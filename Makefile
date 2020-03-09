@@ -1,8 +1,10 @@
-.PHONY: clean
+.PHONY: all clean
 
 HX_SRCs = $(shell hx-srcs.sh)
 CXX_SRCs = $(shell hx-files.sh $(HX_SRCs))
 CXXFLAGS += -Wall -std=c++17
+
+all: hx_run
 
 hx_run: $(HX_SRCs)
 	@echo HX
@@ -12,7 +14,7 @@ hx_run: $(HX_SRCs)
 
 dox: $(CXX_SRCs)
 	@echo C++ $@
-	@$(CXX) $^ -o $@
+	@$(CXX) $(CXXFLAGS) $^ -o $@
 
 $(CXX_SRCs): hx_run
 
