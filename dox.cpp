@@ -14,7 +14,7 @@
 
 	static std::string title;
 	static std::string author;
-	static std::string date;
+	static std::string date { "\\today" };
 
 #line 32 "index.md"
 
@@ -79,8 +79,79 @@
 		nextline(line);
 	}
 
+#line 104 "index.md"
+
+	std::cout <<
+		"\\documentclass[a5paper,ngerman,9pt]{article}\n"
+		"\\usepackage[T1]{fontenc}\n"
+		"\\usepackage[utf8]{inputenc}\n"
+		"\\usepackage[margin=0.5in,includefoot]{geometry}\n"
+		"\\usepackage{microtype}\n"
+		"\\usepackage{babel}\n"
+		"\\usepackage[none]{solarized}\n"
+		"\\usepackage{sectsty}\n"
+		"\\usepackage{ccfonts}\n"
+		"\\usepackage{euler}\n"
+		"\\usepackage{todone}\n"
+		"\\usepackage{fancyhdr}\n"
+		"\\usepackage{fancyvrb}\n"
+		"\\usepackage{graphicx}\n"
+		"\\usepackage{multicol}\n"
+		"\\usepackage{mdframed}\n"
+		"\\pagestyle{fancy}\n"
+		"\\fancypagestyle{plain}{\n"
+		"\\fancyhf{}\n"
+		"\\fancyfoot[C]{{\\color{deemph}\\small$\\thepage$}}\n"
+		"\\renewcommand{\\headrulewidth}{0pt}\n"
+		"\\renewcommand{\\footrulewidth}{0pt}}\n"
+		"\\title{\\color{emph}" << title << "}\n"
+		"\\author{" << author << "}\n"
+		"\\date{" << date << "}\n"
+		"\\columnseprule.2pt\n"
+		"\\renewcommand{\\columnseprulecolor}{\\color{deemph}}\n"
+		"\\begin{document}\n"
+		"\\pagecolor{background}\n"
+		"\\color{normal}\n"
+		"\\allsectionsfont{\\color{emph}\\mdseries}\n"
+		"\\pagestyle{plain}\n"
+		"\\maketitle\n"
+		"\\thispagestyle{fancy}\n"
+		"\\surroundwithmdframed[backgroundcolor=codebackground,fontcolor=normal,hidealllines=true]{Verbatim}\n";
+
 #line 50 "index.md"
 ;
+
+#line 145 "index.md"
+
+	while (line != end_of_file) {
+		
+#line 154 "index.md"
+
+	do {
+		
+#line 164 "index.md"
+
+	if (has_prefix(line, "## ")) {
+		std::cout << "\\section{" << line.substr(3) << "}\n";
+		nextline(line);
+		break;
+	}
+	if (has_prefix(line, "### ")) {
+		std::cout << "\\subsection{" << line.substr(4) << "}\n";
+		nextline(line);
+		break;
+	}
+
+#line 156 "index.md"
+;
+		std::cout << line << "\n";
+		nextline(line);
+	} while (false);
+
+#line 147 "index.md"
+;
+	}
+	std::cout << "\\end{document}\n";
 
 #line 11 "index.md"
 ;

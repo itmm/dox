@@ -8,14 +8,14 @@
 <h1>Dox</h1>
 <div class="slides">
 <div class="page">
-<div class="slide"><div class="headers">
+<div class="slide"><div class="slide-nr">1</div><div class="headers">
 <h1>Dox</h1>
 </div></div>
 <ul><li>
 generate LaTeX sources from a markdown file
 </li></ul>
 </div>
-<div class="page"><div class="slide">
+<div class="page"><div class="slide"><div class="slide-nr">2</div>
 <code>
 <span class="macro">@Def(<span class="name">file: dox.cpp</span>)</span><br/>
 <span class="in1"></span><span class="macro">@put(<span class="name">includes</span>)</span>;<br/>
@@ -28,7 +28,7 @@ generate LaTeX sources from a markdown file
 <span class="macro">@End(<span class="name">file: dox.cpp</span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide">
+<div class="page"><div class="slide"><div class="slide-nr">3</div>
 <code>
 <span class="macro">@def(<span class="name">includes</span>)</span><br/>
 <span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">iostream</span>&gt;<br/>
@@ -36,16 +36,16 @@ generate LaTeX sources from a markdown file
 <span class="macro">@end(<span class="name">includes</span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide">
+<div class="page"><div class="slide"><div class="slide-nr">4</div>
 <code>
 <span class="macro">@def(<span class="name">main prereqs</span>)</span><br/>
 <span class="in1"></span><span class="keyword">static</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">title</span>;<br/>
 <span class="in1"></span><span class="keyword">static</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">author</span>;<br/>
-<span class="in1"></span><span class="keyword">static</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">date</span>;<br/>
+<span class="in1"></span><span class="keyword">static</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">date</span> { <span class="str">"\\today"</span> };<br/>
 <span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide">
+<div class="page"><div class="slide"><div class="slide-nr">5</div>
 <code>
 <span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
 <span class="in1"></span><span class="keyword">static</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">end_of_file</span> {<br/>
@@ -61,7 +61,7 @@ generate LaTeX sources from a markdown file
 <span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide">
+<div class="page"><div class="slide"><div class="slide-nr">6</div>
 <code>
 <span class="macro">@def(<span class="name">main</span>)</span><br/>
 <span class="in1"></span><span class="type">std</span>::<span class="type">string</span> <span class="var">line</span>;<br/>
@@ -70,7 +70,7 @@ generate LaTeX sources from a markdown file
 <span class="macro">@end(<span class="name">main</span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide">
+<div class="page"><div class="slide"><div class="slide-nr">7</div>
 <code>
 <span class="macro">@def(<span class="name">read metadata</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span>.<span class="fn">size</span>() &gt;= <span class="num">2</span> &amp;&amp; <span class="var">line</span>[<span class="num">0</span>] == <span class="str">'#'</span> &amp;&amp; <span class="var">line</span>[<span class="num">1</span>] == <span class="str">' '</span>) {<br/>
@@ -82,7 +82,7 @@ generate LaTeX sources from a markdown file
 <span class="macro">@end(<span class="name">read metadata</span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide">
+<div class="page"><div class="slide"><div class="slide-nr">8</div>
 <code>
 <span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
 <span class="in1"></span><span class="type">bool</span> <span class="fn">has_prefix</span>(<span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> &amp;<span class="var">line</span>, <span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> &amp;<span class="var">prefix</span>) {<br/>
@@ -92,7 +92,7 @@ generate LaTeX sources from a markdown file
 <span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide">
+<div class="page"><div class="slide"><div class="slide-nr">9</div>
 <code>
 <span class="macro">@add(<span class="name">read metadata</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="fn">has_prefix</span>(<span class="var">line</span>, <span class="str">"* author: "</span>)) {<br/>
@@ -104,7 +104,7 @@ generate LaTeX sources from a markdown file
 <span class="macro">@end(<span class="name">read metadata</span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide">
+<div class="page"><div class="slide"><div class="slide-nr">10</div>
 <code>
 <span class="macro">@add(<span class="name">read metadata</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="fn">has_prefix</span>(<span class="var">line</span>, <span class="str">"* date: "</span>)) {<br/>
@@ -114,7 +114,7 @@ generate LaTeX sources from a markdown file
 <span class="macro">@end(<span class="name">read metadata</span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide">
+<div class="page"><div class="slide"><div class="slide-nr">11</div>
 <code>
 <span class="macro">@add(<span class="name">read metadata</span>)</span><br/>
 <span class="in1"></span><span class="keyword">while</span> (<span class="var">line</span>.<span class="fn">size</span>()) {<br/>
@@ -122,6 +122,85 @@ generate LaTeX sources from a markdown file
 <span class="in2"></span><span class="fn">nextline</span>(<span class="var">line</span>);<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">read metadata</span>)</span><br/>
+</code></div>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">12</div>
+<code>
+<span class="macro">@add(<span class="name">read metadata</span>)</span><br/>
+<span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt;<br/>
+<span class="in2"></span><span class="str">"\\documentclass[a5paper,ngerman,9pt]{article}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\usepackage[T1]{fontenc}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\usepackage[utf8]{inputenc}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\usepackage[margin=0.5in,includefoot]{geometry}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\usepackage{microtype}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\usepackage{babel}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\usepackage[none]{solarized}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\usepackage{sectsty}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\usepackage{ccfonts}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\usepackage{euler}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\usepackage{todone}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\usepackage{fancyhdr}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\usepackage{fancyvrb}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\usepackage{graphicx}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\usepackage{multicol}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\usepackage{mdframed}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\pagestyle{fancy}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\fancypagestyle{plain}{\n"</span><br/>
+<span class="in2"></span><span class="str">"\\fancyhf{}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\fancyfoot[C]{{\\color{deemph}\\small$\\thepage$}}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\renewcommand{\\headrulewidth}{0pt}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\renewcommand{\\footrulewidth}{0pt}}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\title{\\color{emph}"</span> &lt;&lt; <span class="var">title</span> &lt;&lt; <span class="str">"}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\author{"</span> &lt;&lt; <span class="var">author</span> &lt;&lt; <span class="str">"}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\date{"</span> &lt;&lt; <span class="var">date</span> &lt;&lt; <span class="str">"}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\columnseprule.2pt\n"</span><br/>
+<span class="in2"></span><span class="str">"\\renewcommand{\\columnseprulecolor}{\\color{deemph}}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\begin{document}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\pagecolor{background}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\color{normal}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\allsectionsfont{\\color{emph}\\mdseries}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\pagestyle{plain}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\maketitle\n"</span><br/>
+<span class="in2"></span><span class="str">"\\thispagestyle{fancy}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\surroundwithmdframed[backgroundcolor=codebackground,fontcolor=normal,hidealllines=true]{Verbatim}\n"</span>;<br/>
+<span class="macro">@end(<span class="name">read metadata</span>)</span><br/>
+</code></div>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">13</div>
+<code>
+<span class="macro">@add(<span class="name">main</span>)</span><br/>
+<span class="in1"></span><span class="keyword">while</span> (<span class="var">line</span> != <span class="var">end_of_file</span>) {<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">process line</span>)</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\end{document}\n"</span>;<br/>
+<span class="macro">@end(<span class="name">main</span>)</span><br/>
+</code></div>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">14</div>
+<code>
+<span class="macro">@def(<span class="name">process line</span>)</span><br/>
+<span class="in1"></span><span class="var">do</span> {<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">process special</span>)</span>;<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">line</span> &lt;&lt; <span class="str">"\n"</span>;<br/>
+<span class="in2"></span><span class="fn">nextline</span>(<span class="var">line</span>);<br/>
+<span class="in1"></span>} <span class="keyword">while</span> (<span class="num">false</span>);<br/>
+<span class="macro">@end(<span class="name">process line</span>)</span><br/>
+</code></div>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">15</div>
+<code>
+<span class="macro">@def(<span class="name">process special</span>)</span><br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="fn">has_prefix</span>(<span class="var">line</span>, <span class="str">"## "</span>)) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\section{"</span> &lt;&lt; <span class="var">line</span>.<span class="fn">substr</span>(<span class="num">3</span>) &lt;&lt; <span class="str">"}\n"</span>;<br/>
+<span class="in2"></span><span class="fn">nextline</span>(<span class="var">line</span>);<br/>
+<span class="in2"></span><span class="keyword">break</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="fn">has_prefix</span>(<span class="var">line</span>, <span class="str">"### "</span>)) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\subsection{"</span> &lt;&lt; <span class="var">line</span>.<span class="fn">substr</span>(<span class="num">4</span>) &lt;&lt; <span class="str">"}\n"</span>;<br/>
+<span class="in2"></span><span class="fn">nextline</span>(<span class="var">line</span>);<br/>
+<span class="in2"></span><span class="keyword">break</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">process special</span>)</span><br/>
 </code></div>
 </div>
 </body>
