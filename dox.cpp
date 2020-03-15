@@ -12,11 +12,15 @@
 	
 #line 24 "index.md"
 
+	static std::string theme { "none" };
+
+#line 41 "index.md"
+
 	static std::string title;
 	static std::string author;
 	static std::string date { "\\today" };
 
-#line 32 "index.md"
+#line 49 "index.md"
 
 	static std::string end_of_file {
 		"**End_of_filE**"
@@ -29,14 +33,14 @@
 		}
 	}
 
-#line 66 "index.md"
+#line 83 "index.md"
 
 	bool has_prefix(const std::string &line, const std::string &prefix) {
 		return line.size() >= prefix.size() &&
 			line.substr(0, prefix.size()) == prefix;
 	}
 
-#line 145 "index.md"
+#line 162 "index.md"
 
 	bool in_two_columns { false };
 	void enter_two_columns() {
@@ -52,18 +56,60 @@
 		}
 	}
 
+#line 180 "index.md"
+
+	void format_line(const std::string line) {
+		
+#line 230 "index.md"
+
+	for (unsigned i { 0 }; i < line.length(); ++i) {
+		if (line[i] == '*') {
+			unsigned j { i + 1 };
+			while (j < line.length() && line[j] >= ' ' && (isalnum(line[j]) || line[j] == '*')) { ++j; }
+			if (line[j - 1] == '*') {
+				std::cout << "\\emph{";
+				for (unsigned t { i + 1 }; t + 1< j; ++t) {
+					if (line[t] == '*') {
+						std::cout << ' ';
+					} else {
+						std::cout << line[t];
+					}
+				}
+				std::cout << "}";
+				if (line[j] == ' ') {
+					std::cout << '\\';
+				}
+				i = j - 1; continue;
+			}
+		}
+		std::cout << line[i];
+	}
+
+#line 182 "index.md"
+;
+	}
+
 #line 7 "index.md"
 ;
 	int main(
 		int argc, const char *const argv[]
 	) {
 		
-#line 47 "index.md"
+#line 30 "index.md"
+
+	if (argc == 2 && argv[1] == std::string { "--theme=light" }) {
+		theme = "light";
+	}
+	if (argc == 2 && argv[1] == std::string { "--theme=dark" }) {
+		theme = "dark";
+	}
+
+#line 64 "index.md"
 
 	std::string line;
 	nextline(line);
 	
-#line 55 "index.md"
+#line 72 "index.md"
 
 	if (line.size() >= 2 && line[0] == '#' && line[1] == ' ') {
 		title = line.substr(2);
@@ -72,7 +118,7 @@
 		std::cerr << "no title\n";
 	}
 
-#line 75 "index.md"
+#line 92 "index.md"
 
 	if (has_prefix(line, "* author: ")) {
 		author = line.substr(10);
@@ -81,21 +127,21 @@
 		std::cerr << "no author\n";
 	}
 
-#line 86 "index.md"
+#line 103 "index.md"
 
 	if (has_prefix(line, "* date: ")) {
 		date = line.substr(8);
 		nextline(line);
 	}
 
-#line 95 "index.md"
+#line 112 "index.md"
 
 	while (line.size()) {
 		std::cerr << "ignoring meta line: " << line << "\n";
 		nextline(line);
 	}
 
-#line 104 "index.md"
+#line 121 "index.md"
 
 	std::cout <<
 		"\\documentclass[a5paper,ngerman,9pt]{article}\n"
@@ -104,7 +150,7 @@
 		"\\usepackage[margin=0.5in,includefoot]{geometry}\n"
 		"\\usepackage{microtype}\n"
 		"\\usepackage{babel}\n"
-		"\\usepackage[none]{solarized}\n"
+		"\\usepackage[" << theme << "]{solarized}\n"
 		"\\usepackage{sectsty}\n"
 		"\\usepackage{ccfonts}\n"
 		"\\usepackage{euler}\n"
@@ -134,39 +180,44 @@
 		"\\thispagestyle{fancy}\n"
 		"\\surroundwithmdframed[backgroundcolor=codebackground,fontcolor=normal,hidealllines=true]{Verbatim}\n";
 
-#line 50 "index.md"
+#line 67 "index.md"
 ;
 
-#line 163 "index.md"
+#line 188 "index.md"
 
 	while (line != end_of_file) {
 		
-#line 173 "index.md"
+#line 198 "index.md"
 
 	do {
 		
-#line 183 "index.md"
+#line 209 "index.md"
 
 	if (has_prefix(line, "## ")) {
 		exit_two_columns();
-		std::cout << "\\section{" << line.substr(3) << "}\n";
+		std::cout << "\\section{";
+		format_line(line.substr(3));
+		std::cout << "}\n";
 		enter_two_columns();
 		nextline(line);
 		break;
 	}
 	if (has_prefix(line, "### ")) {
-		std::cout << "\\subsection{" << line.substr(4) << "}\n";
+		std::cout << "\\subsection{";
+		format_line(line.substr(4));
+		std::cout << "}\n";
 		nextline(line);
 		break;
 	}
 
-#line 175 "index.md"
+#line 200 "index.md"
 ;
-		std::cout << line << "\n";
+		format_line(line);
+		std::cout << "\n";
 		nextline(line);
 	} while (false);
 
-#line 165 "index.md"
+#line 190 "index.md"
 ;
 	}
 	exit_two_columns();

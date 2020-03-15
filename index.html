@@ -39,13 +39,32 @@ generate LaTeX sources from a markdown file
 <div class="page"><div class="slide"><div class="slide-nr">4</div>
 <code>
 <span class="macro">@def(<span class="name">main prereqs</span>)</span><br/>
+<span class="in1"></span><span class="keyword">static</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">theme</span> { <span class="str">"none"</span> };<br/>
+<span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
+</code></div>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">5</div>
+<code>
+<span class="macro">@def(<span class="name">main</span>)</span><br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">argc</span> == <span class="num">2</span> &amp;&amp; <span class="var">argv</span>[<span class="num">1</span>] == <span class="type">std</span>::<span class="type">string</span> { <span class="str">"--theme=light"</span> }) {<br/>
+<span class="in2"></span><span class="var">theme</span> = <span class="str">"light"</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">argc</span> == <span class="num">2</span> &amp;&amp; <span class="var">argv</span>[<span class="num">1</span>] == <span class="type">std</span>::<span class="type">string</span> { <span class="str">"--theme=dark"</span> }) {<br/>
+<span class="in2"></span><span class="var">theme</span> = <span class="str">"dark"</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">main</span>)</span><br/>
+</code></div>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">6</div>
+<code>
+<span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
 <span class="in1"></span><span class="keyword">static</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">title</span>;<br/>
 <span class="in1"></span><span class="keyword">static</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">author</span>;<br/>
 <span class="in1"></span><span class="keyword">static</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">date</span> { <span class="str">"\\today"</span> };<br/>
 <span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">5</div>
+<div class="page"><div class="slide"><div class="slide-nr">7</div>
 <code>
 <span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
 <span class="in1"></span><span class="keyword">static</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">end_of_file</span> {<br/>
@@ -61,16 +80,16 @@ generate LaTeX sources from a markdown file
 <span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">6</div>
+<div class="page"><div class="slide"><div class="slide-nr">8</div>
 <code>
-<span class="macro">@def(<span class="name">main</span>)</span><br/>
+<span class="macro">@add(<span class="name">main</span>)</span><br/>
 <span class="in1"></span><span class="type">std</span>::<span class="type">string</span> <span class="var">line</span>;<br/>
 <span class="in1"></span><span class="fn">nextline</span>(<span class="var">line</span>);<br/>
 <span class="in1"></span><span class="macro">@put(<span class="name">read metadata</span>)</span>;<br/>
 <span class="macro">@end(<span class="name">main</span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">7</div>
+<div class="page"><div class="slide"><div class="slide-nr">9</div>
 <code>
 <span class="macro">@def(<span class="name">read metadata</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span>.<span class="fn">size</span>() &gt;= <span class="num">2</span> &amp;&amp; <span class="var">line</span>[<span class="num">0</span>] == <span class="str">'#'</span> &amp;&amp; <span class="var">line</span>[<span class="num">1</span>] == <span class="str">' '</span>) {<br/>
@@ -82,7 +101,7 @@ generate LaTeX sources from a markdown file
 <span class="macro">@end(<span class="name">read metadata</span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">8</div>
+<div class="page"><div class="slide"><div class="slide-nr">10</div>
 <code>
 <span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
 <span class="in1"></span><span class="type">bool</span> <span class="fn">has_prefix</span>(<span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> &amp;<span class="var">line</span>, <span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> &amp;<span class="var">prefix</span>) {<br/>
@@ -92,7 +111,7 @@ generate LaTeX sources from a markdown file
 <span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">9</div>
+<div class="page"><div class="slide"><div class="slide-nr">11</div>
 <code>
 <span class="macro">@add(<span class="name">read metadata</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="fn">has_prefix</span>(<span class="var">line</span>, <span class="str">"* author: "</span>)) {<br/>
@@ -104,7 +123,7 @@ generate LaTeX sources from a markdown file
 <span class="macro">@end(<span class="name">read metadata</span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">10</div>
+<div class="page"><div class="slide"><div class="slide-nr">12</div>
 <code>
 <span class="macro">@add(<span class="name">read metadata</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="fn">has_prefix</span>(<span class="var">line</span>, <span class="str">"* date: "</span>)) {<br/>
@@ -114,7 +133,7 @@ generate LaTeX sources from a markdown file
 <span class="macro">@end(<span class="name">read metadata</span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">11</div>
+<div class="page"><div class="slide"><div class="slide-nr">13</div>
 <code>
 <span class="macro">@add(<span class="name">read metadata</span>)</span><br/>
 <span class="in1"></span><span class="keyword">while</span> (<span class="var">line</span>.<span class="fn">size</span>()) {<br/>
@@ -124,7 +143,7 @@ generate LaTeX sources from a markdown file
 <span class="macro">@end(<span class="name">read metadata</span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">12</div>
+<div class="page"><div class="slide"><div class="slide-nr">14</div>
 <code>
 <span class="macro">@add(<span class="name">read metadata</span>)</span><br/>
 <span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt;<br/>
@@ -134,7 +153,7 @@ generate LaTeX sources from a markdown file
 <span class="in2"></span><span class="str">"\\usepackage[margin=0.5in,includefoot]{geometry}\n"</span><br/>
 <span class="in2"></span><span class="str">"\\usepackage{microtype}\n"</span><br/>
 <span class="in2"></span><span class="str">"\\usepackage{babel}\n"</span><br/>
-<span class="in2"></span><span class="str">"\\usepackage[none]{solarized}\n"</span><br/>
+<span class="in2"></span><span class="str">"\\usepackage["</span> &lt;&lt; <span class="var">theme</span> &lt;&lt; <span class="str">"]{solarized}\n"</span><br/>
 <span class="in2"></span><span class="str">"\\usepackage{sectsty}\n"</span><br/>
 <span class="in2"></span><span class="str">"\\usepackage{ccfonts}\n"</span><br/>
 <span class="in2"></span><span class="str">"\\usepackage{euler}\n"</span><br/>
@@ -166,7 +185,7 @@ generate LaTeX sources from a markdown file
 <span class="macro">@end(<span class="name">read metadata</span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">13</div>
+<div class="page"><div class="slide"><div class="slide-nr">15</div>
 <code>
 <span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
 <span class="in1"></span><span class="type">bool</span> <span class="var">in_two_columns</span> { <span class="num">false</span> };<br/>
@@ -185,7 +204,16 @@ generate LaTeX sources from a markdown file
 <span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">14</div>
+<div class="page"><div class="slide"><div class="slide-nr">16</div>
+<code>
+<span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
+<span class="in1"></span><span class="type">void</span> <span class="fn">format_line</span>(<span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">line</span>) {<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">format line</span>)</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
+</code></div>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">17</div>
 <code>
 <span class="macro">@add(<span class="name">main</span>)</span><br/>
 <span class="in1"></span><span class="keyword">while</span> (<span class="var">line</span> != <span class="var">end_of_file</span>) {<br/>
@@ -196,33 +224,66 @@ generate LaTeX sources from a markdown file
 <span class="macro">@end(<span class="name">main</span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">15</div>
+<div class="page"><div class="slide"><div class="slide-nr">18</div>
 <code>
 <span class="macro">@def(<span class="name">process line</span>)</span><br/>
 <span class="in1"></span><span class="var">do</span> {<br/>
 <span class="in2"></span><span class="macro">@put(<span class="name">process special</span>)</span>;<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">line</span> &lt;&lt; <span class="str">"\n"</span>;<br/>
+<span class="in2"></span><span class="fn">format_line</span>(<span class="var">line</span>);<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\n"</span>;<br/>
 <span class="in2"></span><span class="fn">nextline</span>(<span class="var">line</span>);<br/>
 <span class="in1"></span>} <span class="keyword">while</span> (<span class="num">false</span>);<br/>
 <span class="macro">@end(<span class="name">process line</span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">16</div>
+<div class="page"><div class="slide"><div class="slide-nr">19</div>
 <code>
 <span class="macro">@def(<span class="name">process special</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="fn">has_prefix</span>(<span class="var">line</span>, <span class="str">"## "</span>)) {<br/>
 <span class="in2"></span><span class="fn">exit_two_columns</span>();<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\section{"</span> &lt;&lt; <span class="var">line</span>.<span class="fn">substr</span>(<span class="num">3</span>) &lt;&lt; <span class="str">"}\n"</span>;<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\section{"</span>;<br/>
+<span class="in2"></span><span class="fn">format_line</span>(<span class="var">line</span>.<span class="fn">substr</span>(<span class="num">3</span>));<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"}\n"</span>;<br/>
 <span class="in2"></span><span class="fn">enter_two_columns</span>();<br/>
 <span class="in2"></span><span class="fn">nextline</span>(<span class="var">line</span>);<br/>
 <span class="in2"></span><span class="keyword">break</span>;<br/>
 <span class="in1"></span>}<br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="fn">has_prefix</span>(<span class="var">line</span>, <span class="str">"### "</span>)) {<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\subsection{"</span> &lt;&lt; <span class="var">line</span>.<span class="fn">substr</span>(<span class="num">4</span>) &lt;&lt; <span class="str">"}\n"</span>;<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\subsection{"</span>;<br/>
+<span class="in2"></span><span class="fn">format_line</span>(<span class="var">line</span>.<span class="fn">substr</span>(<span class="num">4</span>));<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"}\n"</span>;<br/>
 <span class="in2"></span><span class="fn">nextline</span>(<span class="var">line</span>);<br/>
 <span class="in2"></span><span class="keyword">break</span>;<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">process special</span>)</span><br/>
+</code></div>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">20</div>
+<code>
+<span class="macro">@def(<span class="name">format line</span>)</span><br/>
+<span class="in1"></span><span class="keyword">for</span> (<span class="type">unsigned</span> <span class="var">i</span> { <span class="num">0</span> }; <span class="var">i</span> &lt; <span class="var">line</span>.<span class="fn">length</span>(); ++<span class="var">i</span>) {<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">line</span>[<span class="var">i</span>] == <span class="str">'*'</span>) {<br/>
+<span class="in3"></span><span class="type">unsigned</span> <span class="var">j</span> { <span class="var">i</span> + <span class="num">1</span> };<br/>
+<span class="in3"></span><span class="keyword">while</span> (<span class="var">j</span> &lt; <span class="var">line</span>.<span class="fn">length</span>() &amp;&amp; <span class="var">line</span>[<span class="var">j</span>] &gt;= <span class="str">' '</span> &amp;&amp; (<span class="fn">isalnum</span>(<span class="var">line</span>[<span class="var">j</span>]) || <span class="var">line</span>[<span class="var">j</span>] == <span class="str">'*'</span>)) { ++<span class="var">j</span>; }<br/>
+<span class="in3"></span><span class="keyword">if</span> (<span class="var">line</span>[<span class="var">j</span> - <span class="num">1</span>] == <span class="str">'*'</span>) {<br/>
+<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\emph{"</span>;<br/>
+<span class="in4"></span><span class="keyword">for</span> (<span class="type">unsigned</span> <span class="var">t</span> { <span class="var">i</span> + <span class="num">1</span> }; <span class="var">t</span> + <span class="num">1</span>&lt; <span class="var">j</span>; ++<span class="var">t</span>) {<br/>
+<span class="in5"></span><span class="keyword">if</span> (<span class="var">line</span>[<span class="var">t</span>] == <span class="str">'*'</span>) {<br/>
+<span class="in6"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">' '</span>;<br/>
+<span class="in5"></span>} <span class="keyword">else</span> {<br/>
+<span class="in6"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">line</span>[<span class="var">t</span>];<br/>
+<span class="in5"></span>}<br/>
+<span class="in4"></span>}<br/>
+<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"}"</span>;<br/>
+<span class="in4"></span><span class="keyword">if</span> (<span class="var">line</span>[<span class="var">j</span>] == <span class="str">' '</span>) {<br/>
+<span class="in5"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">'\\'</span>;<br/>
+<span class="in4"></span>}<br/>
+<span class="in4"></span><span class="var">i</span> = <span class="var">j</span> - <span class="num">1</span>; <span class="keyword">continue</span>;<br/>
+<span class="in3"></span>}<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">line</span>[<span class="var">i</span>];<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">format line</span>)</span><br/>
 </code></div>
 </div>
 </body>

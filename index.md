@@ -22,6 +22,23 @@
 
 ```
 @def(main prereqs)
+	static std::string theme { "none" };
+@end(main prereqs)
+```
+
+```
+@def(main)
+	if (argc == 2 && argv[1] == std::string { "--theme=light" }) {
+		theme = "light";
+	}
+	if (argc == 2 && argv[1] == std::string { "--theme=dark" }) {
+		theme = "dark";
+	}
+@end(main)
+```
+
+```
+@add(main prereqs)
 	static std::string title;
 	static std::string author;
 	static std::string date { "\\today" };
@@ -44,7 +61,7 @@
 ```
 
 ```
-@def(main)
+@add(main)
 	std::string line;
 	nextline(line);
 	@put(read metadata);
@@ -109,7 +126,7 @@
 		"\\usepackage[margin=0.5in,includefoot]{geometry}\n"
 		"\\usepackage{microtype}\n"
 		"\\usepackage{babel}\n"
-		"\\usepackage[none]{solarized}\n"
+		"\\usepackage[" << theme << "]{solarized}\n"
 		"\\usepackage{sectsty}\n"
 		"\\usepackage{ccfonts}\n"
 		"\\usepackage{euler}\n"
@@ -160,6 +177,14 @@
 ```
 
 ```
+@add(main prereqs)
+	void format_line(const std::string line) {
+		@put(format line);
+	}
+@end(main prereqs)
+```
+
+```
 @add(main)
 	while (line != end_of_file) {
 		@put(process line);
@@ -173,7 +198,8 @@
 @def(process line)
 	do {
 		@put(process special);
-		std::cout << line << "\n";
+		format_line(line);
+		std::cout << "\n";
 		nextline(line);
 	} while (false);
 @end(process line)
@@ -183,16 +209,46 @@
 @def(process special)
 	if (has_prefix(line, "## ")) {
 		exit_two_columns();
-		std::cout << "\\section{" << line.substr(3) << "}\n";
+		std::cout << "\\section{";
+		format_line(line.substr(3));
+		std::cout << "}\n";
 		enter_two_columns();
 		nextline(line);
 		break;
 	}
 	if (has_prefix(line, "### ")) {
-		std::cout << "\\subsection{" << line.substr(4) << "}\n";
+		std::cout << "\\subsection{";
+		format_line(line.substr(4));
+		std::cout << "}\n";
 		nextline(line);
 		break;
 	}
 @end(process special)
 ```
 
+```
+@def(format line)
+	for (unsigned i { 0 }; i < line.length(); ++i) {
+		if (line[i] == '*') {
+			unsigned j { i + 1 };
+			while (j < line.length() && line[j] >= ' ' && (isalnum(line[j]) || line[j] == '*')) { ++j; }
+			if (line[j - 1] == '*') {
+				std::cout << "\\emph{";
+				for (unsigned t { i + 1 }; t + 1< j; ++t) {
+					if (line[t] == '*') {
+						std::cout << ' ';
+					} else {
+						std::cout << line[t];
+					}
+				}
+				std::cout << "}";
+				if (line[j] == ' ') {
+					std::cout << '\\';
+				}
+				i = j - 1; continue;
+			}
+		}
+		std::cout << line[i];
+	}
+@end(format line)
+```
