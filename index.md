@@ -142,10 +142,29 @@
 ```
 
 ```
+@add(main prereqs)
+	bool in_two_columns { false };
+	void enter_two_columns() {
+		if (! in_two_columns) {
+			std::cout << "\\begin{multicols}{2}\n";
+			in_two_columns = true;
+		}
+	}
+	void exit_two_columns() {
+		if (in_two_columns) {
+			std::cout << "\\end{multicols}\n";
+			in_two_columns = false;
+		}
+	}
+@end(main prereqs)
+```
+
+```
 @add(main)
 	while (line != end_of_file) {
 		@put(process line);
 	}
+	exit_two_columns();
 	std::cout << "\\end{document}\n";
 @end(main)
 ```
@@ -163,7 +182,9 @@
 ```
 @def(process special)
 	if (has_prefix(line, "## ")) {
+		exit_two_columns();
 		std::cout << "\\section{" << line.substr(3) << "}\n";
+		enter_two_columns();
 		nextline(line);
 		break;
 	}

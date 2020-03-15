@@ -36,6 +36,22 @@
 			line.substr(0, prefix.size()) == prefix;
 	}
 
+#line 145 "index.md"
+
+	bool in_two_columns { false };
+	void enter_two_columns() {
+		if (! in_two_columns) {
+			std::cout << "\\begin{multicols}{2}\n";
+			in_two_columns = true;
+		}
+	}
+	void exit_two_columns() {
+		if (in_two_columns) {
+			std::cout << "\\end{multicols}\n";
+			in_two_columns = false;
+		}
+	}
+
 #line 7 "index.md"
 ;
 	int main(
@@ -121,18 +137,20 @@
 #line 50 "index.md"
 ;
 
-#line 145 "index.md"
+#line 163 "index.md"
 
 	while (line != end_of_file) {
 		
-#line 154 "index.md"
+#line 173 "index.md"
 
 	do {
 		
-#line 164 "index.md"
+#line 183 "index.md"
 
 	if (has_prefix(line, "## ")) {
+		exit_two_columns();
 		std::cout << "\\section{" << line.substr(3) << "}\n";
+		enter_two_columns();
 		nextline(line);
 		break;
 	}
@@ -142,15 +160,16 @@
 		break;
 	}
 
-#line 156 "index.md"
+#line 175 "index.md"
 ;
 		std::cout << line << "\n";
 		nextline(line);
 	} while (false);
 
-#line 147 "index.md"
+#line 165 "index.md"
 ;
 	}
+	exit_two_columns();
 	std::cout << "\\end{document}\n";
 
 #line 11 "index.md"
