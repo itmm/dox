@@ -191,28 +191,51 @@
 ;
 	}
 
-#line 616 "index.md"
+#line 666 "index.md"
 
 	if (line[i] == '`') {
-		unsigned j { i + 1 };
-		while (j < line.size() &&
-			line[j] != '`'
-		) { ++j; }
-		if (j < line.size() && line[j] == '`') {
-			std::cout << "\\hlInline{";
-			for (auto t { i + 1 }; t < j; ++t) {
-				if (line[t] == ' ') {
-					std::cout << "\\";
-				}
-				std::cout << line[t];
-			}
-			std::cout << "}";
-			if (j + 1 < line.size() && line[j + 1] == ' ') {
-				std::cout << "\\";
-			}
-			i = j;
-			continue;
+		
+#line 675 "index.md"
+
+	unsigned j { i + 1 };
+	for (;
+		j < line.size() && line[j] != '`';
+		++j
+	) {}
+
+#line 686 "index.md"
+
+	if (j < line.size() &&
+		line[j] == '`'
+	) {
+		
+#line 699 "index.md"
+
+	std::cout << "\\hlInline{";
+	for (auto t { i + 1 }; t < j; ++t) {
+		if (line[t] == ' ') {
+			std::cout << "\\";
 		}
+		std::cout << line[t];
+	}
+	std::cout << "}";
+
+#line 714 "index.md"
+
+	if (j + 1 < line.size() &&
+		line[j + 1] == ' '
+	) {
+		std::cout << "\\";
+	}
+
+#line 690 "index.md"
+;
+		i = j;
+		continue;
+	}
+
+#line 668 "index.md"
+;
 	}
 
 #line 342 "index.md"
@@ -557,30 +580,60 @@
 	if (line == "```lisp") {
 		std::cout << "\\begin{lisp}\n";
 		nextline(line);
-		int nr { 1 };
-		while (line != end_of_file && line != "```") {
-			std::cout << "$\\hlLine{" << nr++ << "}";
-			unsigned indent { 0 };
-			unsigned i { 0 };
-			while (i < line.size() && line[i] == '\t') { ++i; ++indent; }
-			if (indent) {
-				std::cout << "\\hlIndent{" << indent << "}";
-			}
-			for (; i < line.size(); ++i) {
-				if (line[i] == ' ') {
-					std::cout << "\\";
-				}
-				std::cout << line[i];
-			}
-			std::cout << "$";
-			nextline(line);
-			if (line == end_of_file || line == "```") {
-				std::cout << "\n";
-				break;
-			}
-			std::cout << "\\\\*\n";
+		
+#line 592 "index.md"
+
+	int nr { 1 };
+	while (line != end_of_file &&
+		line != "```"
+	) {
+		
+#line 608 "index.md"
+
+	if (nr > 1) {
+		std::cout << "\\\\*\n";
+	}
+
+#line 617 "index.md"
+
+	std::cout << "$\\hlLine{" <<
+		nr++ << "}";
+
+#line 625 "index.md"
+
+	unsigned i { 0 };
+	for (;
+		i < line.size() &&
+			line[i] == '\t';
+		++i
+	) {}
+	if (i) {
+		std::cout << "\\hlIndent{" <<
+			i << "}";
+	}
+
+#line 642 "index.md"
+
+	for (; i < line.size(); ++i) {
+		if (line[i] == ' ') {
+			std::cout << "\\";
 		}
+		std::cout << line[i];
+	}
+
+#line 656 "index.md"
+
+	std::cout << "$";
+
+#line 597 "index.md"
+;
 		nextline(line);
+	}
+	std::cout << "\n";
+	nextline(line);
+
+#line 583 "index.md"
+;
 		std::cout << "\\end{lisp}\n";
 		break;
 	}

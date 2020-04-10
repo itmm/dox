@@ -1,3 +1,2 @@
-* code
 * images
 * links

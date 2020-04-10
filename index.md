@@ -580,60 +580,144 @@
 	if (line == "```lisp") {
 		std::cout << "\\begin{lisp}\n";
 		nextline(line);
-		int nr { 1 };
-		while (line != end_of_file && line != "```") {
-			std::cout << "$\\hlLine{" << nr++ << "}";
-			unsigned indent { 0 };
-			unsigned i { 0 };
-			while (i < line.size() && line[i] == '\t') { ++i; ++indent; }
-			if (indent) {
-				std::cout << "\\hlIndent{" << indent << "}";
-			}
-			for (; i < line.size(); ++i) {
-				if (line[i] == ' ') {
-					std::cout << "\\";
-				}
-				std::cout << line[i];
-			}
-			std::cout << "$";
-			nextline(line);
-			if (line == end_of_file || line == "```") {
-				std::cout << "\n";
-				break;
-			}
-			std::cout << "\\\\*\n";
-		}
-		nextline(line);
+		@put(process lisp lines);
 		std::cout << "\\end{lisp}\n";
 		break;
 	}
 @end(process special)
 ```
+* parse LISP block
+
+```
+@def(process lisp lines)
+	int nr { 1 };
+	while (line != end_of_file &&
+		line != "```"
+	) {
+		@put(process lisp line);
+		nextline(line);
+	}
+	std::cout << "\n";
+	nextline(line);
+@end(process lisp lines)
+```
+* process each line
+* close last line with a newline
+
+```
+@def(process lisp line)
+	if (nr > 1) {
+		std::cout << "\\\\*\n";
+	}
+@end(process lisp line)
+```
+* terminate previous line correctly
+
+```
+@add(process lisp line)
+	std::cout << "$\\hlLine{" <<
+		nr++ << "}";
+@end(process lisp line)
+```
+* enter math mode and write line number
+
+```
+@add(process lisp line)
+	unsigned i { 0 };
+	for (;
+		i < line.size() &&
+			line[i] == '\t';
+		++i
+	) {}
+	if (i) {
+		std::cout << "\\hlIndent{" <<
+			i << "}";
+	}
+@end(process lisp line)
+```
+* skip over tabs
+* and add matching indent
+
+```
+@add(process lisp line)
+	for (; i < line.size(); ++i) {
+		if (line[i] == ' ') {
+			std::cout << "\\";
+		}
+		std::cout << line[i];
+	}
+@end(process lisp line)
+```
+* copy code
+* but escape spaces
+* otherwise they are ignored in math mode
+
+```
+@add(process lisp line)
+	std::cout << "$";
+@end(process lisp line)
+```
+* leave math mode
 
 ## Handle inline code
+* display an inline code fragment
 
 ```
 @add(handle format)
 	if (line[i] == '`') {
-		unsigned j { i + 1 };
-		while (j < line.size() &&
-			line[j] != '`'
-		) { ++j; }
-		if (j < line.size() && line[j] == '`') {
-			std::cout << "\\hlInline{";
-			for (auto t { i + 1 }; t < j; ++t) {
-				if (line[t] == ' ') {
-					std::cout << "\\";
-				}
-				std::cout << line[t];
-			}
-			std::cout << "}";
-			if (j + 1 < line.size() && line[j + 1] == ' ') {
-				std::cout << "\\";
-			}
-			i = j;
-			continue;
-		}
+		@put(inline code);
 	}
 @end(handle format)
 ```
+* parse inline code fragment
+
+```
+@def(inline code)
+	unsigned j { i + 1 };
+	for (;
+		j < line.size() && line[j] != '`';
+		++j
+	) {}
+@end(inline code)
+```
+* find end of fragment
+
+```
+@add(inline code)
+	if (j < line.size() &&
+		line[j] == '`'
+	) {
+		@put(do inline code);
+		i = j;
+		continue;
+	}
+@end(inline code)
+```
+* process valid fragment
+
+```
+@def(do inline code)
+	std::cout << "\\hlInline{";
+	for (auto t { i + 1 }; t < j; ++t) {
+		if (line[t] == ' ') {
+			std::cout << "\\";
+		}
+		std::cout << line[t];
+	}
+	std::cout << "}";
+@end(do inline code)
+```
+* copy code fragment
+* but escape spaces
+
+```
+@add(do inline code)
+	if (j + 1 < line.size() &&
+		line[j + 1] == ' '
+	) {
+		std::cout << "\\";
+	}
+@end(do inline code)
+```
+* pad trailing space
+

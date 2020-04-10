@@ -823,70 +823,194 @@ highlight source code
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span> == <span class="str">"```lisp"</span>) {<br/>
 <span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\begin{lisp}\n"</span>;<br/>
 <span class="in2"></span><span class="fn">nextline</span>(<span class="var">line</span>);<br/>
-<span class="in2"></span><span class="type">int</span> <span class="var">nr</span> { <span class="num">1</span> };<br/>
-<span class="in2"></span><span class="keyword">while</span> (<span class="var">line</span> != <span class="var">end_of_file</span> &amp;&amp; <span class="var">line</span> != <span class="str">"```"</span>) {<br/>
-<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"$\\hlLine{"</span> &lt;&lt; <span class="var">nr</span>++ &lt;&lt; <span class="str">"}"</span>;<br/>
-<span class="in3"></span><span class="type">unsigned</span> <span class="var">indent</span> { <span class="num">0</span> };<br/>
-<span class="in3"></span><span class="type">unsigned</span> <span class="var">i</span> { <span class="num">0</span> };<br/>
-<span class="in3"></span><span class="keyword">while</span> (<span class="var">i</span> &lt; <span class="var">line</span>.<span class="fn">size</span>() &amp;&amp; <span class="var">line</span>[<span class="var">i</span>] == <span class="str">'\t'</span>) { ++<span class="var">i</span>; ++<span class="var">indent</span>; }<br/>
-<span class="in3"></span><span class="keyword">if</span> (<span class="var">indent</span>) {<br/>
-<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\hlIndent{"</span> &lt;&lt; <span class="var">indent</span> &lt;&lt; <span class="str">"}"</span>;<br/>
-<span class="in3"></span>}<br/>
-<span class="in3"></span><span class="keyword">for</span> (; <span class="var">i</span> &lt; <span class="var">line</span>.<span class="fn">size</span>(); ++<span class="var">i</span>) {<br/>
-<span class="in4"></span><span class="keyword">if</span> (<span class="var">line</span>[<span class="var">i</span>] == <span class="str">' '</span>) {<br/>
-<span class="in5"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\"</span>;<br/>
-<span class="in4"></span>}<br/>
-<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">line</span>[<span class="var">i</span>];<br/>
-<span class="in3"></span>}<br/>
-<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"$"</span>;<br/>
-<span class="in3"></span><span class="fn">nextline</span>(<span class="var">line</span>);<br/>
-<span class="in3"></span><span class="keyword">if</span> (<span class="var">line</span> == <span class="var">end_of_file</span> || <span class="var">line</span> == <span class="str">"```"</span>) {<br/>
-<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\n"</span>;<br/>
-<span class="in4"></span><span class="keyword">break</span>;<br/>
-<span class="in3"></span>}<br/>
-<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\\\*\n"</span>;<br/>
-<span class="in2"></span>}<br/>
-<span class="in2"></span><span class="fn">nextline</span>(<span class="var">line</span>);<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">process lisp lines</span>)</span>;<br/>
 <span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\end{lisp}\n"</span>;<br/>
 <span class="in2"></span><span class="keyword">break</span>;<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">process special</span>)</span><br/>
 </code></div>
+<ul><li>
+parse LISP block
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">57</div>
+<code>
+<span class="macro">@def(<span class="name">process lisp lines</span>)</span><br/>
+<span class="in1"></span><span class="type">int</span> <span class="var">nr</span> { <span class="num">1</span> };<br/>
+<span class="in1"></span><span class="keyword">while</span> (<span class="var">line</span> != <span class="var">end_of_file</span> &amp;&amp;<br/>
+<span class="in2"></span><span class="var">line</span> != <span class="str">"```"</span><br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">process lisp line</span>)</span>;<br/>
+<span class="in2"></span><span class="fn">nextline</span>(<span class="var">line</span>);<br/>
+<span class="in1"></span>}<br/>
+<span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\n"</span>;<br/>
+<span class="in1"></span><span class="fn">nextline</span>(<span class="var">line</span>);<br/>
+<span class="macro">@end(<span class="name">process lisp lines</span>)</span><br/>
+</code></div>
+<ul><li>
+process each line
+</li><li>
+close last line with a newline
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">58</div>
+<code>
+<span class="macro">@def(<span class="name">process lisp line</span>)</span><br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">nr</span> &gt; <span class="num">1</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\\\*\n"</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">process lisp line</span>)</span><br/>
+</code></div>
+<ul><li>
+terminate previous line correctly
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">59</div>
+<code>
+<span class="macro">@add(<span class="name">process lisp line</span>)</span><br/>
+<span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"$\\hlLine{"</span> &lt;&lt;<br/>
+<span class="in2"></span><span class="var">nr</span>++ &lt;&lt; <span class="str">"}"</span>;<br/>
+<span class="macro">@end(<span class="name">process lisp line</span>)</span><br/>
+</code></div>
+<ul><li>
+enter math mode and write line number
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">60</div>
+<code>
+<span class="macro">@add(<span class="name">process lisp line</span>)</span><br/>
+<span class="in1"></span><span class="type">unsigned</span> <span class="var">i</span> { <span class="num">0</span> };<br/>
+<span class="in1"></span><span class="keyword">for</span> (;<br/>
+<span class="in2"></span><span class="var">i</span> &lt; <span class="var">line</span>.<span class="fn">size</span>() &amp;&amp;<br/>
+<span class="in3"></span><span class="var">line</span>[<span class="var">i</span>] == <span class="str">'\t'</span>;<br/>
+<span class="in2"></span>++<span class="var">i</span><br/>
+<span class="in1"></span>) {}<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">i</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\hlIndent{"</span> &lt;&lt;<br/>
+<span class="in3"></span><span class="var">i</span> &lt;&lt; <span class="str">"}"</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">process lisp line</span>)</span><br/>
+</code></div>
+<ul><li>
+skip over tabs
+</li><li>
+and add matching indent
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">61</div>
+<code>
+<span class="macro">@add(<span class="name">process lisp line</span>)</span><br/>
+<span class="in1"></span><span class="keyword">for</span> (; <span class="var">i</span> &lt; <span class="var">line</span>.<span class="fn">size</span>(); ++<span class="var">i</span>) {<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">line</span>[<span class="var">i</span>] == <span class="str">' '</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\"</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">line</span>[<span class="var">i</span>];<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">process lisp line</span>)</span><br/>
+</code></div>
+<ul><li>
+copy code
+</li><li>
+but escape spaces
+</li><li>
+otherwise they are ignored in math mode
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">62</div>
+<code>
+<span class="macro">@add(<span class="name">process lisp line</span>)</span><br/>
+<span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"$"</span>;<br/>
+<span class="macro">@end(<span class="name">process lisp line</span>)</span><br/>
+</code></div>
+<ul><li>
+leave math mode
+</li></ul>
 </div>
 </div>
 <h2>Handle inline code</h2>
 <div class="slides">
 <div class="page">
-<div class="slide"><div class="slide-nr">57</div><div class="headers">
+<div class="slide"><div class="slide-nr">63</div><div class="headers">
 <h2>Handle inline code</h2>
 </div></div>
+<ul><li>
+display an inline code fragment
+</li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">58</div>
+<div class="page"><div class="slide"><div class="slide-nr">64</div>
 <code>
 <span class="macro">@add(<span class="name">handle format</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span>[<span class="var">i</span>] == <span class="str">'`'</span>) {<br/>
-<span class="in2"></span><span class="type">unsigned</span> <span class="var">j</span> { <span class="var">i</span> + <span class="num">1</span> };<br/>
-<span class="in2"></span><span class="keyword">while</span> (<span class="var">j</span> &lt; <span class="var">line</span>.<span class="fn">size</span>() &amp;&amp;<br/>
-<span class="in3"></span><span class="var">line</span>[<span class="var">j</span>] != <span class="str">'`'</span><br/>
-<span class="in2"></span>) { ++<span class="var">j</span>; }<br/>
-<span class="in2"></span><span class="keyword">if</span> (<span class="var">j</span> &lt; <span class="var">line</span>.<span class="fn">size</span>() &amp;&amp; <span class="var">line</span>[<span class="var">j</span>] == <span class="str">'`'</span>) {<br/>
-<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\hlInline{"</span>;<br/>
-<span class="in3"></span><span class="keyword">for</span> (<span class="type">auto</span> <span class="var">t</span> { <span class="var">i</span> + <span class="num">1</span> }; <span class="var">t</span> &lt; <span class="var">j</span>; ++<span class="var">t</span>) {<br/>
-<span class="in4"></span><span class="keyword">if</span> (<span class="var">line</span>[<span class="var">t</span>] == <span class="str">' '</span>) {<br/>
-<span class="in5"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\"</span>;<br/>
-<span class="in4"></span>}<br/>
-<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">line</span>[<span class="var">t</span>];<br/>
-<span class="in3"></span>}<br/>
-<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"}"</span>;<br/>
-<span class="in3"></span><span class="keyword">if</span> (<span class="var">j</span> + <span class="num">1</span> &lt; <span class="var">line</span>.<span class="fn">size</span>() &amp;&amp; <span class="var">line</span>[<span class="var">j</span> + <span class="num">1</span>] == <span class="str">' '</span>) {<br/>
-<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\"</span>;<br/>
-<span class="in3"></span>}<br/>
-<span class="in3"></span><span class="var">i</span> = <span class="var">j</span>;<br/>
-<span class="in3"></span><span class="keyword">continue</span>;<br/>
-<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">inline code</span>)</span>;<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">handle format</span>)</span><br/>
 </code></div>
+<ul><li>
+parse inline code fragment
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">65</div>
+<code>
+<span class="macro">@def(<span class="name">inline code</span>)</span><br/>
+<span class="in1"></span><span class="type">unsigned</span> <span class="var">j</span> { <span class="var">i</span> + <span class="num">1</span> };<br/>
+<span class="in1"></span><span class="keyword">for</span> (;<br/>
+<span class="in2"></span><span class="var">j</span> &lt; <span class="var">line</span>.<span class="fn">size</span>() &amp;&amp; <span class="var">line</span>[<span class="var">j</span>] != <span class="str">'`'</span>;<br/>
+<span class="in2"></span>++<span class="var">j</span><br/>
+<span class="in1"></span>) {}<br/>
+<span class="macro">@end(<span class="name">inline code</span>)</span><br/>
+</code></div>
+<ul><li>
+find end of fragment
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">66</div>
+<code>
+<span class="macro">@add(<span class="name">inline code</span>)</span><br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">j</span> &lt; <span class="var">line</span>.<span class="fn">size</span>() &amp;&amp;<br/>
+<span class="in2"></span><span class="var">line</span>[<span class="var">j</span>] == <span class="str">'`'</span><br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">do inline code</span>)</span>;<br/>
+<span class="in2"></span><span class="var">i</span> = <span class="var">j</span>;<br/>
+<span class="in2"></span><span class="keyword">continue</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">inline code</span>)</span><br/>
+</code></div>
+<ul><li>
+process valid fragment
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">67</div>
+<code>
+<span class="macro">@def(<span class="name">do inline code</span>)</span><br/>
+<span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\hlInline{"</span>;<br/>
+<span class="in1"></span><span class="keyword">for</span> (<span class="type">auto</span> <span class="var">t</span> { <span class="var">i</span> + <span class="num">1</span> }; <span class="var">t</span> &lt; <span class="var">j</span>; ++<span class="var">t</span>) {<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">line</span>[<span class="var">t</span>] == <span class="str">' '</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\"</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">line</span>[<span class="var">t</span>];<br/>
+<span class="in1"></span>}<br/>
+<span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"}"</span>;<br/>
+<span class="macro">@end(<span class="name">do inline code</span>)</span><br/>
+</code></div>
+<ul><li>
+copy code fragment
+</li><li>
+but escape spaces
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">68</div>
+<code>
+<span class="macro">@add(<span class="name">do inline code</span>)</span><br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">j</span> + <span class="num">1</span> &lt; <span class="var">line</span>.<span class="fn">size</span>() &amp;&amp;<br/>
+<span class="in2"></span><span class="var">line</span>[<span class="var">j</span> + <span class="num">1</span>] == <span class="str">' '</span><br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\"</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">do inline code</span>)</span><br/>
+</code></div>
+<ul><li>
+pad trailing space
+</li></ul>
 </div>
 </body>
 </html>
