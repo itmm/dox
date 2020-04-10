@@ -63,7 +63,7 @@
 @end(preamble)
 ```
 * better section titles
-* and euler font
+* use concrete and euler font to mimic look of "Concrete Mathematics"
 
 ```
 @add(preamble)
