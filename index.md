@@ -6,36 +6,54 @@
 	@put(includes);
 	@put(main prereqs);
 	int main(
-		int argc, const char *const argv[]
+		int argc,
+		const char *const argv[]
 	) {
 		@put(main);
 	}
 @End(file: dox.cpp)
 ```
+* simple main program
 
 ```
 @def(includes)
-	#include <iostream>
-	#include <string>
+	#include @s(<iostream>)
+	#include @s(<string>)
 @end(includes)
 ```
+* needs libraries for string processing
+
+## Theme selection
+* `dox` can generate output with different themes
+* specify theme with a command line argument
 
 ```
 @def(main prereqs)
 	static std::string theme { "none" };
 @end(main prereqs)
 ```
+* current theme defaults to `"none"`
 
 ```
-@def(main)
-	if (argc == 2 && argv[1] == std::string { "--theme=light" }) {
+@def(main) {
+	static const std::string light {
+		"--theme=light"
+	};
+	static const std::string dark {
+		"--theme=dark"
+	};
+	if (argc == 2 && argv[1] == light) {
 		theme = "light";
 	}
-	if (argc == 2 && argv[1] == std::string { "--theme=dark" }) {
+	if (argc == 2 && argv[1] == dark) {
 		theme = "dark";
 	}
-@end(main)
+} @end(main)
 ```
+* may select other theme based on command line arguments
+
+## Meta-Data
+* collect information about the document
 
 ```
 @add(main prereqs)
@@ -44,12 +62,25 @@
 	static std::string date { "\\today" };
 @end(main prereqs)
 ```
+* `date` defaults to the LaTeX command for the current day
+
+## Read the next line
+* reading one line from standard input
 
 ```
 @add(main prereqs)
-	static std::string end_of_file {
-		"**End_of_filE**"
-	};
+	static const
+		std::string end_of_file {
+			"\r\n"
+		};
+@end(main prereqs)
+```
+* a special string value marks the end of file
+* as the newline is stripped by the reading routine the provided string
+  should never occur during normal reading
+
+```
+@add(main prereqs)
 	void nextline(std::string &line) {
 		if (line != end_of_file) {
 			if (! std::getline(std::cin, line)) {
@@ -59,6 +90,13 @@
 	}
 @end(main prereqs)
 ```
+* reads the next line into the argument
+* if the end is already reached, nothing will be read
+
+## Reading Meta-Data
+* the start of the read document may contain meta-data
+* every line until the first empty line is considered meta-data
+* but nonetheless the meta-data is formatted as regular markdown code
 
 ```
 @add(main)
@@ -67,122 +105,144 @@
 	@put(read metadata);
 @end(main)
 ```
+* read the first line
+* and process meta-data
 
 ```
-@def(read metadata)
-	if (line.size() >= 2 && line[0] == '#' && line[1] == ' ') {
-		title = line.substr(2);
+@add(main prereqs)
+	bool has_prefix(
+		const std::string &line,
+		const std::string &prefix
+	) {
+		const auto &l { line };
+		const auto &p { prefix };
+		return l.size() >= p.size() &&
+			l.substr(0, p.size()) == p;
+	}
+@end(main prereqs)
+```
+* check if a string starts with the specified prefix
+* this is used a couple of times in the program
+
+```
+@def(read metadata) {
+	static const std::string prefix {
+		"# "
+	};
+	if (has_prefix(line, prefix)) {
+		title = line.substr(
+			prefix.size()
+		);
 		nextline(line);
 	} else {
 		std::cerr << "no title\n";
 	}
-@end(read metadata)
+} @end(read metadata)
 ```
+* the first meta-data must be the title that is provided with a lever 1
+  heading
 
 ```
-@add(main prereqs)
-	bool has_prefix(const std::string &line, const std::string &prefix) {
-		return line.size() >= prefix.size() &&
-			line.substr(0, prefix.size()) == prefix;
-	}
-@end(main prereqs)
-```
-
-```
-@add(read metadata)
-	if (has_prefix(line, "* author: ")) {
-		author = line.substr(10);
+@add(read metadata) {
+	static const std::string prefix {
+		"* author: "
+	};
+	if (has_prefix(line, prefix)) {
+		author = line.substr(
+			prefix.size()
+		);
 		nextline(line);
 	} else {
 		std::cerr << "no author\n";
 	}
-@end(read metadata)
+} @end(read metadata)
 ```
+* the next line specifies the author
+
+```
+@add(read metadata) {
+	static const std::string prefix {
+		"* date: "
+	};
+	if (has_prefix(line, prefix)) {
+		date = line.substr(
+			prefix.size()
+		);
+		nextline(line);
+	}
+} @end(read metadata)
+```
+* the next line may specify the generation date
+* if no date is provided, the program uses the current date
 
 ```
 @add(read metadata)
-	if (has_prefix(line, "* date: ")) {
-		date = line.substr(8);
+	while (
+		line != end_of_file && line.size()
+	) {
+		std::cerr <<
+			"ignoring meta line: " <<
+			line << "\n";
 		nextline(line);
 	}
 @end(read metadata)
 ```
+* all other lines until the first empty line are ignored
+
+## Writing the preamble
+* after `dox` read the meta-data it writes the LaTeX preamble
 
 ```
-@add(read metadata)
-	while (line.size()) {
-		std::cerr << "ignoring meta line: " << line << "\n";
-		nextline(line);
-	}
-@end(read metadata)
-```
-
-```
-@add(read metadata)
+@add(main)
 	std::cout <<
-		"\\documentclass[a5paper,ngerman,9pt]{article}\n"
-		"\\usepackage[T1]{fontenc}\n"
-		"\\usepackage[utf8]{inputenc}\n"
-		"\\usepackage[margin=0.5in,includefoot]{geometry}\n"
-		"\\usepackage{microtype}\n"
-		"\\usepackage{babel}\n"
-		"\\usepackage[" << theme << "]{solarized}\n"
-		"\\usepackage{sectsty}\n"
-		"\\usepackage{ccfonts}\n"
-		"\\usepackage{euler}\n"
-		"\\usepackage{todone}\n"
-		"\\usepackage{fancyhdr}\n"
-		"\\usepackage{fancyvrb}\n"
-		"\\usepackage{graphicx}\n"
-		"\\usepackage{multicol}\n"
-		"\\usepackage{mdframed}\n"
-		"\\pagestyle{fancy}\n"
-		"\\fancypagestyle{plain}{\n"
-		"\\fancyhf{}\n"
-		"\\fancyfoot[C]{{\\color{deemph}\\small$\\thepage$}}\n"
-		"\\renewcommand{\\headrulewidth}{0pt}\n"
-		"\\renewcommand{\\footrulewidth}{0pt}}\n"
-		"\\title{\\color{emph}" << title << "}\n"
-		"\\author{" << author << "}\n"
-		"\\date{" << date << "}\n"
-		"\\columnseprule.2pt\n"
-		"\\renewcommand{\\columnseprulecolor}{\\color{deemph}}\n"
-		"\\begin{document}\n"
-		"\\pagecolor{background}\n"
-		"\\color{normal}\n"
-		"\\allsectionsfont{\\color{emph}\\mdseries}\n"
-		"\\pagestyle{plain}\n"
-		"\\maketitle\n"
-		"\\thispagestyle{fancy}\n"
-		"\\surroundwithmdframed[backgroundcolor=codebackground,fontcolor=normal,hidealllines=true]{Verbatim}\n";
-@end(read metadata)
+		@put(preamble);
+@end(main)
 ```
+* write the preamble
+
+```
+@inc(preamble.md)
+```
+* preamble is defined in another document
+
+## Handle Two-Column Style
+* output can switch between one-column and two-column style
 
 ```
 @add(main prereqs)
 	bool in_two_columns { false };
+@end(main prereqs)
+```
+* is the output currently in two-column style?
+
+```
+@add(main prereqs)
 	void enter_two_columns() {
 		if (! in_two_columns) {
-			std::cout << "\\begin{multicols}{2}\n";
+			std::cout <<
+				"\\begin{multicols}{2}\n";
 			in_two_columns = true;
 		}
 	}
+@end(main prereqs)
+```
+* switch into two-column style
+
+```
+@add(main prereqs)
 	void exit_two_columns() {
 		if (in_two_columns) {
-			std::cout << "\\end{multicols}\n";
+			std::cout <<
+				"\\end{multicols}\n";
 			in_two_columns = false;
 		}
 	}
 @end(main prereqs)
 ```
+* switch back into one-column style
 
-```
-@add(main prereqs)
-	void format_line(const std::string line) {
-		@put(format line);
-	}
-@end(main prereqs)
-```
+## Process main body
+* process the main body of text
 
 ```
 @add(main)
@@ -193,29 +253,68 @@
 	std::cout << "\\end{document}\n";
 @end(main)
 ```
+* read and process all lines
+* and close the document
+
+```
+@add(main prereqs)
+	void format_line(
+		const std::string line
+	) {
+		@put(format line);
+	}
+@end(main prereqs)
+```
+* do special formatting of all the special sequences in one line of
+  normal text
 
 ```
 @def(process line)
 	do {
 		@put(process special);
+		enter_two_columns();
 		format_line(line);
 		std::cout << "\n";
 		nextline(line);
 	} while (false);
 @end(process line)
 ```
+* first process some special lines
+* if no special line is found do the normal processing
+* in two-column style
+* and read the next line
+
+## Process section headers
+* process the section and subsection headers
 
 ```
-@def(process special)
-	if (has_prefix(line, "## ")) {
-		exit_two_columns();
-		std::cout << "\\section{";
-		format_line(line.substr(3));
-		std::cout << "}\n";
-		enter_two_columns();
+@def(process special) {
+	static const std::string prefix {
+		"## "
+	};
+	if (has_prefix(line, prefix)) {
+		@put(write section);
 		nextline(line);
 		break;
 	}
+} @end(process special)
+```
+* process section header
+
+```
+@def(write section)
+	exit_two_columns();
+	std::cout << "\\section{";
+	format_line(line.substr(
+		prefix.size()
+	));
+	std::cout << "}\n";
+@end(write section)
+```
+* section headers are in one-column style
+
+```
+@add(process special)
 	if (has_prefix(line, "### ")) {
 		std::cout << "\\subsection{";
 		format_line(line.substr(4));
@@ -225,30 +324,124 @@
 	}
 @end(process special)
 ```
+* subsections stay in the current columns style
+
+## Handle emphasis
+* text in a line can be emphasised
 
 ```
 @def(format line)
-	for (unsigned i { 0 }; i < line.length(); ++i) {
-		if (line[i] == '*') {
-			unsigned j { i + 1 };
-			while (j < line.length() && line[j] >= ' ' && (isalnum(line[j]) || line[j] == '*')) { ++j; }
-			if (line[j - 1] == '*') {
-				std::cout << "\\emph{";
-				for (unsigned t { i + 1 }; t + 1< j; ++t) {
-					if (line[t] == '*') {
-						std::cout << ' ';
-					} else {
-						std::cout << line[t];
-					}
-				}
-				std::cout << "}";
-				if (line[j] == ' ') {
-					std::cout << '\\';
-				}
-				i = j - 1; continue;
-			}
-		}
+	for (unsigned i { 0 };
+		i < line.length(); ++i
+	) {
+		@put(handle format);
 		std::cout << line[i];
 	}
 @end(format line)
 ```
+* iterate over each char
+* and process special format sequences
+
+```
+@def(handle format)
+	if (
+		line[i] == '*' || line[i] == '_'
+	) {
+		@put(emphasise);
+	}
+@end(handle format)
+```
+* emphasise following words
+
+```
+@def(emphasise)
+	unsigned j { i + 1 };
+	char mark { line[i] };
+	while (j < line.length() &&
+		line[j] >= ' ' && (
+			isalnum(line[j]) ||
+			line[j] == '*' ||
+			line[j] == '_' ||
+			line[j] == '-'
+		)
+	) { ++j; }
+@end(emphasise)
+```
+* find end of chars to highlight
+
+```
+@add(emphasise)
+	if (i + 1 < j &&
+		line[j - 1] == mark
+	) {
+		@put(do emphasis);
+	}
+@end(emphasise)
+```
+* if start and end differ and have the same mark, it is a legal
+  highlight sequence
+
+```
+@def(do emphasis)
+	bool bold {
+		i + 3 < j &&
+		line[i + 1] == mark &&
+		line[j - 2] == mark
+	};
+@end(do emphasis)
+```
+* if two marks are at the beginning and ending use bold highlight
+
+```
+@add(do emphasis)
+	if (bold) {
+		std::cout << "\\textbf{";
+	} else {
+		std::cout << "\\emph{";
+	}
+@end(do emphasis)
+```
+* write bold or italics tag
+
+```
+@add(do emphasis)
+	unsigned begin {
+		bold ? i + 2 : i + 1
+	};
+	unsigned end { bold ? j - 2 : j - 1 };
+	for (auto t { begin }; t < end; ++t) {
+		@put(emphasis loop);
+	}
+	std::cout << "}";
+	@put(add padding);
+	i = j - 1;
+	continue;
+@end(do emphasis)
+```
+* write the emphasised characters
+* close tag
+* and skip over the processed characters
+
+```
+@def(emphasis loop)
+	if (line[t] == mark) {
+		std::cout << ' ';
+	} else {
+		std::cout << line[t];
+	}
+@end(emphasis loop)
+```
+* replace the marking char with spaces
+* and copy all other chars
+
+```
+@def(add padding)
+	if (line[j] == ' ') {
+		std::cout << '\\';
+	}
+@end(add padding)
+```
+* if a space follows the emphasise sequence
+* it must be padded
+* otherwise it is swallowed by TeX
+

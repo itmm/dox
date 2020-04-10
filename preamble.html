@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Define LaTeX preamble</title>
+<link rel="stylesheet" type="text/css" href="slides/slides.css"></head>
+<body>
+<h1>Define LaTeX preamble</h1>
+<div class="slides">
+<div class="page">
+<div class="slide"><div class="slide-nr">1</div><div class="headers">
+<h1>Define LaTeX preamble</h1>
+</div></div>
+<ul><li>
+preamble of the LaTeX document
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">2</div>
+<code>
+<span class="macro">@Def(<span class="name">preamble</span>)</span><br/>
+<span class="in1"></span><span class="macro">@put(<span class="name">preamble</span>)</span><br/>
+<span class="macro">@End(<span class="name">preamble</span>)</span><br/>
+</code></div>
+<ul><li>
+use local fragment instead of global one
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">3</div>
+<code>
+<span class="macro">@def(<span class="name">preamble</span>)</span><br/>
+<span class="in1"></span><span class="str">"\\documentclass["</span><br/>
+<span class="in2"></span><span class="str">"a5paper,ngerman,9pt"</span><br/>
+<span class="in1"></span><span class="str">"]{article}\n"</span><br/>
+<span class="macro">@end(<span class="name">preamble</span>)</span><br/>
+</code></div>
+<ul><li>
+document is generated on a DIN A5 page format
+</li><li>
+with german spelling
+</li><li>
+and a small font
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">4</div>
+<code>
+<span class="macro">@add(<span class="name">preamble</span>)</span><br/>
+<span class="in1"></span><span class="str">"\\usepackage[T1]{fontenc}\n"</span><br/>
+<span class="in1"></span><span class="str">"\\usepackage[utf8]{inputenc}\n"</span><br/>
+<span class="macro">@end(<span class="name">preamble</span>)</span><br/>
+</code></div>
+<ul><li>
+use modern font encoding
+</li><li>
+and UTF-8 input format
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">5</div>
+<code>
+<span class="macro">@add(<span class="name">preamble</span>)</span><br/>
+<span class="in1"></span><span class="str">"\\usepackage["</span><br/>
+<span class="in2"></span><span class="str">"margin=0.5in,includefoot"</span><br/>
+<span class="in1"></span><span class="str">"]{geometry}\n"</span><br/>
+<span class="macro">@end(<span class="name">preamble</span>)</span><br/>
+</code></div>
+<ul><li>
+use smaller margins
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">6</div>
+<code>
+<span class="macro">@add(<span class="name">preamble</span>)</span><br/>
+<span class="in1"></span><span class="str">"\\usepackage{microtype}\n"</span><br/>
+<span class="in1"></span><span class="str">"\\usepackage{babel}\n"</span><br/>
+<span class="macro">@end(<span class="name">preamble</span>)</span><br/>
+</code></div>
+<ul><li>
+better position characters
+</li><li>
+and use german titles
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">7</div>
+<code>
+<span class="macro">@add(<span class="name">preamble</span>)</span><br/>
+<span class="in1"></span><span class="str">"\\usepackage["</span> &lt;&lt;<br/>
+<span class="in2"></span><span class="var">theme</span> &lt;&lt;<br/>
+<span class="in1"></span><span class="str">"]{solarized}\n"</span><br/>
+<span class="macro">@end(<span class="name">preamble</span>)</span><br/>
+</code></div>
+<ul><li>
+the local solarized package is used with the current theme
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">8</div>
+<code>
+<span class="macro">@add(<span class="name">preamble</span>)</span><br/>
+<span class="in1"></span><span class="str">"\\usepackage{sectsty}\n"</span><br/>
+<span class="in1"></span><span class="str">"\\usepackage{ccfonts}\n"</span><br/>
+<span class="in1"></span><span class="str">"\\usepackage{euler}\n"</span><br/>
+<span class="macro">@end(<span class="name">preamble</span>)</span><br/>
+</code></div>
+<ul><li>
+better section titles
+</li><li>
+and euler font
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">9</div>
+<code>
+<span class="macro">@add(<span class="name">preamble</span>)</span><br/>
+<span class="in1"></span><span class="str">"\\usepackage{todone}\n"</span><br/>
+<span class="macro">@end(<span class="name">preamble</span>)</span><br/>
+</code></div>
+<ul><li>
+marking sections that are still in progress
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">10</div>
+<code>
+<span class="macro">@add(<span class="name">preamble</span>)</span><br/>
+<span class="in1"></span><span class="str">"\\usepackage{fancyhdr}\n"</span><br/>
+<span class="in1"></span><span class="str">"\\usepackage{fancyvrb}\n"</span><br/>
+<span class="macro">@end(<span class="name">preamble</span>)</span><br/>
+</code></div>
+<ul><li>
+better headers
+</li><li>
+and better verbose listings
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">11</div>
+<code>
+<span class="macro">@add(<span class="name">preamble</span>)</span><br/>
+<span class="in1"></span><span class="str">"\\usepackage{graphicx}\n"</span><br/>
+<span class="macro">@end(<span class="name">preamble</span>)</span><br/>
+</code></div>
+<ul><li>
+include graphics
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">12</div>
+<code>
+<span class="macro">@add(<span class="name">preamble</span>)</span><br/>
+<span class="in1"></span><span class="str">"\\usepackage{multicol}\n"</span><br/>
+<span class="macro">@end(<span class="name">preamble</span>)</span><br/>
+</code></div>
+<ul><li>
+for fancy two-column output
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">13</div>
+<code>
+<span class="macro">@add(<span class="name">preamble</span>)</span><br/>
+<span class="in1"></span><span class="str">"\\usepackage{mdframed}\n"</span><br/>
+<span class="macro">@end(<span class="name">preamble</span>)</span><br/>
+</code></div>
+<ul><li>
+to frame boxes
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">14</div>
+<code>
+<span class="macro">@add(<span class="name">preamble</span>)</span><br/>
+<span class="in1"></span><span class="str">"\\pagestyle{fancy}\n"</span><br/>
+<span class="in1"></span><span class="str">"\\fancypagestyle{plain}{\n"</span><br/>
+<span class="in1"></span><span class="str">"\\fancyhf{}\n"</span><br/>
+<span class="macro">@end(<span class="name">preamble</span>)</span><br/>
+</code></div>
+<ul><li>
+define own pagestyle
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">15</div>
+<code>
+<span class="macro">@add(<span class="name">preamble</span>)</span><br/>
+<span class="in1"></span><span class="str">"\\fancyfoot[C]{{"</span><br/>
+<span class="in2"></span><span class="str">"\\color{deemph}\\small"</span><br/>
+<span class="in2"></span><span class="str">"$\\thepage$"</span><br/>
+<span class="in1"></span><span class="str">"}}\n"</span><br/>
+<span class="macro">@end(<span class="name">preamble</span>)</span><br/>
+</code></div>
+<ul><li>
+page footer contains a small page number
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">16</div>
+<code>
+<span class="macro">@add(<span class="name">preamble</span>)</span><br/>
+<span class="in1"></span><span class="str">"\\renewcommand{\\headrulewidth}"</span><br/>
+<span class="in2"></span><span class="str">"{0pt}\n"</span><br/>
+<span class="in1"></span><span class="str">"\\renewcommand{\\footrulewidth}"</span><br/>
+<span class="in2"></span><span class="str">"{0pt}}\n"</span><br/>
+<span class="macro">@end(<span class="name">preamble</span>)</span><br/>
+</code></div>
+<ul><li>
+hide header and footer rulers
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">17</div>
+<code>
+<span class="macro">@add(<span class="name">preamble</span>)</span><br/>
+<span class="in1"></span><span class="str">"\\title{"</span><br/>
+<span class="in2"></span><span class="str">"\\color{emph}"</span> &lt;&lt; <span class="var">title</span> &lt;&lt;<br/>
+<span class="in1"></span><span class="str">"}\n"</span><br/>
+<span class="in1"></span><span class="str">"\\author{"</span> &lt;&lt; <span class="var">author</span> &lt;&lt; <span class="str">"}\n"</span><br/>
+<span class="in1"></span><span class="str">"\\date{"</span> &lt;&lt; <span class="var">date</span> &lt;&lt; <span class="str">"}\n"</span><br/>
+<span class="macro">@end(<span class="name">preamble</span>)</span><br/>
+</code></div>
+<ul><li>
+define meta-data
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">18</div>
+<code>
+<span class="macro">@add(<span class="name">preamble</span>)</span><br/>
+<span class="in1"></span><span class="str">"\\columnseprule.2pt\n"</span><br/>
+<span class="in1"></span><span class="str">"\\renewcommand{\\columnseprulecolor}"</span><br/>
+<span class="in2"></span><span class="str">"{\\color{deemph}}\n"</span><br/>
+<span class="macro">@end(<span class="name">preamble</span>)</span><br/>
+</code></div>
+<ul><li>
+define column separator
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">19</div>
+<code>
+<span class="macro">@add(<span class="name">preamble</span>)</span><br/>
+<span class="in1"></span><span class="str">"\\begin{document}\n"</span><br/>
+<span class="macro">@end(<span class="name">preamble</span>)</span><br/>
+</code></div>
+<ul><li>
+start the main document
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">20</div>
+<code>
+<span class="macro">@add(<span class="name">preamble</span>)</span><br/>
+<span class="in1"></span><span class="str">"\\pagecolor{background}\n"</span><br/>
+<span class="in1"></span><span class="str">"\\color{normal}\n"</span><br/>
+<span class="in1"></span><span class="str">"\\allsectionsfont{"</span><br/>
+<span class="in2"></span><span class="str">"\\color{emph}\\mdseries"</span><br/>
+<span class="in1"></span><span class="str">"}\n"</span><br/>
+<span class="macro">@end(<span class="name">preamble</span>)</span><br/>
+</code></div>
+<ul><li>
+set the default colors
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">21</div>
+<code>
+<span class="macro">@add(<span class="name">preamble</span>)</span><br/>
+<span class="in1"></span><span class="str">"\\pagestyle{plain}\n"</span><br/>
+<span class="in1"></span><span class="str">"\\maketitle\n"</span><br/>
+<span class="in1"></span><span class="str">"\\thispagestyle{fancy}\n"</span><br/>
+<span class="macro">@end(<span class="name">preamble</span>)</span><br/>
+</code></div>
+<ul><li>
+render title
+</li><li>
+and set default page style
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">22</div>
+<code>
+<span class="macro">@add(<span class="name">preamble</span>)</span><br/>
+<span class="in1"></span><span class="str">"\\surroundwithmdframed["</span><br/>
+<span class="in2"></span><span class="str">"backgroundcolor=codebackground,"</span><br/>
+<span class="in2"></span><span class="str">"fontcolor=normal,"</span><br/>
+<span class="in2"></span><span class="str">"hidealllines=true"</span><br/>
+<span class="in1"></span><span class="str">"]{Verbatim}\n"</span>;<br/>
+<span class="macro">@end(<span class="name">preamble</span>)</span><br/>
+</code></div>
+<ul><li>
+put verbose text in a box
+</li></ul>
+</div>
+</body>
+</html>
