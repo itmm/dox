@@ -471,15 +471,20 @@ section headers are in one-column style
 </div>
 <div class="page"><div class="slide"><div class="slide-nr">33</div>
 <code>
-<span class="macro">@add(<span class="name">process special</span>)</span><br/>
-<span class="in1"></span><span class="keyword">if</span> (<span class="fn">has_prefix</span>(<span class="var">line</span>, <span class="str">"### "</span>)) {<br/>
+<span class="macro">@add(<span class="name">process special</span>)</span> {<br/>
+<span class="in1"></span><span class="keyword">static</span> <span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">prefix</span> {<br/>
+<span class="in2"></span><span class="str">"### "</span><br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="fn">has_prefix</span>(<span class="var">line</span>, <span class="var">prefix</span>)) {<br/>
 <span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\subsection{"</span>;<br/>
-<span class="in2"></span><span class="fn">format_line</span>(<span class="var">line</span>.<span class="fn">substr</span>(<span class="num">4</span>));<br/>
+<span class="in2"></span><span class="fn">format_line</span>(<span class="var">line</span>.<span class="fn">substr</span>(<br/>
+<span class="in3"></span><span class="var">prefix</span>.<span class="fn">size</span>()<br/>
+<span class="in2"></span>));<br/>
 <span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"}\n"</span>;<br/>
 <span class="in2"></span><span class="fn">nextline</span>(<span class="var">line</span>);<br/>
 <span class="in2"></span><span class="keyword">break</span>;<br/>
 <span class="in1"></span>}<br/>
-<span class="macro">@end(<span class="name">process special</span>)</span><br/>
+} <span class="macro">@end(<span class="name">process special</span>)</span><br/>
 </code></div>
 <ul><li>
 subsections stay in the current columns style
@@ -642,6 +647,111 @@ if a space follows the emphasise sequence
 it must be padded
 </li><li>
 otherwise it is swallowed by TeX
+</li></ul>
+</div>
+</div>
+<h2>Handle lists</h2>
+<div class="slides">
+<div class="page">
+<div class="slide"><div class="slide-nr">44</div><div class="headers">
+<h2>Handle lists</h2>
+</div></div>
+<ul><li>
+format lists
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">45</div>
+<code>
+<span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
+<span class="in1"></span><span class="type">enum</span> <span class="keyword">class</span> <span class="type">List_Type</span> {<br/>
+<span class="in2"></span><span class="var">no_list</span>, <span class="var">enum_list</span>, <span class="var">item_list</span><br/>
+<span class="in1"></span>} <span class="var">list_type</span> { <span class="type">List_Type</span>::<span class="var">no_list</span> };<br/>
+<span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
+</code></div>
+<ul><li>
+is the output currently in a list item
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">46</div>
+<code>
+<span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
+<span class="in1"></span><span class="type">void</span> <span class="fn">open_list</span>(<span class="type">bool</span> <span class="var">enumerate</span>) {<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">list_type</span> == <span class="type">List_Type</span>::<span class="var">no_list</span>) {<br/>
+<span class="in3"></span><span class="keyword">if</span> (<span class="var">enumerate</span>) {<br/>
+<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\begin{enumerate}\n"</span>;<br/>
+<span class="in4"></span><span class="var">list_type</span> = <span class="type">List_Type</span>::<span class="var">enum_list</span>;<br/>
+<span class="in3"></span>} <span class="keyword">else</span> {<br/>
+<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\begin{itemize}\n"</span>;<br/>
+<span class="in4"></span><span class="var">list_type</span> = <span class="type">List_Type</span>::<span class="var">item_list</span>;<br/>
+<span class="in3"></span>}<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\item "</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
+</code></div>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">47</div>
+<code>
+<span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
+<span class="in1"></span><span class="type">void</span> <span class="fn">close_list</span>() {<br/>
+<span class="in2"></span><span class="keyword">switch</span> (<span class="var">list_type</span>) {<br/>
+<span class="in3"></span><span class="keyword">case</span> <span class="type">List_Type</span>::<span class="var">no_list</span>:<br/>
+<span class="in4"></span><span class="keyword">break</span>;<br/>
+<span class="in3"></span><span class="keyword">case</span> <span class="type">List_Type</span>::<span class="var">enum_list</span>:<br/>
+<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\end{enumerate}\n"</span>;<br/>
+<span class="in4"></span><span class="keyword">break</span>;<br/>
+<span class="in3"></span><span class="keyword">case</span> <span class="type">List_Type</span>::<span class="var">item_list</span>:<br/>
+<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\end{itemize}\n"</span>;<br/>
+<span class="in4"></span><span class="keyword">break</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="var">list_type</span> = <span class="type">List_Type</span>::<span class="var">no_list</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
+</code></div>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">48</div>
+<code>
+<span class="macro">@add(<span class="name">process special</span>)</span><br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span> == <span class="str">""</span>) {<br/>
+<span class="in2"></span><span class="fn">close_list</span>();<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">process special</span>)</span><br/>
+</code></div>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">49</div>
+<code>
+<span class="macro">@add(<span class="name">process special</span>)</span> {<br/>
+<span class="in1"></span><span class="keyword">static</span> <span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">prefix</span> {<br/>
+<span class="in2"></span><span class="str">"* "</span><br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="fn">has_prefix</span>(<span class="var">line</span>, <span class="var">prefix</span>)) {<br/>
+<span class="in2"></span><span class="fn">open_list</span>(<span class="num">false</span>);<br/>
+<span class="in2"></span><span class="fn">format_line</span>(<span class="var">line</span>.<span class="fn">substr</span>(<span class="var">prefix</span>.<span class="fn">size</span>()));<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\n"</span>;<br/>
+<span class="in2"></span><span class="fn">nextline</span>(<span class="var">line</span>);<br/>
+<span class="in2"></span><span class="keyword">break</span>;<br/>
+<span class="in1"></span>}<br/>
+} <span class="macro">@end(<span class="name">process special</span>)</span><br/>
+</code></div>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">50</div>
+<code>
+<span class="macro">@add(<span class="name">process special</span>)</span><br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span>.<span class="fn">size</span>() &amp;&amp; <span class="fn">isdigit</span>(<span class="var">line</span>[<span class="num">0</span>])) {<br/>
+<span class="in2"></span><span class="type">unsigned</span> <span class="var">i</span> { <span class="num">1</span> };<br/>
+<span class="in2"></span><span class="keyword">while</span> (<span class="var">i</span> &lt; <span class="var">line</span>.<span class="fn">size</span>() &amp;&amp; <span class="fn">isdigit</span>(<span class="var">line</span>[<span class="var">i</span>])) { ++<span class="var">i</span>; }<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">i</span> + <span class="num">1</span> &lt; <span class="var">line</span>.<span class="fn">size</span>() &amp;&amp; <span class="var">line</span>[<span class="var">i</span>] == <span class="str">'.'</span> &amp;&amp; <span class="var">line</span>[<span class="var">i</span> + <span class="num">1</span>] == <span class="str">' '</span>) {<br/>
+<span class="in3"></span><span class="fn">open_list</span>(<span class="num">true</span>);<br/>
+<span class="in3"></span><span class="fn">format_line</span>(<span class="var">line</span>.<span class="fn">substr</span>(<span class="var">i</span> + <span class="num">1</span>));<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\n"</span>;<br/>
+<span class="in3"></span><span class="fn">nextline</span>(<span class="var">line</span>);<br/>
+<span class="in3"></span><span class="keyword">break</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">process special</span>)</span><br/>
+</code></div>
+<ul><li>
+subsections stay in the current columns style
 </li></ul>
 </div>
 </body>

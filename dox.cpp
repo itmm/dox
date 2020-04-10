@@ -79,19 +79,19 @@
 		const std::string line
 	) {
 		
-#line 333 "index.md"
+#line 338 "index.md"
 
 	for (unsigned i { 0 };
 		i < line.length(); ++i
 	) {
 		
-#line 346 "index.md"
+#line 351 "index.md"
 
 	if (
 		line[i] == '*' || line[i] == '_'
 	) {
 		
-#line 357 "index.md"
+#line 362 "index.md"
 
 	unsigned j { i + 1 };
 	char mark { line[i] };
@@ -104,13 +104,13 @@
 		)
 	) { ++j; }
 
-#line 373 "index.md"
+#line 378 "index.md"
 
 	if (i + 1 < j &&
 		line[j - 1] == mark
 	) {
 		
-#line 385 "index.md"
+#line 390 "index.md"
 
 	bool bold {
 		i + 3 < j &&
@@ -118,7 +118,7 @@
 		line[j - 2] == mark
 	};
 
-#line 396 "index.md"
+#line 401 "index.md"
 
 	if (bold) {
 		std::cout << "\\textbf{";
@@ -126,7 +126,7 @@
 		std::cout << "\\emph{";
 	}
 
-#line 407 "index.md"
+#line 412 "index.md"
 
 	unsigned begin {
 		bold ? i + 2 : i + 1
@@ -134,7 +134,7 @@
 	unsigned end { bold ? j - 2 : j - 1 };
 	for (auto t { begin }; t < end; ++t) {
 		
-#line 426 "index.md"
+#line 431 "index.md"
 
 	if (line[t] == mark) {
 		std::cout << ' ';
@@ -142,37 +142,74 @@
 		std::cout << line[t];
 	}
 
-#line 413 "index.md"
+#line 418 "index.md"
 ;
 	}
 	std::cout << "}";
 	
-#line 438 "index.md"
+#line 443 "index.md"
 
 	if (line[j] == ' ') {
 		std::cout << '\\';
 	}
 
-#line 416 "index.md"
+#line 421 "index.md"
 ;
 	i = j - 1;
 	continue;
 
-#line 377 "index.md"
+#line 382 "index.md"
 ;
 	}
 
-#line 350 "index.md"
+#line 355 "index.md"
 ;
 	}
 
-#line 337 "index.md"
+#line 342 "index.md"
 ;
 		std::cout << line[i];
 	}
 
 #line 264 "index.md"
 ;
+	}
+
+#line 457 "index.md"
+
+	enum class List_Type {
+		no_list, enum_list, item_list
+	} list_type { List_Type::no_list };
+
+#line 466 "index.md"
+
+	void open_list(bool enumerate) {
+		if (list_type == List_Type::no_list) {
+			if (enumerate) {
+				std::cout << "\\begin{enumerate}\n";
+				list_type = List_Type::enum_list;
+			} else {
+				std::cout << "\\begin{itemize}\n";
+				list_type = List_Type::item_list;
+			}
+		}
+		std::cout << "\\item ";
+	}
+
+#line 483 "index.md"
+
+	void close_list() {
+		switch (list_type) {
+			case List_Type::no_list:
+				break;
+			case List_Type::enum_list:
+				std::cout << "\\end{enumerate}\n";
+				break;
+			case List_Type::item_list:
+				std::cout << "\\end{itemize}\n";
+				break;
+		}
+		list_type = List_Type::no_list;
 	}
 
 #line 7 "index.md"
@@ -415,13 +452,51 @@
 	}
 } 
 #line 317 "index.md"
-
-	if (has_prefix(line, "### ")) {
+ {
+	static const std::string prefix {
+		"### "
+	};
+	if (has_prefix(line, prefix)) {
 		std::cout << "\\subsection{";
-		format_line(line.substr(4));
+		format_line(line.substr(
+			prefix.size()
+		));
 		std::cout << "}\n";
 		nextline(line);
 		break;
+	}
+} 
+#line 501 "index.md"
+
+	if (line == "") {
+		close_list();
+	}
+
+#line 509 "index.md"
+ {
+	static const std::string prefix {
+		"* "
+	};
+	if (has_prefix(line, prefix)) {
+		open_list(false);
+		format_line(line.substr(prefix.size()));
+		std::cout << "\n";
+		nextline(line);
+		break;
+	}
+} 
+#line 524 "index.md"
+
+	if (line.size() && isdigit(line[0])) {
+		unsigned i { 1 };
+		while (i < line.size() && isdigit(line[i])) { ++i; }
+		if (i + 1 < line.size() && line[i] == '.' && line[i + 1] == ' ') {
+			open_list(true);
+			format_line(line.substr(i + 1));
+			std::cout << "\n";
+			nextline(line);
+			break;
+		}
 	}
 
 #line 274 "index.md"

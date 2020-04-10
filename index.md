@@ -314,15 +314,20 @@
 * section headers are in one-column style
 
 ```
-@add(process special)
-	if (has_prefix(line, "### ")) {
+@add(process special) {
+	static const std::string prefix {
+		"### "
+	};
+	if (has_prefix(line, prefix)) {
 		std::cout << "\\subsection{";
-		format_line(line.substr(4));
+		format_line(line.substr(
+			prefix.size()
+		));
 		std::cout << "}\n";
 		nextline(line);
 		break;
 	}
-@end(process special)
+} @end(process special)
 ```
 * subsections stay in the current columns style
 
@@ -444,4 +449,91 @@
 * if a space follows the emphasise sequence
 * it must be padded
 * otherwise it is swallowed by TeX
+
+## Handle lists
+* format lists
+
+```
+@add(main prereqs)
+	enum class List_Type {
+		no_list, enum_list, item_list
+	} list_type { List_Type::no_list };
+@end(main prereqs)
+```
+* is the output currently in a list item
+
+```
+@add(main prereqs)
+	void open_list(bool enumerate) {
+		if (list_type == List_Type::no_list) {
+			if (enumerate) {
+				std::cout << "\\begin{enumerate}\n";
+				list_type = List_Type::enum_list;
+			} else {
+				std::cout << "\\begin{itemize}\n";
+				list_type = List_Type::item_list;
+			}
+		}
+		std::cout << "\\item ";
+	}
+@end(main prereqs)
+```
+
+```
+@add(main prereqs)
+	void close_list() {
+		switch (list_type) {
+			case List_Type::no_list:
+				break;
+			case List_Type::enum_list:
+				std::cout << "\\end{enumerate}\n";
+				break;
+			case List_Type::item_list:
+				std::cout << "\\end{itemize}\n";
+				break;
+		}
+		list_type = List_Type::no_list;
+	}
+@end(main prereqs)
+```
+
+```
+@add(process special)
+	if (line == "") {
+		close_list();
+	}
+@end(process special)
+```
+
+```
+@add(process special) {
+	static const std::string prefix {
+		"* "
+	};
+	if (has_prefix(line, prefix)) {
+		open_list(false);
+		format_line(line.substr(prefix.size()));
+		std::cout << "\n";
+		nextline(line);
+		break;
+	}
+} @end(process special)
+```
+
+```
+@add(process special)
+	if (line.size() && isdigit(line[0])) {
+		unsigned i { 1 };
+		while (i < line.size() && isdigit(line[i])) { ++i; }
+		if (i + 1 < line.size() && line[i] == '.' && line[i + 1] == ' ') {
+			open_list(true);
+			format_line(line.substr(i + 1));
+			std::cout << "\n";
+			nextline(line);
+			break;
+		}
+	}
+@end(process special)
+```
+* subsections stay in the current columns style
 
