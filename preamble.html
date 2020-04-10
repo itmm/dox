@@ -29,7 +29,7 @@ use local fragment instead of global one
 <code>
 <span class="macro">@def(<span class="name">preamble</span>)</span><br/>
 <span class="in1"></span><span class="str">"\\documentclass["</span><br/>
-<span class="in2"></span><span class="str">"a5paper,ngerman,9pt"</span><br/>
+<span class="in2"></span><span class="str">"a5paper,ngerman"</span><br/>
 <span class="in1"></span><span class="str">"]{article}\n"</span><br/>
 <span class="macro">@end(<span class="name">preamble</span>)</span><br/>
 </code></div>
@@ -161,6 +161,16 @@ to frame boxes
 <div class="page"><div class="slide"><div class="slide-nr">14</div>
 <code>
 <span class="macro">@add(<span class="name">preamble</span>)</span><br/>
+<span class="in1"></span><span class="str">"\\usepackage{lisp}\n"</span><br/>
+<span class="macro">@end(<span class="name">preamble</span>)</span><br/>
+</code></div>
+<ul><li>
+highlight LISP source code
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">15</div>
+<code>
+<span class="macro">@add(<span class="name">preamble</span>)</span><br/>
 <span class="in1"></span><span class="str">"\\pagestyle{fancy}\n"</span><br/>
 <span class="in1"></span><span class="str">"\\fancypagestyle{plain}{\n"</span><br/>
 <span class="in1"></span><span class="str">"\\fancyhf{}\n"</span><br/>
@@ -170,7 +180,7 @@ to frame boxes
 define own pagestyle
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">15</div>
+<div class="page"><div class="slide"><div class="slide-nr">16</div>
 <code>
 <span class="macro">@add(<span class="name">preamble</span>)</span><br/>
 <span class="in1"></span><span class="str">"\\fancyfoot[C]{{"</span><br/>
@@ -183,7 +193,7 @@ define own pagestyle
 page footer contains a small page number
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">16</div>
+<div class="page"><div class="slide"><div class="slide-nr">17</div>
 <code>
 <span class="macro">@add(<span class="name">preamble</span>)</span><br/>
 <span class="in1"></span><span class="str">"\\renewcommand{\\headrulewidth}"</span><br/>
@@ -196,7 +206,7 @@ page footer contains a small page number
 hide header and footer rulers
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">17</div>
+<div class="page"><div class="slide"><div class="slide-nr">18</div>
 <code>
 <span class="macro">@add(<span class="name">preamble</span>)</span><br/>
 <span class="in1"></span><span class="str">"\\title{"</span><br/>
@@ -210,7 +220,7 @@ hide header and footer rulers
 define meta-data
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">18</div>
+<div class="page"><div class="slide"><div class="slide-nr">19</div>
 <code>
 <span class="macro">@add(<span class="name">preamble</span>)</span><br/>
 <span class="in1"></span><span class="str">"\\columnseprule.2pt\n"</span><br/>
@@ -222,7 +232,7 @@ define meta-data
 define column separator
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">19</div>
+<div class="page"><div class="slide"><div class="slide-nr">20</div>
 <code>
 <span class="macro">@add(<span class="name">preamble</span>)</span><br/>
 <span class="in1"></span><span class="str">"\\begin{document}\n"</span><br/>
@@ -232,7 +242,7 @@ define column separator
 start the main document
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">20</div>
+<div class="page"><div class="slide"><div class="slide-nr">21</div>
 <code>
 <span class="macro">@add(<span class="name">preamble</span>)</span><br/>
 <span class="in1"></span><span class="str">"\\pagecolor{background}\n"</span><br/>
@@ -246,7 +256,7 @@ start the main document
 set the default colors
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">21</div>
+<div class="page"><div class="slide"><div class="slide-nr">22</div>
 <code>
 <span class="macro">@add(<span class="name">preamble</span>)</span><br/>
 <span class="in1"></span><span class="str">"\\pagestyle{plain}\n"</span><br/>
@@ -260,7 +270,7 @@ render title
 and set default page style
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">22</div>
+<div class="page"><div class="slide"><div class="slide-nr">23</div>
 <code>
 <span class="macro">@add(<span class="name">preamble</span>)</span><br/>
 <span class="in1"></span><span class="str">"\\surroundwithmdframed["</span><br/>

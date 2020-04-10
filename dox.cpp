@@ -82,7 +82,7 @@
 #line 338 "index.md"
 
 	for (unsigned i { 0 };
-		i < line.length(); ++i
+		i < line.size(); ++i
 	) {
 		
 #line 351 "index.md"
@@ -95,7 +95,7 @@
 
 	unsigned j { i + 1 };
 	char mark { line[i] };
-	while (j < line.length() &&
+	while (j < line.size() &&
 		line[j] >= ' ' && (
 			isalnum(line[j]) ||
 			line[j] == '*' ||
@@ -173,22 +173,46 @@
 #line 553 "index.md"
 
 	unsigned j { i + 1 };
-	while (j < line.length() &&
+	while (j < line.size() &&
 		line[j] != '$'
 	) { ++j; }
 
 #line 563 "index.md"
 
-	if (i + 1 < j && line[j - 1] == '$') {
-		for (auto t { i }; t < j; ++t) {
-			std::cout << line[i];
+	if (j < line.size() && line[j] == '$') {
+		for (auto t { i }; t <= j; ++t) {
+			std::cout << line[t];
 		}
-		i = j - 1;
+		i = j;
 		continue;
 	}
 
 #line 546 "index.md"
 ;
+	}
+
+#line 616 "index.md"
+
+	if (line[i] == '`') {
+		unsigned j { i + 1 };
+		while (j < line.size() &&
+			line[j] != '`'
+		) { ++j; }
+		if (j < line.size() && line[j] == '`') {
+			std::cout << "\\hlInline{";
+			for (auto t { i + 1 }; t < j; ++t) {
+				if (line[t] == ' ') {
+					std::cout << "\\";
+				}
+				std::cout << line[t];
+			}
+			std::cout << "}";
+			if (j + 1 < line.size() && line[j + 1] == ' ') {
+				std::cout << "\\";
+			}
+			i = j;
+			continue;
+		}
 	}
 
 #line 342 "index.md"
@@ -328,7 +352,7 @@
 #line 12 "preamble.md"
 
 	"\\documentclass["
-		"a5paper,ngerman,9pt"
+		"a5paper,ngerman"
 	"]{article}\n"
 
 #line 23 "preamble.md"
@@ -382,25 +406,29 @@
 
 #line 106 "preamble.md"
 
+	"\\usepackage{lisp}\n"
+
+#line 113 "preamble.md"
+
 	"\\pagestyle{fancy}\n"
 	"\\fancypagestyle{plain}{\n"
 	"\\fancyhf{}\n"
 
-#line 115 "preamble.md"
+#line 122 "preamble.md"
 
 	"\\fancyfoot[C]{{"
 		"\\color{deemph}\\small"
 		"$\\thepage$"
 	"}}\n"
 
-#line 125 "preamble.md"
+#line 132 "preamble.md"
 
 	"\\renewcommand{\\headrulewidth}"
 		"{0pt}\n"
 	"\\renewcommand{\\footrulewidth}"
 		"{0pt}}\n"
 
-#line 135 "preamble.md"
+#line 142 "preamble.md"
 
 	"\\title{"
 		"\\color{emph}" << title <<
@@ -408,17 +436,17 @@
 	"\\author{" << author << "}\n"
 	"\\date{" << date << "}\n"
 
-#line 146 "preamble.md"
+#line 153 "preamble.md"
 
 	"\\columnseprule.2pt\n"
 	"\\renewcommand{\\columnseprulecolor}"
 		"{\\color{deemph}}\n"
 
-#line 155 "preamble.md"
+#line 162 "preamble.md"
 
 	"\\begin{document}\n"
 
-#line 162 "preamble.md"
+#line 169 "preamble.md"
 
 	"\\pagecolor{background}\n"
 	"\\color{normal}\n"
@@ -426,13 +454,13 @@
 		"\\color{emph}\\mdseries"
 	"}\n"
 
-#line 173 "preamble.md"
+#line 180 "preamble.md"
 
 	"\\pagestyle{plain}\n"
 	"\\maketitle\n"
 	"\\thispagestyle{fancy}\n"
 
-#line 183 "preamble.md"
+#line 190 "preamble.md"
 
 	"\\surroundwithmdframed["
 		"backgroundcolor=codebackground,"
@@ -522,6 +550,39 @@
 			nextline(line);
 			break;
 		}
+	}
+
+#line 579 "index.md"
+
+	if (line == "```lisp") {
+		std::cout << "\\begin{lisp}\n";
+		nextline(line);
+		int nr { 1 };
+		while (line != end_of_file && line != "```") {
+			std::cout << "$\\hlLine{" << nr++ << "}";
+			unsigned indent { 0 };
+			unsigned i { 0 };
+			while (i < line.size() && line[i] == '\t') { ++i; ++indent; }
+			if (indent) {
+				std::cout << "\\hlIndent{" << indent << "}";
+			}
+			for (; i < line.size(); ++i) {
+				if (line[i] == ' ') {
+					std::cout << "\\";
+				}
+				std::cout << line[i];
+			}
+			std::cout << "$";
+			nextline(line);
+			if (line == end_of_file || line == "```") {
+				std::cout << "\n";
+				break;
+			}
+			std::cout << "\\\\*\n";
+		}
+		nextline(line);
+		std::cout << "\\end{lisp}\n";
+		break;
 	}
 
 #line 274 "index.md"

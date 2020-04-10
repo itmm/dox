@@ -11,7 +11,7 @@
 ```
 @def(preamble)
 	"\\documentclass["
-		"a5paper,ngerman,9pt"
+		"a5paper,ngerman"
 	"]{article}\n"
 @end(preamble)
 ```
@@ -101,6 +101,13 @@
 @end(preamble)
 ```
 * to frame boxes
+
+```
+@add(preamble)
+	"\\usepackage{lisp}\n"
+@end(preamble)
+```
+* highlight LISP source code
 
 ```
 @add(preamble)

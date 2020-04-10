@@ -337,7 +337,7 @@
 ```
 @def(format line)
 	for (unsigned i { 0 };
-		i < line.length(); ++i
+		i < line.size(); ++i
 	) {
 		@put(handle format);
 		std::cout << line[i];
@@ -362,7 +362,7 @@
 @def(emphasise)
 	unsigned j { i + 1 };
 	char mark { line[i] };
-	while (j < line.length() &&
+	while (j < line.size() &&
 		line[j] >= ' ' && (
 			isalnum(line[j]) ||
 			line[j] == '*' ||
@@ -552,7 +552,7 @@
 ```
 @def(math)
 	unsigned j { i + 1 };
-	while (j < line.length() &&
+	while (j < line.size() &&
 		line[j] != '$'
 	) { ++j; }
 @end(math)
@@ -561,14 +561,79 @@
 
 ```
 @add(math)
-	if (i + 1 < j && line[j - 1] == '$') {
-		for (auto t { i }; t < j; ++t) {
-			std::cout << line[i];
+	if (j < line.size() && line[j] == '$') {
+		for (auto t { i }; t <= j; ++t) {
+			std::cout << line[t];
 		}
-		i = j - 1;
+		i = j;
 		continue;
 	}
 @end(math)
 ```
 * directly copy math
 
+## Handle Source Code
+* highlight source code
+
+```
+@add(process special)
+	if (line == "```lisp") {
+		std::cout << "\\begin{lisp}\n";
+		nextline(line);
+		int nr { 1 };
+		while (line != end_of_file && line != "```") {
+			std::cout << "$\\hlLine{" << nr++ << "}";
+			unsigned indent { 0 };
+			unsigned i { 0 };
+			while (i < line.size() && line[i] == '\t') { ++i; ++indent; }
+			if (indent) {
+				std::cout << "\\hlIndent{" << indent << "}";
+			}
+			for (; i < line.size(); ++i) {
+				if (line[i] == ' ') {
+					std::cout << "\\";
+				}
+				std::cout << line[i];
+			}
+			std::cout << "$";
+			nextline(line);
+			if (line == end_of_file || line == "```") {
+				std::cout << "\n";
+				break;
+			}
+			std::cout << "\\\\*\n";
+		}
+		nextline(line);
+		std::cout << "\\end{lisp}\n";
+		break;
+	}
+@end(process special)
+```
+
+## Handle inline code
+
+```
+@add(handle format)
+	if (line[i] == '`') {
+		unsigned j { i + 1 };
+		while (j < line.size() &&
+			line[j] != '`'
+		) { ++j; }
+		if (j < line.size() && line[j] == '`') {
+			std::cout << "\\hlInline{";
+			for (auto t { i + 1 }; t < j; ++t) {
+				if (line[t] == ' ') {
+					std::cout << "\\";
+				}
+				std::cout << line[t];
+			}
+			std::cout << "}";
+			if (j + 1 < line.size() && line[j + 1] == ' ') {
+				std::cout << "\\";
+			}
+			i = j;
+			continue;
+		}
+	}
+@end(handle format)
+```
