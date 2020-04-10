@@ -754,5 +754,57 @@ is the output currently in a list item
 subsections stay in the current columns style
 </li></ul>
 </div>
+</div>
+<h2>Handle math</h2>
+<div class="slides">
+<div class="page">
+<div class="slide"><div class="slide-nr">51</div><div class="headers">
+<h2>Handle math</h2>
+</div></div>
+<ul><li>
+verbose copy math blocks
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">52</div>
+<code>
+<span class="macro">@add(<span class="name">handle format</span>)</span><br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span>[<span class="var">i</span>] == <span class="str">'$'</span>) {<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">math</span>)</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">handle format</span>)</span><br/>
+</code></div>
+<ul><li>
+start of math mode
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">53</div>
+<code>
+<span class="macro">@def(<span class="name">math</span>)</span><br/>
+<span class="in1"></span><span class="type">unsigned</span> <span class="var">j</span> { <span class="var">i</span> + <span class="num">1</span> };<br/>
+<span class="in1"></span><span class="keyword">while</span> (<span class="var">j</span> &lt; <span class="var">line</span>.<span class="fn">length</span>() &amp;&amp;<br/>
+<span class="in2"></span><span class="var">line</span>[<span class="var">j</span>] != <span class="str">'$'</span><br/>
+<span class="in1"></span>) { ++<span class="var">j</span>; }<br/>
+<span class="macro">@end(<span class="name">math</span>)</span><br/>
+</code></div>
+<ul><li>
+find end of math mode
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">54</div>
+<code>
+<span class="macro">@add(<span class="name">math</span>)</span><br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">i</span> + <span class="num">1</span> &lt; <span class="var">j</span> &amp;&amp; <span class="var">line</span>[<span class="var">j</span> - <span class="num">1</span>] == <span class="str">'$'</span>) {<br/>
+<span class="in2"></span><span class="keyword">for</span> (<span class="type">auto</span> <span class="var">t</span> { <span class="var">i</span> }; <span class="var">t</span> &lt; <span class="var">j</span>; ++<span class="var">t</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">line</span>[<span class="var">i</span>];<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="var">i</span> = <span class="var">j</span> - <span class="num">1</span>;<br/>
+<span class="in2"></span><span class="keyword">continue</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">math</span>)</span><br/>
+</code></div>
+<ul><li>
+directly copy math
+</li></ul>
+</div>
 </body>
 </html>

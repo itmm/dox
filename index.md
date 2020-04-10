@@ -537,3 +537,38 @@
 ```
 * subsections stay in the current columns style
 
+## Handle math
+* verbose copy math blocks
+
+```
+@add(handle format)
+	if (line[i] == '$') {
+		@put(math);
+	}
+@end(handle format)
+```
+* start of math mode
+
+```
+@def(math)
+	unsigned j { i + 1 };
+	while (j < line.length() &&
+		line[j] != '$'
+	) { ++j; }
+@end(math)
+```
+* find end of math mode
+
+```
+@add(math)
+	if (i + 1 < j && line[j - 1] == '$') {
+		for (auto t { i }; t < j; ++t) {
+			std::cout << line[i];
+		}
+		i = j - 1;
+		continue;
+	}
+@end(math)
+```
+* directly copy math
+

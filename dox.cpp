@@ -166,6 +166,31 @@
 ;
 	}
 
+#line 544 "index.md"
+
+	if (line[i] == '$') {
+		
+#line 553 "index.md"
+
+	unsigned j { i + 1 };
+	while (j < line.length() &&
+		line[j] != '$'
+	) { ++j; }
+
+#line 563 "index.md"
+
+	if (i + 1 < j && line[j - 1] == '$') {
+		for (auto t { i }; t < j; ++t) {
+			std::cout << line[i];
+		}
+		i = j - 1;
+		continue;
+	}
+
+#line 546 "index.md"
+;
+	}
+
 #line 342 "index.md"
 ;
 		std::cout << line[i];
