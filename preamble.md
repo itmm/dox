@@ -41,10 +41,12 @@
 @add(preamble)
 	"\\usepackage{microtype}\n"
 	"\\usepackage{babel}\n"
+	"\\usepackage{siunitx}\n"
 @end(preamble)
 ```
 * better position characters
-* and use german titles
+* use german titles
+* and standard units
 
 ```
 @add(preamble)

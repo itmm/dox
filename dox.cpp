@@ -393,65 +393,66 @@
 
 	"\\usepackage{microtype}\n"
 	"\\usepackage{babel}\n"
+	"\\usepackage{siunitx}\n"
 
-#line 50 "preamble.md"
+#line 52 "preamble.md"
 
 	"\\usepackage[" <<
 		theme <<
 	"]{solarized}\n"
 
-#line 59 "preamble.md"
+#line 61 "preamble.md"
 
 	"\\usepackage{sectsty}\n"
 	"\\usepackage{ccfonts}\n"
 	"\\usepackage{euler}\n"
 
-#line 69 "preamble.md"
+#line 71 "preamble.md"
 
 	"\\usepackage{todone}\n"
 
-#line 76 "preamble.md"
+#line 78 "preamble.md"
 
 	"\\usepackage{fancyhdr}\n"
 	"\\usepackage{fancyvrb}\n"
 
-#line 85 "preamble.md"
+#line 87 "preamble.md"
 
 	"\\usepackage{graphicx}\n"
 
-#line 92 "preamble.md"
+#line 94 "preamble.md"
 
 	"\\usepackage{multicol}\n"
 
-#line 99 "preamble.md"
+#line 101 "preamble.md"
 
 	"\\usepackage{mdframed}\n"
 
-#line 106 "preamble.md"
+#line 108 "preamble.md"
 
 	"\\usepackage{lisp}\n"
 
-#line 113 "preamble.md"
+#line 115 "preamble.md"
 
 	"\\pagestyle{fancy}\n"
 	"\\fancypagestyle{plain}{\n"
 	"\\fancyhf{}\n"
 
-#line 122 "preamble.md"
+#line 124 "preamble.md"
 
 	"\\fancyfoot[C]{{"
 		"\\color{deemph}\\small"
 		"$\\thepage$"
 	"}}\n"
 
-#line 132 "preamble.md"
+#line 134 "preamble.md"
 
 	"\\renewcommand{\\headrulewidth}"
 		"{0pt}\n"
 	"\\renewcommand{\\footrulewidth}"
 		"{0pt}}\n"
 
-#line 142 "preamble.md"
+#line 144 "preamble.md"
 
 	"\\title{"
 		"\\color{emph}" << title <<
@@ -459,17 +460,17 @@
 	"\\author{" << author << "}\n"
 	"\\date{" << date << "}\n"
 
-#line 153 "preamble.md"
+#line 155 "preamble.md"
 
 	"\\columnseprule.2pt\n"
 	"\\renewcommand{\\columnseprulecolor}"
 		"{\\color{deemph}}\n"
 
-#line 162 "preamble.md"
+#line 164 "preamble.md"
 
 	"\\begin{document}\n"
 
-#line 169 "preamble.md"
+#line 171 "preamble.md"
 
 	"\\pagecolor{background}\n"
 	"\\color{normal}\n"
@@ -477,13 +478,13 @@
 		"\\color{emph}\\mdseries"
 	"}\n"
 
-#line 180 "preamble.md"
+#line 182 "preamble.md"
 
 	"\\pagestyle{plain}\n"
 	"\\maketitle\n"
 	"\\thispagestyle{fancy}\n"
 
-#line 190 "preamble.md"
+#line 192 "preamble.md"
 
 	"\\surroundwithmdframed["
 		"backgroundcolor=codebackground,"
