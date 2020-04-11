@@ -646,18 +646,33 @@
 	};
 	if (has_prefix(line, prefix)) {
 		exit_two_columns();
-		std::cout << "\\begin{center}\n";
-		std::cout << "\\includegraphics[scale=.5]{";
-		unsigned i { prefix.size() };
-		while (i < line.size() && line[i] != '}' && line[i] != '.') {
-			std::cout << line[i];
-			++i;
-		}
-		if (theme.size()) {
-			std::cout << "-" << theme;
-		}
-		std::cout << ".pdf}\n";
-		std::cout << "\\end{center}\n";
+		
+#line 743 "index.md"
+
+	std::cout << "\\begin{center}\n";
+	std::cout <<
+		"\\includegraphics[scale=.5]{";
+	
+#line 756 "index.md"
+
+	unsigned i { prefix.size() };
+	while (i < line.size() &&
+		line[i] != '}' && line[i] != '.'
+	) {
+		std::cout << line[i];
+		++i;
+	}
+	if (theme.size()) {
+		std::cout << "-" << theme;
+	}
+
+#line 747 "index.md"
+;
+	std::cout << ".pdf}\n";
+	std::cout << "\\end{center}\n";
+
+#line 734 "index.md"
+;
 		nextline(line);
 		break;
 	}

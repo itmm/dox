@@ -731,22 +731,41 @@
 	};
 	if (has_prefix(line, prefix)) {
 		exit_two_columns();
-		std::cout << "\\begin{center}\n";
-		std::cout << "\\includegraphics[scale=.5]{";
-		unsigned i { prefix.size() };
-		while (i < line.size() && line[i] != '}' && line[i] != '.') {
-			std::cout << line[i];
-			++i;
-		}
-		if (theme.size()) {
-			std::cout << "-" << theme;
-		}
-		std::cout << ".pdf}\n";
-		std::cout << "\\end{center}\n";
+		@put(include graphics);
 		nextline(line);
 		break;
 	}
 } @end(process special)
 ```
-* parse LISP block
+* parse image
+
+```
+@def(include graphics)
+	std::cout << "\\begin{center}\n";
+	std::cout <<
+		"\\includegraphics[scale=.5]{";
+	@put(copy themed graphics name);
+	std::cout << ".pdf}\n";
+	std::cout << "\\end{center}\n";
+@end(include graphics)
+```
+* include LaTeX statements to load graphic
+* only PDF graphics are supported
+
+```
+@def(copy themed graphics name)
+	unsigned i { prefix.size() };
+	while (i < line.size() &&
+		line[i] != '}' && line[i] != '.'
+	) {
+		std::cout << line[i];
+		++i;
+	}
+	if (theme.size()) {
+		std::cout << "-" << theme;
+	}
+@end(copy themed graphics name)
+```
+* copy name until the first extension
+* add theme name if present
 
