@@ -900,23 +900,41 @@ and add matching indent
 <div class="page"><div class="slide"><div class="slide-nr">61</div>
 <code>
 <span class="macro">@add(<span class="name">process lisp line</span>)</span><br/>
-<span class="in1"></span><span class="keyword">for</span> (; <span class="var">i</span> &lt; <span class="var">line</span>.<span class="fn">size</span>(); ++<span class="var">i</span>) {<br/>
-<span class="in2"></span><span class="keyword">if</span> (<span class="var">line</span>[<span class="var">i</span>] == <span class="str">' '</span>) {<br/>
-<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\"</span>;<br/>
-<span class="in2"></span>}<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">line</span>[<span class="var">i</span>];<br/>
+<span class="in1"></span><span class="keyword">for</span> (<span class="type">auto</span> <span class="var">t</span> { <span class="var">i</span> };<br/>
+<span class="in2"></span><span class="var">t</span> &lt; <span class="var">line</span>.<span class="fn">size</span>(); ++<span class="var">t</span><br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="macro">@mul(<span class="name">copy code</span>)</span>;<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">process lisp line</span>)</span><br/>
+</code></div>
+<ul><li>
+copy code
+</li></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">62</div>
+<code>
+<span class="macro">@def(<span class="name">copy code</span>)</span><br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span>[<span class="var">t</span>] == <span class="str">' '</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\"</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span>[<span class="var">t</span>] == <span class="str">'-'</span> &amp;&amp; <span class="var">t</span> &gt; <span class="num">0</span> &amp;&amp;<br/>
+<span class="in2"></span><span class="fn">isalpha</span>(<span class="var">line</span>[<span class="var">t</span> - <span class="num">1</span>])<br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"{\\text -}"</span>;<br/>
+<span class="in1"></span>} <span class="keyword">else</span> {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">line</span>[<span class="var">t</span>];<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">copy code</span>)</span><br/>
 </code></div>
 <ul><li>
 copy code
 </li><li>
 but escape spaces
 </li><li>
-otherwise they are ignored in math mode
+special treatment to separate hyphens from minus signs
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">62</div>
+<div class="page"><div class="slide"><div class="slide-nr">63</div>
 <code>
 <span class="macro">@add(<span class="name">process lisp line</span>)</span><br/>
 <span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"$"</span>;<br/>
@@ -930,14 +948,14 @@ leave math mode
 <h2>Handle inline code</h2>
 <div class="slides">
 <div class="page">
-<div class="slide"><div class="slide-nr">63</div><div class="headers">
+<div class="slide"><div class="slide-nr">64</div><div class="headers">
 <h2>Handle inline code</h2>
 </div></div>
 <ul><li>
 display an inline code fragment
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">64</div>
+<div class="page"><div class="slide"><div class="slide-nr">65</div>
 <code>
 <span class="macro">@add(<span class="name">handle format</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span>[<span class="var">i</span>] == <span class="str">'`'</span>) {<br/>
@@ -949,7 +967,7 @@ display an inline code fragment
 parse inline code fragment
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">65</div>
+<div class="page"><div class="slide"><div class="slide-nr">66</div>
 <code>
 <span class="macro">@def(<span class="name">inline code</span>)</span><br/>
 <span class="in1"></span><span class="type">unsigned</span> <span class="var">j</span> { <span class="var">i</span> + <span class="num">1</span> };<br/>
@@ -963,7 +981,7 @@ parse inline code fragment
 find end of fragment
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">66</div>
+<div class="page"><div class="slide"><div class="slide-nr">67</div>
 <code>
 <span class="macro">@add(<span class="name">inline code</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">j</span> &lt; <span class="var">line</span>.<span class="fn">size</span>() &amp;&amp;<br/>
@@ -979,15 +997,12 @@ find end of fragment
 process valid fragment
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">67</div>
+<div class="page"><div class="slide"><div class="slide-nr">68</div>
 <code>
 <span class="macro">@def(<span class="name">do inline code</span>)</span><br/>
 <span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\hlInline{"</span>;<br/>
 <span class="in1"></span><span class="keyword">for</span> (<span class="type">auto</span> <span class="var">t</span> { <span class="var">i</span> + <span class="num">1</span> }; <span class="var">t</span> &lt; <span class="var">j</span>; ++<span class="var">t</span>) {<br/>
-<span class="in2"></span><span class="keyword">if</span> (<span class="var">line</span>[<span class="var">t</span>] == <span class="str">' '</span>) {<br/>
-<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\"</span>;<br/>
-<span class="in2"></span>}<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">line</span>[<span class="var">t</span>];<br/>
+<span class="in2"></span><span class="macro">@mul(<span class="name">copy code</span>)</span>;<br/>
 <span class="in1"></span>}<br/>
 <span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"}"</span>;<br/>
 <span class="macro">@end(<span class="name">do inline code</span>)</span><br/>
@@ -998,7 +1013,7 @@ copy code fragment
 but escape spaces
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">68</div>
+<div class="page"><div class="slide"><div class="slide-nr">69</div>
 <code>
 <span class="macro">@add(<span class="name">do inline code</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">j</span> + <span class="num">1</span> &lt; <span class="var">line</span>.<span class="fn">size</span>() &amp;&amp;<br/>
@@ -1016,14 +1031,14 @@ pad trailing space
 <h2>Include Graphics</h2>
 <div class="slides">
 <div class="page">
-<div class="slide"><div class="slide-nr">69</div><div class="headers">
+<div class="slide"><div class="slide-nr">70</div><div class="headers">
 <h2>Include Graphics</h2>
 </div></div>
 <ul><li>
 include PDF graphics in the correct theme
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">70</div>
+<div class="page"><div class="slide"><div class="slide-nr">71</div>
 <code>
 <span class="macro">@add(<span class="name">process special</span>)</span> {<br/>
 <span class="in1"></span><span class="keyword">static</span> <span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">prefix</span> {<br/>
@@ -1041,7 +1056,7 @@ include PDF graphics in the correct theme
 parse image
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">71</div>
+<div class="page"><div class="slide"><div class="slide-nr">72</div>
 <code>
 <span class="macro">@def(<span class="name">include graphics</span>)</span><br/>
 <span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\begin{center}\n"</span>;<br/>
@@ -1058,7 +1073,7 @@ include LaTeX statements to load graphic
 only PDF graphics are supported
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">72</div>
+<div class="page"><div class="slide"><div class="slide-nr">73</div>
 <code>
 <span class="macro">@def(<span class="name">copy themed graphics name</span>)</span><br/>
 <span class="in1"></span><span class="type">unsigned</span> <span class="var">i</span> { <span class="var">prefix</span>.<span class="fn">size</span>() };<br/>

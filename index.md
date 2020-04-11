@@ -640,17 +640,32 @@
 
 ```
 @add(process lisp line)
-	for (; i < line.size(); ++i) {
-		if (line[i] == ' ') {
-			std::cout << "\\";
-		}
-		std::cout << line[i];
+	for (auto t { i };
+		t < line.size(); ++t
+	) {
+		@mul(copy code);
 	}
 @end(process lisp line)
 ```
 * copy code
+
+```
+@def(copy code)
+	if (line[t] == ' ') {
+		std::cout << "\\";
+	}
+	if (line[t] == '-' && t > 0 &&
+		isalpha(line[t - 1])
+	) {
+		std::cout << "{\\text -}";
+	} else {
+		std::cout << line[t];
+	}
+@end(copy code)
+```
+* copy code
 * but escape spaces
-* otherwise they are ignored in math mode
+* special treatment to separate hyphens from minus signs
 
 ```
 @add(process lisp line)
@@ -699,10 +714,7 @@
 @def(do inline code)
 	std::cout << "\\hlInline{";
 	for (auto t { i + 1 }; t < j; ++t) {
-		if (line[t] == ' ') {
-			std::cout << "\\";
-		}
-		std::cout << line[t];
+		@mul(copy code);
 	}
 	std::cout << "}";
 @end(do inline code)

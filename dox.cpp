@@ -191,11 +191,11 @@
 ;
 	}
 
-#line 666 "index.md"
+#line 681 "index.md"
 
 	if (line[i] == '`') {
 		
-#line 675 "index.md"
+#line 690 "index.md"
 
 	unsigned j { i + 1 };
 	for (;
@@ -203,24 +203,36 @@
 		++j
 	) {}
 
-#line 686 "index.md"
+#line 701 "index.md"
 
 	if (j < line.size() &&
 		line[j] == '`'
 	) {
 		
-#line 699 "index.md"
+#line 714 "index.md"
 
 	std::cout << "\\hlInline{";
 	for (auto t { i + 1 }; t < j; ++t) {
-		if (line[t] == ' ') {
-			std::cout << "\\";
-		}
+		
+#line 653 "index.md"
+
+	if (line[t] == ' ') {
+		std::cout << "\\";
+	}
+	if (line[t] == '-' && t > 0 &&
+		isalpha(line[t - 1])
+	) {
+		std::cout << "{\\text -}";
+	} else {
 		std::cout << line[t];
+	}
+
+#line 717 "index.md"
+;
 	}
 	std::cout << "}";
 
-#line 714 "index.md"
+#line 726 "index.md"
 
 	if (j + 1 < line.size() &&
 		line[j + 1] == ' '
@@ -228,13 +240,13 @@
 		std::cout << "\\";
 	}
 
-#line 690 "index.md"
+#line 705 "index.md"
 ;
 		i = j;
 		continue;
 	}
 
-#line 668 "index.md"
+#line 683 "index.md"
 ;
 	}
 
@@ -615,14 +627,28 @@
 
 #line 642 "index.md"
 
-	for (; i < line.size(); ++i) {
-		if (line[i] == ' ') {
-			std::cout << "\\";
-		}
-		std::cout << line[i];
+	for (auto t { i };
+		t < line.size(); ++t
+	) {
+		
+#line 653 "index.md"
+
+	if (line[t] == ' ') {
+		std::cout << "\\";
+	}
+	if (line[t] == '-' && t > 0 &&
+		isalpha(line[t - 1])
+	) {
+		std::cout << "{\\text -}";
+	} else {
+		std::cout << line[t];
 	}
 
-#line 656 "index.md"
+#line 646 "index.md"
+;
+	}
+
+#line 671 "index.md"
 
 	std::cout << "$";
 
@@ -639,7 +665,7 @@
 		break;
 	}
 
-#line 728 "index.md"
+#line 740 "index.md"
  {
 	static const std::string prefix {
 		"!("
@@ -647,13 +673,13 @@
 	if (has_prefix(line, prefix)) {
 		exit_two_columns();
 		
-#line 743 "index.md"
+#line 755 "index.md"
 
 	std::cout << "\\begin{center}\n";
 	std::cout <<
 		"\\includegraphics[scale=.5]{";
 	
-#line 756 "index.md"
+#line 768 "index.md"
 
 	unsigned i { prefix.size() };
 	while (i < line.size() &&
@@ -666,12 +692,12 @@
 		std::cout << "-" << theme;
 	}
 
-#line 747 "index.md"
+#line 759 "index.md"
 ;
 	std::cout << ".pdf}\n";
 	std::cout << "\\end{center}\n";
 
-#line 734 "index.md"
+#line 746 "index.md"
 ;
 		nextline(line);
 		break;
