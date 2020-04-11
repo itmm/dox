@@ -638,6 +638,26 @@
 		break;
 	}
 
+#line 728 "index.md"
+ {
+	static const std::string prefix {
+		"!("
+	};
+	if (has_prefix(line, prefix)) {
+		exit_two_columns();
+		std::cout << "\\begin{center}\n";
+		std::cout << "\\includegraphics[scale=.5]{";
+		unsigned i { prefix.size() };
+		while (i < line.size() && line[i] != '}' && line[i] != '.') {
+			std::cout << line[i];
+			++i;
+		}
+		std::cout << "-" << theme << ".pdf}\n";
+		std::cout << "\\end{center}\n";
+		nextline(line);
+		break;
+	}
+} 
 #line 274 "index.md"
 ;
 		enter_two_columns();

@@ -1012,5 +1012,39 @@ but escape spaces
 pad trailing space
 </li></ul>
 </div>
+</div>
+<h2>Include Graphics</h2>
+<div class="slides">
+<div class="page">
+<div class="slide"><div class="slide-nr">69</div><div class="headers">
+<h2>Include Graphics</h2>
+</div></div>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">70</div>
+<code>
+<span class="macro">@add(<span class="name">process special</span>)</span> {<br/>
+<span class="in1"></span><span class="keyword">static</span> <span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">prefix</span> {<br/>
+<span class="in2"></span><span class="str">"!("</span><br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="fn">has_prefix</span>(<span class="var">line</span>, <span class="var">prefix</span>)) {<br/>
+<span class="in2"></span><span class="fn">exit_two_columns</span>();<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\begin{center}\n"</span>;<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\includegraphics[scale=.5]{"</span>;<br/>
+<span class="in2"></span><span class="type">unsigned</span> <span class="var">i</span> { <span class="var">prefix</span>.<span class="fn">size</span>() };<br/>
+<span class="in2"></span><span class="keyword">while</span> (<span class="var">i</span> &lt; <span class="var">line</span>.<span class="fn">size</span>() &amp;&amp; <span class="var">line</span>[<span class="var">i</span>] != <span class="str">'}'</span> &amp;&amp; <span class="var">line</span>[<span class="var">i</span>] != <span class="str">'.'</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">line</span>[<span class="var">i</span>];<br/>
+<span class="in3"></span>++<span class="var">i</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"-"</span> &lt;&lt; <span class="var">theme</span> &lt;&lt; <span class="str">".pdf}\n"</span>;<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\end{center}\n"</span>;<br/>
+<span class="in2"></span><span class="fn">nextline</span>(<span class="var">line</span>);<br/>
+<span class="in2"></span><span class="keyword">break</span>;<br/>
+<span class="in1"></span>}<br/>
+} <span class="macro">@end(<span class="name">process special</span>)</span><br/>
+</code></div>
+<ul><li>
+parse LISP block
+</li></ul>
+</div>
 </body>
 </html>
