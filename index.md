@@ -367,7 +367,8 @@
 			isalnum(line[j]) ||
 			line[j] == '*' ||
 			line[j] == '_' ||
-			line[j] == '-'
+			line[j] == '-' ||
+			line[j] == ' '
 		)
 	) { ++j; }
 @end(emphasise)

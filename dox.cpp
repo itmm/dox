@@ -100,17 +100,18 @@
 			isalnum(line[j]) ||
 			line[j] == '*' ||
 			line[j] == '_' ||
-			line[j] == '-'
+			line[j] == '-' ||
+			line[j] == ' '
 		)
 	) { ++j; }
 
-#line 378 "index.md"
+#line 379 "index.md"
 
 	if (i + 1 < j &&
 		line[j - 1] == mark
 	) {
 		
-#line 390 "index.md"
+#line 391 "index.md"
 
 	bool bold {
 		i + 3 < j &&
@@ -118,7 +119,7 @@
 		line[j - 2] == mark
 	};
 
-#line 401 "index.md"
+#line 402 "index.md"
 
 	if (bold) {
 		std::cout << "\\textbf{";
@@ -126,7 +127,7 @@
 		std::cout << "\\emph{";
 	}
 
-#line 412 "index.md"
+#line 413 "index.md"
 
 	unsigned begin {
 		bold ? i + 2 : i + 1
@@ -134,7 +135,7 @@
 	unsigned end { bold ? j - 2 : j - 1 };
 	for (auto t { begin }; t < end; ++t) {
 		
-#line 431 "index.md"
+#line 432 "index.md"
 
 	if (line[t] == mark) {
 		std::cout << ' ';
@@ -142,23 +143,23 @@
 		std::cout << line[t];
 	}
 
-#line 418 "index.md"
+#line 419 "index.md"
 ;
 	}
 	std::cout << "}";
 	
-#line 443 "index.md"
+#line 444 "index.md"
 
 	if (line[j] == ' ') {
 		std::cout << '\\';
 	}
 
-#line 421 "index.md"
+#line 422 "index.md"
 ;
 	i = j - 1;
 	continue;
 
-#line 382 "index.md"
+#line 383 "index.md"
 ;
 	}
 
@@ -166,18 +167,18 @@
 ;
 	}
 
-#line 544 "index.md"
+#line 545 "index.md"
 
 	if (line[i] == '$') {
 		
-#line 553 "index.md"
+#line 554 "index.md"
 
 	unsigned j { i + 1 };
 	while (j < line.size() &&
 		line[j] != '$'
 	) { ++j; }
 
-#line 563 "index.md"
+#line 564 "index.md"
 
 	if (j < line.size() && line[j] == '$') {
 		for (auto t { i }; t <= j; ++t) {
@@ -187,15 +188,15 @@
 		continue;
 	}
 
-#line 546 "index.md"
+#line 547 "index.md"
 ;
 	}
 
-#line 681 "index.md"
+#line 682 "index.md"
 
 	if (line[i] == '`') {
 		
-#line 690 "index.md"
+#line 691 "index.md"
 
 	unsigned j { i + 1 };
 	for (;
@@ -203,18 +204,18 @@
 		++j
 	) {}
 
-#line 701 "index.md"
+#line 702 "index.md"
 
 	if (j < line.size() &&
 		line[j] == '`'
 	) {
 		
-#line 714 "index.md"
+#line 715 "index.md"
 
 	std::cout << "\\hlInline{";
 	for (auto t { i + 1 }; t < j; ++t) {
 		
-#line 653 "index.md"
+#line 654 "index.md"
 
 	if (line[t] == ' ') {
 		std::cout << "\\";
@@ -227,12 +228,12 @@
 		std::cout << line[t];
 	}
 
-#line 717 "index.md"
+#line 718 "index.md"
 ;
 	}
 	std::cout << "}";
 
-#line 726 "index.md"
+#line 727 "index.md"
 
 	if (j + 1 < line.size() &&
 		line[j + 1] == ' '
@@ -240,13 +241,13 @@
 		std::cout << "\\";
 	}
 
-#line 705 "index.md"
+#line 706 "index.md"
 ;
 		i = j;
 		continue;
 	}
 
-#line 683 "index.md"
+#line 684 "index.md"
 ;
 	}
 
@@ -259,13 +260,13 @@
 ;
 	}
 
-#line 457 "index.md"
+#line 458 "index.md"
 
 	enum class List_Type {
 		no_list, enum_list, item_list
 	} list_type { List_Type::no_list };
 
-#line 466 "index.md"
+#line 467 "index.md"
 
 	void open_list(bool enumerate) {
 		if (list_type == List_Type::no_list) {
@@ -280,7 +281,7 @@
 		std::cout << "\\item ";
 	}
 
-#line 483 "index.md"
+#line 484 "index.md"
 
 	void close_list() {
 		switch (list_type) {
@@ -555,13 +556,13 @@
 		break;
 	}
 } 
-#line 501 "index.md"
+#line 502 "index.md"
 
 	if (line == "") {
 		close_list();
 	}
 
-#line 509 "index.md"
+#line 510 "index.md"
  {
 	static const std::string prefix {
 		"* "
@@ -574,7 +575,7 @@
 		break;
 	}
 } 
-#line 524 "index.md"
+#line 525 "index.md"
 
 	if (line.size() && isdigit(line[0])) {
 		unsigned i { 1 };
@@ -588,31 +589,31 @@
 		}
 	}
 
-#line 579 "index.md"
+#line 580 "index.md"
 
 	if (line == "```lisp") {
 		std::cout << "\\begin{lisp}\n";
 		nextline(line);
 		
-#line 592 "index.md"
+#line 593 "index.md"
 
 	int nr { 1 };
 	while (line != end_of_file &&
 		line != "```"
 	) {
 		
-#line 608 "index.md"
+#line 609 "index.md"
 
 	if (nr > 1) {
 		std::cout << "\\\\*\n";
 	}
 
-#line 617 "index.md"
+#line 618 "index.md"
 
 	std::cout << "$\\hlLine{" <<
 		nr++ << "}";
 
-#line 625 "index.md"
+#line 626 "index.md"
 
 	unsigned i { 0 };
 	for (;
@@ -625,13 +626,13 @@
 			i << "}";
 	}
 
-#line 642 "index.md"
+#line 643 "index.md"
 
 	for (auto t { i };
 		t < line.size(); ++t
 	) {
 		
-#line 653 "index.md"
+#line 654 "index.md"
 
 	if (line[t] == ' ') {
 		std::cout << "\\";
@@ -644,28 +645,28 @@
 		std::cout << line[t];
 	}
 
-#line 646 "index.md"
+#line 647 "index.md"
 ;
 	}
 
-#line 671 "index.md"
+#line 672 "index.md"
 
 	std::cout << "$";
 
-#line 597 "index.md"
+#line 598 "index.md"
 ;
 		nextline(line);
 	}
 	std::cout << "\n";
 	nextline(line);
 
-#line 583 "index.md"
+#line 584 "index.md"
 ;
 		std::cout << "\\end{lisp}\n";
 		break;
 	}
 
-#line 740 "index.md"
+#line 741 "index.md"
  {
 	static const std::string prefix {
 		"!("
@@ -673,13 +674,13 @@
 	if (has_prefix(line, prefix)) {
 		exit_two_columns();
 		
-#line 755 "index.md"
+#line 756 "index.md"
 
 	std::cout << "\\begin{center}\n";
 	std::cout <<
 		"\\includegraphics[scale=.5]{";
 	
-#line 768 "index.md"
+#line 769 "index.md"
 
 	unsigned i { prefix.size() };
 	while (i < line.size() &&
@@ -692,12 +693,12 @@
 		std::cout << "-" << theme;
 	}
 
-#line 759 "index.md"
+#line 760 "index.md"
 ;
 	std::cout << ".pdf}\n";
 	std::cout << "\\end{center}\n";
 
-#line 746 "index.md"
+#line 747 "index.md"
 ;
 		nextline(line);
 		break;
