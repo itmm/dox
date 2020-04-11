@@ -29,10 +29,10 @@
 
 ```
 @def(main prereqs)
-	static std::string theme { "none" };
+	static std::string theme {};
 @end(main prereqs)
 ```
-* current theme defaults to `"none"`
+* no default theme is used
 
 ```
 @def(main) {
@@ -722,7 +722,7 @@
 * pad trailing space
 
 ## Include Graphics
-
+* include PDF graphics in the correct theme
 
 ```
 @add(process special) {
@@ -738,7 +738,10 @@
 			std::cout << line[i];
 			++i;
 		}
-		std::cout << "-" << theme << ".pdf}\n";
+		if (theme.size()) {
+			std::cout << "-" << theme;
+		}
+		std::cout << ".pdf}\n";
 		std::cout << "\\end{center}\n";
 		nextline(line);
 		break;

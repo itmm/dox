@@ -85,9 +85,9 @@ and standard units
 <div class="page"><div class="slide"><div class="slide-nr">7</div>
 <code>
 <span class="macro">@add(<span class="name">preamble</span>)</span><br/>
-<span class="in1"></span><span class="str">"\\usepackage["</span> &lt;&lt;<br/>
-<span class="in2"></span><span class="var">theme</span> &lt;&lt;<br/>
-<span class="in1"></span><span class="str">"]{solarized}\n"</span><br/>
+<span class="in1"></span><span class="str">"\\usepackage"</span> &lt;&lt; (<span class="var">theme</span>.<span class="fn">size</span>() ?<br/>
+<span class="in2"></span><span class="str">"["</span> + <span class="var">theme</span> + <span class="str">"]"</span> : <span class="str">""</span><br/>
+<span class="in1"></span>) &lt;&lt; <span class="str">"{solarized}\n"</span><br/>
 <span class="macro">@end(<span class="name">preamble</span>)</span><br/>
 </code></div>
 <ul><li>

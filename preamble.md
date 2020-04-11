@@ -50,9 +50,9 @@
 
 ```
 @add(preamble)
-	"\\usepackage[" <<
-		theme <<
-	"]{solarized}\n"
+	"\\usepackage" << (theme.size() ?
+		"[" + theme + "]" : ""
+	) << "{solarized}\n"
 @end(preamble)
 ```
 * the local solarized package is used with the current theme

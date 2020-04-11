@@ -12,7 +12,7 @@
 	
 #line 31 "index.md"
 
-	static std::string theme { "none" };
+	static std::string theme {};
 
 #line 59 "index.md"
 
@@ -397,9 +397,9 @@
 
 #line 52 "preamble.md"
 
-	"\\usepackage[" <<
-		theme <<
-	"]{solarized}\n"
+	"\\usepackage" << (theme.size() ?
+		"[" + theme + "]" : ""
+	) << "{solarized}\n"
 
 #line 61 "preamble.md"
 
@@ -653,7 +653,10 @@
 			std::cout << line[i];
 			++i;
 		}
-		std::cout << "-" << theme << ".pdf}\n";
+		if (theme.size()) {
+			std::cout << "-" << theme;
+		}
+		std::cout << ".pdf}\n";
 		std::cout << "\\end{center}\n";
 		nextline(line);
 		break;
