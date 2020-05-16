@@ -69,13 +69,6 @@
 
 ```
 @add(preamble)
-	"\\usepackage{todone}\n"
-@end(preamble)
-```
-* marking sections that are still in progress
-
-```
-@add(preamble)
 	"\\usepackage{fancyhdr}\n"
 	"\\usepackage{fancyvrb}\n"
 @end(preamble)

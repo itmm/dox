@@ -522,66 +522,57 @@ and process special format sequences
 <code>
 <span class="macro">@def(<span class="name">handle format</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<br/>
-<span class="in2"></span><span class="var">line</span>[<span class="var">i</span>] == <span class="str">'*'</span> || <span class="var">line</span>[<span class="var">i</span>] == <span class="str">'_'</span><br/>
-<span class="in1"></span>) {<br/>
+<span class="in3"></span><span class="var">line</span>[<span class="var">i</span>] == <span class="str">'*'</span> || <span class="var">line</span>[<span class="var">i</span>] == <span class="str">'_'</span><br/>
+<span class="in1"></span>   ) {<br/>
 <span class="in2"></span><span class="macro">@put(<span class="name">emphasise</span>)</span>;<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">handle format</span>)</span><br/>
-</code></div>
-<ul><li>
-emphasise following words
-</li></ul>
-</div>
-<div class="page"><div class="slide"><div class="slide-nr">37</div>
-<code>
+<span class="in1"></span><span class="str">``</span>`<br/>
+<span class="in1"></span>* <span class="var">emphasise</span> <span class="var">following</span> <span class="var">words</span><br/>
+<br/>
+<span class="in1"></span><span class="str">``</span>`<br/>
 <span class="macro">@def(<span class="name">emphasise</span>)</span><br/>
-<span class="in1"></span><span class="type">unsigned</span> <span class="var">j</span> { <span class="var">i</span> + <span class="num">1</span> };<br/>
-<span class="in1"></span><span class="type">char</span> <span class="var">mark</span> { <span class="var">line</span>[<span class="var">i</span>] };<br/>
-<span class="in1"></span><span class="keyword">while</span> (<span class="var">j</span> &lt; <span class="var">line</span>.<span class="fn">size</span>() &amp;&amp;<br/>
-<span class="in2"></span><span class="var">line</span>[<span class="var">j</span>] &gt;= <span class="str">' '</span> &amp;&amp; (<br/>
-<span class="in3"></span><span class="fn">isalnum</span>(<span class="var">line</span>[<span class="var">j</span>]) ||<br/>
-<span class="in3"></span><span class="var">line</span>[<span class="var">j</span>] == <span class="str">'*'</span> ||<br/>
-<span class="in3"></span><span class="var">line</span>[<span class="var">j</span>] == <span class="str">'_'</span> ||<br/>
-<span class="in3"></span><span class="var">line</span>[<span class="var">j</span>] == <span class="str">'-'</span> ||<br/>
-<span class="in3"></span><span class="var">line</span>[<span class="var">j</span>] == <span class="str">' '</span><br/>
-<span class="in2"></span>)<br/>
-<span class="in1"></span>) { ++<span class="var">j</span>; }<br/>
+<span class="in1"></span><span class="type">unsigned</span> <span class="var">j</span> { <span class="var">i</span> };<br/>
+<span class="in1"></span><span class="type">char</span> <span class="var">mark</span> { <span class="var">line</span>[<span class="var">j</span>] };<br/>
+<span class="in1"></span><span class="type">int</span> <span class="var">cnt</span> { <span class="num">0</span> };<br/>
+<span class="in1"></span><span class="keyword">while</span> (<span class="var">j</span> &lt; <span class="var">line</span>.<span class="fn">size</span>() &amp;&amp; <span class="var">line</span>[<span class="var">j</span>] == <span class="var">mark</span>) {<br/>
+<span class="in2"></span>++<span class="var">cnt</span>; ++<span class="var">j</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="in1"></span><span class="keyword">while</span> (<span class="var">j</span> &lt; <span class="var">line</span>.<span class="fn">size</span>() &amp;&amp; <span class="var">cnt</span> &amp;&amp;<br/>
+<span class="in3"></span><span class="var">line</span>[<span class="var">j</span>] &gt;= <span class="str">' '</span> &amp;&amp; (<br/>
+<span class="in4"></span><span class="fn">isalnum</span>(<span class="var">line</span>[<span class="var">j</span>]) ||<br/>
+<span class="in4"></span><span class="var">line</span>[<span class="var">j</span>] == <span class="str">'*'</span> ||<br/>
+<span class="in4"></span><span class="var">line</span>[<span class="var">j</span>] == <span class="str">'_'</span> ||<br/>
+<span class="in4"></span><span class="var">line</span>[<span class="var">j</span>] == <span class="str">'-'</span> ||<br/>
+<span class="in4"></span><span class="var">line</span>[<span class="var">j</span>] == <span class="str">' '</span><br/>
+<span class="in4"></span>)<br/>
+<span class="in2"></span>  ) { <span class="keyword">if</span> (<span class="var">line</span>[<span class="var">j</span>] == <span class="var">mark</span>) { --<span class="var">cnt</span>; }; ++<span class="var">j</span>; }<br/>
 <span class="macro">@end(<span class="name">emphasise</span>)</span><br/>
-</code></div>
-<ul><li>
-find end of chars to highlight
-</li></ul>
-</div>
-<div class="page"><div class="slide"><div class="slide-nr">38</div>
-<code>
+<span class="in1"></span><span class="str">``</span>`<br/>
+<span class="in1"></span>* <span class="var">find</span> <span class="var">end</span> <span class="var">of</span> <span class="var">chars</span> <span class="var">to</span> <span class="var">highlight</span><br/>
+<br/>
+<span class="in1"></span><span class="str">``</span>`<br/>
 <span class="macro">@add(<span class="name">emphasise</span>)</span><br/>
-<span class="in1"></span><span class="keyword">if</span> (<span class="var">i</span> + <span class="num">1</span> &lt; <span class="var">j</span> &amp;&amp;<br/>
-<span class="in2"></span><span class="var">line</span>[<span class="var">j</span> - <span class="num">1</span>] == <span class="var">mark</span><br/>
-<span class="in1"></span>) {<br/>
+<span class="in1"></span><span class="keyword">if</span> (! <span class="var">cnt</span>) {<br/>
 <span class="in2"></span><span class="macro">@put(<span class="name">do emphasis</span>)</span>;<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">emphasise</span>)</span><br/>
-</code></div>
-<ul><li>
-if start and end differ and have the same mark, it is a legal  highlight sequence
-</li></ul>
-</div>
-<div class="page"><div class="slide"><div class="slide-nr">39</div>
-<code>
+<span class="in1"></span><span class="str">``</span>`<br/>
+<span class="in1"></span>* <span class="keyword">if</span> <span class="var">start</span> <span class="var">and</span> <span class="var">end</span> <span class="var">differ</span> <span class="var">and</span> <span class="var">have</span> <span class="var">the</span> <span class="var">same</span> <span class="var">mark</span>, <span class="var">it</span> <span class="var">is</span> <span class="var">a</span> <span class="var">legal</span><br/>
+<span class="in1"></span><span class="var">highlight</span> <span class="var">sequence</span><br/>
+<br/>
+<span class="in1"></span><span class="str">``</span>`<br/>
 <span class="macro">@def(<span class="name">do emphasis</span>)</span><br/>
 <span class="in1"></span><span class="type">bool</span> <span class="var">bold</span> {<br/>
 <span class="in2"></span><span class="var">i</span> + <span class="num">3</span> &lt; <span class="var">j</span> &amp;&amp;<br/>
-<span class="in2"></span><span class="var">line</span>[<span class="var">i</span> + <span class="num">1</span>] == <span class="var">mark</span> &amp;&amp;<br/>
-<span class="in2"></span><span class="var">line</span>[<span class="var">j</span> - <span class="num">2</span>] == <span class="var">mark</span><br/>
+<span class="in3"></span><span class="var">line</span>[<span class="var">i</span> + <span class="num">1</span>] == <span class="var">mark</span> &amp;&amp;<br/>
+<span class="in3"></span><span class="var">line</span>[<span class="var">j</span> - <span class="num">2</span>] == <span class="var">mark</span><br/>
 <span class="in1"></span>};<br/>
 <span class="macro">@end(<span class="name">do emphasis</span>)</span><br/>
-</code></div>
-<ul><li>
-if two marks are at the beginning and ending use bold highlight
-</li></ul>
-</div>
-<div class="page"><div class="slide"><div class="slide-nr">40</div>
-<code>
+<span class="in1"></span><span class="str">``</span>`<br/>
+<span class="in1"></span>* <span class="keyword">if</span> <span class="var">two</span> <span class="var">marks</span> <span class="var">are</span> <span class="var">at</span> <span class="var">the</span> <span class="var">beginning</span> <span class="var">and</span> <span class="var">ending</span> <span class="var">use</span> <span class="var">bold</span> <span class="var">highlight</span><br/>
+<br/>
+<span class="in1"></span><span class="str">``</span>`<br/>
 <span class="macro">@add(<span class="name">do emphasis</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">bold</span>) {<br/>
 <span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\textbf{"</span>;<br/>
@@ -589,37 +580,29 @@ if two marks are at the beginning and ending use bold highlight
 <span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\emph{"</span>;<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">do emphasis</span>)</span><br/>
-</code></div>
-<ul><li>
-write bold or italics tag
-</li></ul>
-</div>
-<div class="page"><div class="slide"><div class="slide-nr">41</div>
-<code>
+<span class="in1"></span><span class="str">``</span>`<br/>
+<span class="in1"></span>* <span class="var">write</span> <span class="var">bold</span> <span class="var">or</span> <span class="var">italics</span> <span class="var">tag</span><br/>
+<br/>
+<span class="in1"></span><span class="str">``</span>`<br/>
 <span class="macro">@add(<span class="name">do emphasis</span>)</span><br/>
 <span class="in1"></span><span class="type">unsigned</span> <span class="var">begin</span> {<br/>
 <span class="in2"></span><span class="var">bold</span> ? <span class="var">i</span> + <span class="num">2</span> : <span class="var">i</span> + <span class="num">1</span><br/>
 <span class="in1"></span>};<br/>
-<span class="in1"></span><span class="type">unsigned</span> <span class="var">end</span> { <span class="var">bold</span> ? <span class="var">j</span> - <span class="num">2</span> : <span class="var">j</span> - <span class="num">1</span> };<br/>
-<span class="in1"></span><span class="keyword">for</span> (<span class="type">auto</span> <span class="var">t</span> { <span class="var">begin</span> }; <span class="var">t</span> &lt; <span class="var">end</span>; ++<span class="var">t</span>) {<br/>
-<span class="in2"></span><span class="macro">@put(<span class="name">emphasis loop</span>)</span>;<br/>
-<span class="in1"></span>}<br/>
-<span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"}"</span>;<br/>
-<span class="in1"></span><span class="macro">@put(<span class="name">add padding</span>)</span>;<br/>
-<span class="in1"></span><span class="var">i</span> = <span class="var">j</span> - <span class="num">1</span>;<br/>
-<span class="in1"></span><span class="keyword">continue</span>;<br/>
+<span class="type">unsigned</span> <span class="var">end</span> { <span class="var">bold</span> ? <span class="var">j</span> - <span class="num">2</span> : <span class="var">j</span> - <span class="num">1</span> };<br/>
+<span class="keyword">for</span> (<span class="type">auto</span> <span class="var">t</span> { <span class="var">begin</span> }; <span class="var">t</span> &lt; <span class="var">end</span>; ++<span class="var">t</span>) {<br/>
+<span class="in1"></span><span class="macro">@put(<span class="name">emphasis loop</span>)</span>;<br/>
+}<br/>
+<span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"}"</span>;<br/>
+<span class="macro">@put(<span class="name">add padding</span>)</span>;<br/>
+<span class="var">i</span> = <span class="var">j</span> - <span class="num">1</span>;<br/>
+<span class="keyword">continue</span>;<br/>
 <span class="macro">@end(<span class="name">do emphasis</span>)</span><br/>
-</code></div>
-<ul><li>
-write the emphasised characters
-</li><li>
-close tag
-</li><li>
-and skip over the processed characters
-</li></ul>
-</div>
-<div class="page"><div class="slide"><div class="slide-nr">42</div>
-<code>
+<span class="in1"></span><span class="str">``</span>`<br/>
+<span class="in1"></span>* <span class="var">write</span> <span class="var">the</span> <span class="var">emphasised</span> <span class="var">characters</span><br/>
+<span class="in1"></span>* <span class="var">close</span> <span class="var">tag</span><br/>
+<span class="in1"></span>* <span class="var">and</span> <span class="var">skip</span> <span class="var">over</span> <span class="var">the</span> <span class="var">processed</span> <span class="var">characters</span><br/>
+<br/>
+<span class="in1"></span><span class="str">``</span>`<br/>
 <span class="macro">@def(<span class="name">emphasis loop</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span>[<span class="var">t</span>] == <span class="var">mark</span>) {<br/>
 <span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">' '</span>;<br/>
@@ -634,7 +617,7 @@ replace the marking char with spaces
 and copy all other chars
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">43</div>
+<div class="page"><div class="slide"><div class="slide-nr">37</div>
 <code>
 <span class="macro">@def(<span class="name">add padding</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span>[<span class="var">j</span>] == <span class="str">' '</span>) {<br/>
@@ -654,14 +637,14 @@ otherwise it is swallowed by TeX
 <h2>Handle lists</h2>
 <div class="slides">
 <div class="page">
-<div class="slide"><div class="slide-nr">44</div><div class="headers">
+<div class="slide"><div class="slide-nr">38</div><div class="headers">
 <h2>Handle lists</h2>
 </div></div>
 <ul><li>
 format lists
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">45</div>
+<div class="page"><div class="slide"><div class="slide-nr">39</div>
 <code>
 <span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
 <span class="in1"></span><span class="type">enum</span> <span class="keyword">class</span> <span class="type">List_Type</span> {<br/>
@@ -673,7 +656,7 @@ format lists
 is the output currently in a list item
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">46</div>
+<div class="page"><div class="slide"><div class="slide-nr">40</div>
 <code>
 <span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
 <span class="in1"></span><span class="type">void</span> <span class="fn">open_list</span>(<span class="type">bool</span> <span class="var">enumerate</span>) {<br/>
@@ -691,7 +674,7 @@ is the output currently in a list item
 <span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">47</div>
+<div class="page"><div class="slide"><div class="slide-nr">41</div>
 <code>
 <span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
 <span class="in1"></span><span class="type">void</span> <span class="fn">close_list</span>() {<br/>
@@ -710,7 +693,7 @@ is the output currently in a list item
 <span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">48</div>
+<div class="page"><div class="slide"><div class="slide-nr">42</div>
 <code>
 <span class="macro">@add(<span class="name">process special</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span> == <span class="str">""</span>) {<br/>
@@ -719,7 +702,7 @@ is the output currently in a list item
 <span class="macro">@end(<span class="name">process special</span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">49</div>
+<div class="page"><div class="slide"><div class="slide-nr">43</div>
 <code>
 <span class="macro">@add(<span class="name">process special</span>)</span> {<br/>
 <span class="in1"></span><span class="keyword">static</span> <span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">prefix</span> {<br/>
@@ -735,7 +718,7 @@ is the output currently in a list item
 } <span class="macro">@end(<span class="name">process special</span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">50</div>
+<div class="page"><div class="slide"><div class="slide-nr">44</div>
 <code>
 <span class="macro">@add(<span class="name">process special</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span>.<span class="fn">size</span>() &amp;&amp; <span class="fn">isdigit</span>(<span class="var">line</span>[<span class="num">0</span>])) {<br/>
@@ -759,14 +742,14 @@ subsections stay in the current columns style
 <h2>Handle math</h2>
 <div class="slides">
 <div class="page">
-<div class="slide"><div class="slide-nr">51</div><div class="headers">
+<div class="slide"><div class="slide-nr">45</div><div class="headers">
 <h2>Handle math</h2>
 </div></div>
 <ul><li>
 verbose copy math blocks
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">52</div>
+<div class="page"><div class="slide"><div class="slide-nr">46</div>
 <code>
 <span class="macro">@add(<span class="name">handle format</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span>[<span class="var">i</span>] == <span class="str">'$'</span>) {<br/>
@@ -778,7 +761,7 @@ verbose copy math blocks
 start of math mode
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">53</div>
+<div class="page"><div class="slide"><div class="slide-nr">47</div>
 <code>
 <span class="macro">@def(<span class="name">math</span>)</span><br/>
 <span class="in1"></span><span class="type">unsigned</span> <span class="var">j</span> { <span class="var">i</span> + <span class="num">1</span> };<br/>
@@ -791,7 +774,7 @@ start of math mode
 find end of math mode
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">54</div>
+<div class="page"><div class="slide"><div class="slide-nr">48</div>
 <code>
 <span class="macro">@add(<span class="name">math</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">j</span> &lt; <span class="var">line</span>.<span class="fn">size</span>() &amp;&amp; <span class="var">line</span>[<span class="var">j</span>] == <span class="str">'$'</span>) {<br/>
@@ -811,14 +794,14 @@ directly copy math
 <h2>Handle Source Code</h2>
 <div class="slides">
 <div class="page">
-<div class="slide"><div class="slide-nr">55</div><div class="headers">
+<div class="slide"><div class="slide-nr">49</div><div class="headers">
 <h2>Handle Source Code</h2>
 </div></div>
 <ul><li>
 highlight source code
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">56</div>
+<div class="page"><div class="slide"><div class="slide-nr">50</div>
 <code>
 <span class="macro">@add(<span class="name">process special</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span> == <span class="str">"```lisp"</span>) {<br/>
@@ -834,7 +817,7 @@ highlight source code
 parse LISP block
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">57</div>
+<div class="page"><div class="slide"><div class="slide-nr">51</div>
 <code>
 <span class="macro">@def(<span class="name">process lisp lines</span>)</span><br/>
 <span class="in1"></span><span class="type">int</span> <span class="var">nr</span> { <span class="num">1</span> };<br/>
@@ -854,7 +837,7 @@ process each line
 close last line with a newline
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">58</div>
+<div class="page"><div class="slide"><div class="slide-nr">52</div>
 <code>
 <span class="macro">@def(<span class="name">process lisp line</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">nr</span> &gt; <span class="num">1</span>) {<br/>
@@ -866,7 +849,7 @@ close last line with a newline
 terminate previous line correctly
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">59</div>
+<div class="page"><div class="slide"><div class="slide-nr">53</div>
 <code>
 <span class="macro">@add(<span class="name">process lisp line</span>)</span><br/>
 <span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"$\\hlLine{"</span> &lt;&lt;<br/>
@@ -877,7 +860,7 @@ terminate previous line correctly
 enter math mode and write line number
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">60</div>
+<div class="page"><div class="slide"><div class="slide-nr">54</div>
 <code>
 <span class="macro">@add(<span class="name">process lisp line</span>)</span><br/>
 <span class="in1"></span><span class="type">unsigned</span> <span class="var">i</span> { <span class="num">0</span> };<br/>
@@ -898,7 +881,7 @@ skip over tabs
 and add matching indent
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">61</div>
+<div class="page"><div class="slide"><div class="slide-nr">55</div>
 <code>
 <span class="macro">@add(<span class="name">process lisp line</span>)</span><br/>
 <span class="in1"></span><span class="keyword">for</span> (<span class="type">auto</span> <span class="var">t</span> { <span class="var">i</span> };<br/>
@@ -912,7 +895,7 @@ and add matching indent
 copy code
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">62</div>
+<div class="page"><div class="slide"><div class="slide-nr">56</div>
 <code>
 <span class="macro">@def(<span class="name">copy code</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span>[<span class="var">t</span>] == <span class="str">' '</span>) {<br/>
@@ -935,7 +918,7 @@ but escape spaces
 special treatment to separate hyphens from minus signs
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">63</div>
+<div class="page"><div class="slide"><div class="slide-nr">57</div>
 <code>
 <span class="macro">@add(<span class="name">process lisp line</span>)</span><br/>
 <span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"$"</span>;<br/>
@@ -949,14 +932,14 @@ leave math mode
 <h2>Handle inline code</h2>
 <div class="slides">
 <div class="page">
-<div class="slide"><div class="slide-nr">64</div><div class="headers">
+<div class="slide"><div class="slide-nr">58</div><div class="headers">
 <h2>Handle inline code</h2>
 </div></div>
 <ul><li>
 display an inline code fragment
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">65</div>
+<div class="page"><div class="slide"><div class="slide-nr">59</div>
 <code>
 <span class="macro">@add(<span class="name">handle format</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span>[<span class="var">i</span>] == <span class="str">'`'</span>) {<br/>
@@ -968,7 +951,7 @@ display an inline code fragment
 parse inline code fragment
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">66</div>
+<div class="page"><div class="slide"><div class="slide-nr">60</div>
 <code>
 <span class="macro">@def(<span class="name">inline code</span>)</span><br/>
 <span class="in1"></span><span class="type">unsigned</span> <span class="var">j</span> { <span class="var">i</span> + <span class="num">1</span> };<br/>
@@ -982,7 +965,7 @@ parse inline code fragment
 find end of fragment
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">67</div>
+<div class="page"><div class="slide"><div class="slide-nr">61</div>
 <code>
 <span class="macro">@add(<span class="name">inline code</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">j</span> &lt; <span class="var">line</span>.<span class="fn">size</span>() &amp;&amp;<br/>
@@ -998,7 +981,7 @@ find end of fragment
 process valid fragment
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">68</div>
+<div class="page"><div class="slide"><div class="slide-nr">62</div>
 <code>
 <span class="macro">@def(<span class="name">do inline code</span>)</span><br/>
 <span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\hlInline{"</span>;<br/>
@@ -1014,7 +997,7 @@ copy code fragment
 but escape spaces
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">69</div>
+<div class="page"><div class="slide"><div class="slide-nr">63</div>
 <code>
 <span class="macro">@add(<span class="name">do inline code</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">j</span> + <span class="num">1</span> &lt; <span class="var">line</span>.<span class="fn">size</span>() &amp;&amp;<br/>
@@ -1032,14 +1015,14 @@ pad trailing space
 <h2>Include Graphics</h2>
 <div class="slides">
 <div class="page">
-<div class="slide"><div class="slide-nr">70</div><div class="headers">
+<div class="slide"><div class="slide-nr">64</div><div class="headers">
 <h2>Include Graphics</h2>
 </div></div>
 <ul><li>
 include PDF graphics in the correct theme
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">71</div>
+<div class="page"><div class="slide"><div class="slide-nr">65</div>
 <code>
 <span class="macro">@add(<span class="name">process special</span>)</span> {<br/>
 <span class="in1"></span><span class="keyword">static</span> <span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">prefix</span> {<br/>
@@ -1057,7 +1040,7 @@ include PDF graphics in the correct theme
 parse image
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">72</div>
+<div class="page"><div class="slide"><div class="slide-nr">66</div>
 <code>
 <span class="macro">@def(<span class="name">include graphics</span>)</span><br/>
 <span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\begin{center}\n"</span>;<br/>
@@ -1074,7 +1057,7 @@ include LaTeX statements to load graphic
 only PDF graphics are supported
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">73</div>
+<div class="page"><div class="slide"><div class="slide-nr">67</div>
 <code>
 <span class="macro">@def(<span class="name">copy themed graphics name</span>)</span><br/>
 <span class="in1"></span><span class="type">unsigned</span> <span class="var">i</span> { <span class="var">prefix</span>.<span class="fn">size</span>() };<br/>

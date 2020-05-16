@@ -350,55 +350,57 @@
 ```
 @def(handle format)
 	if (
-		line[i] == '*' || line[i] == '_'
-	) {
+			line[i] == '*' || line[i] == '_'
+	   ) {
 		@put(emphasise);
 	}
 @end(handle format)
-```
-* emphasise following words
+	```
+	* emphasise following words
 
-```
+	```
 @def(emphasise)
-	unsigned j { i + 1 };
-	char mark { line[i] };
-	while (j < line.size() &&
-		line[j] >= ' ' && (
-			isalnum(line[j]) ||
-			line[j] == '*' ||
-			line[j] == '_' ||
-			line[j] == '-' ||
-			line[j] == ' '
-		)
-	) { ++j; }
+	unsigned j { i };
+	char mark { line[j] };
+	int cnt { 0 };
+	while (j < line.size() && line[j] == mark) {
+		++cnt; ++j;
+	}
+	while (j < line.size() && cnt &&
+			line[j] >= ' ' && (
+				isalnum(line[j]) ||
+				line[j] == '*' ||
+				line[j] == '_' ||
+				line[j] == '-' ||
+				line[j] == ' '
+				)
+		  ) { if (line[j] == mark) { --cnt; }; ++j; }
 @end(emphasise)
-```
-* find end of chars to highlight
+	```
+	* find end of chars to highlight
 
-```
+	```
 @add(emphasise)
-	if (i + 1 < j &&
-		line[j - 1] == mark
-	) {
+	if (! cnt) {
 		@put(do emphasis);
 	}
 @end(emphasise)
-```
-* if start and end differ and have the same mark, it is a legal
-  highlight sequence
+	```
+	* if start and end differ and have the same mark, it is a legal
+	highlight sequence
 
-```
+	```
 @def(do emphasis)
 	bool bold {
 		i + 3 < j &&
-		line[i + 1] == mark &&
-		line[j - 2] == mark
+			line[i + 1] == mark &&
+			line[j - 2] == mark
 	};
 @end(do emphasis)
-```
-* if two marks are at the beginning and ending use bold highlight
+	```
+	* if two marks are at the beginning and ending use bold highlight
 
-```
+	```
 @add(do emphasis)
 	if (bold) {
 		std::cout << "\\textbf{";
@@ -406,29 +408,29 @@
 		std::cout << "\\emph{";
 	}
 @end(do emphasis)
-```
-* write bold or italics tag
+	```
+	* write bold or italics tag
 
-```
+	```
 @add(do emphasis)
 	unsigned begin {
 		bold ? i + 2 : i + 1
 	};
-	unsigned end { bold ? j - 2 : j - 1 };
-	for (auto t { begin }; t < end; ++t) {
-		@put(emphasis loop);
-	}
-	std::cout << "}";
-	@put(add padding);
-	i = j - 1;
-	continue;
+unsigned end { bold ? j - 2 : j - 1 };
+for (auto t { begin }; t < end; ++t) {
+	@put(emphasis loop);
+}
+std::cout << "}";
+@put(add padding);
+i = j - 1;
+continue;
 @end(do emphasis)
-```
-* write the emphasised characters
-* close tag
-* and skip over the processed characters
+	```
+	* write the emphasised characters
+	* close tag
+	* and skip over the processed characters
 
-```
+	```
 @def(emphasis loop)
 	if (line[t] == mark) {
 		std::cout << ' ';

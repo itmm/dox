@@ -88,38 +88,40 @@
 #line 351 "index.md"
 
 	if (
-		line[i] == '*' || line[i] == '_'
-	) {
+			line[i] == '*' || line[i] == '_'
+	   ) {
 		
 #line 362 "index.md"
 
-	unsigned j { i + 1 };
-	char mark { line[i] };
-	while (j < line.size() &&
-		line[j] >= ' ' && (
-			isalnum(line[j]) ||
-			line[j] == '*' ||
-			line[j] == '_' ||
-			line[j] == '-' ||
-			line[j] == ' '
-		)
-	) { ++j; }
+	unsigned j { i };
+	char mark { line[j] };
+	int cnt { 0 };
+	while (j < line.size() && line[j] == mark) {
+		++cnt; ++j;
+	}
+	while (j < line.size() && cnt &&
+			line[j] >= ' ' && (
+				isalnum(line[j]) ||
+				line[j] == '*' ||
+				line[j] == '_' ||
+				line[j] == '-' ||
+				line[j] == ' '
+				)
+		  ) { if (line[j] == mark) { --cnt; }; ++j; }
 
-#line 379 "index.md"
+#line 383 "index.md"
 
-	if (i + 1 < j &&
-		line[j - 1] == mark
-	) {
+	if (! cnt) {
 		
-#line 391 "index.md"
+#line 393 "index.md"
 
 	bool bold {
 		i + 3 < j &&
-		line[i + 1] == mark &&
-		line[j - 2] == mark
+			line[i + 1] == mark &&
+			line[j - 2] == mark
 	};
 
-#line 402 "index.md"
+#line 404 "index.md"
 
 	if (bold) {
 		std::cout << "\\textbf{";
@@ -127,15 +129,15 @@
 		std::cout << "\\emph{";
 	}
 
-#line 413 "index.md"
+#line 415 "index.md"
 
 	unsigned begin {
 		bold ? i + 2 : i + 1
 	};
-	unsigned end { bold ? j - 2 : j - 1 };
-	for (auto t { begin }; t < end; ++t) {
-		
-#line 432 "index.md"
+unsigned end { bold ? j - 2 : j - 1 };
+for (auto t { begin }; t < end; ++t) {
+	
+#line 434 "index.md"
 
 	if (line[t] == mark) {
 		std::cout << ' ';
@@ -143,23 +145,23 @@
 		std::cout << line[t];
 	}
 
-#line 419 "index.md"
+#line 421 "index.md"
 ;
-	}
-	std::cout << "}";
-	
-#line 444 "index.md"
+}
+std::cout << "}";
+
+#line 446 "index.md"
 
 	if (line[j] == ' ') {
 		std::cout << '\\';
 	}
 
-#line 422 "index.md"
+#line 424 "index.md"
 ;
-	i = j - 1;
-	continue;
+i = j - 1;
+continue;
 
-#line 383 "index.md"
+#line 385 "index.md"
 ;
 	}
 
@@ -167,18 +169,18 @@
 ;
 	}
 
-#line 545 "index.md"
+#line 547 "index.md"
 
 	if (line[i] == '$') {
 		
-#line 554 "index.md"
+#line 556 "index.md"
 
 	unsigned j { i + 1 };
 	while (j < line.size() &&
 		line[j] != '$'
 	) { ++j; }
 
-#line 564 "index.md"
+#line 566 "index.md"
 
 	if (j < line.size() && line[j] == '$') {
 		for (auto t { i }; t <= j; ++t) {
@@ -188,15 +190,15 @@
 		continue;
 	}
 
-#line 547 "index.md"
+#line 549 "index.md"
 ;
 	}
 
-#line 682 "index.md"
+#line 684 "index.md"
 
 	if (line[i] == '`') {
 		
-#line 691 "index.md"
+#line 693 "index.md"
 
 	unsigned j { i + 1 };
 	for (;
@@ -204,18 +206,18 @@
 		++j
 	) {}
 
-#line 702 "index.md"
+#line 704 "index.md"
 
 	if (j < line.size() &&
 		line[j] == '`'
 	) {
 		
-#line 715 "index.md"
+#line 717 "index.md"
 
 	std::cout << "\\hlInline{";
 	for (auto t { i + 1 }; t < j; ++t) {
 		
-#line 654 "index.md"
+#line 656 "index.md"
 
 	if (line[t] == ' ') {
 		std::cout << "\\";
@@ -228,12 +230,12 @@
 		std::cout << line[t];
 	}
 
-#line 718 "index.md"
+#line 720 "index.md"
 ;
 	}
 	std::cout << "}";
 
-#line 727 "index.md"
+#line 729 "index.md"
 
 	if (j + 1 < line.size() &&
 		line[j + 1] == ' '
@@ -241,13 +243,13 @@
 		std::cout << "\\";
 	}
 
-#line 706 "index.md"
+#line 708 "index.md"
 ;
 		i = j;
 		continue;
 	}
 
-#line 684 "index.md"
+#line 686 "index.md"
 ;
 	}
 
@@ -260,13 +262,13 @@
 ;
 	}
 
-#line 458 "index.md"
+#line 460 "index.md"
 
 	enum class List_Type {
 		no_list, enum_list, item_list
 	} list_type { List_Type::no_list };
 
-#line 467 "index.md"
+#line 469 "index.md"
 
 	void open_list(bool enumerate) {
 		if (list_type == List_Type::no_list) {
@@ -281,7 +283,7 @@
 		std::cout << "\\item ";
 	}
 
-#line 484 "index.md"
+#line 486 "index.md"
 
 	void close_list() {
 		switch (list_type) {
@@ -422,50 +424,46 @@
 
 #line 71 "preamble.md"
 
-	"\\usepackage{todone}\n"
-
-#line 78 "preamble.md"
-
 	"\\usepackage{fancyhdr}\n"
 	"\\usepackage{fancyvrb}\n"
 
-#line 87 "preamble.md"
+#line 80 "preamble.md"
 
 	"\\usepackage{graphicx}\n"
 
-#line 94 "preamble.md"
+#line 87 "preamble.md"
 
 	"\\usepackage{multicol}\n"
 
-#line 101 "preamble.md"
+#line 94 "preamble.md"
 
 	"\\usepackage{mdframed}\n"
 
-#line 108 "preamble.md"
+#line 101 "preamble.md"
 
 	"\\usepackage{lisp}\n"
 
-#line 115 "preamble.md"
+#line 108 "preamble.md"
 
 	"\\pagestyle{fancy}\n"
 	"\\fancypagestyle{plain}{\n"
 	"\\fancyhf{}\n"
 
-#line 124 "preamble.md"
+#line 117 "preamble.md"
 
 	"\\fancyfoot[C]{{"
 		"\\color{deemph}\\small"
 		"$\\thepage$"
 	"}}\n"
 
-#line 134 "preamble.md"
+#line 127 "preamble.md"
 
 	"\\renewcommand{\\headrulewidth}"
 		"{0pt}\n"
 	"\\renewcommand{\\footrulewidth}"
 		"{0pt}}\n"
 
-#line 144 "preamble.md"
+#line 137 "preamble.md"
 
 	"\\title{"
 		"\\color{emph}" << title <<
@@ -473,17 +471,17 @@
 	"\\author{" << author << "}\n"
 	"\\date{" << date << "}\n"
 
-#line 155 "preamble.md"
+#line 148 "preamble.md"
 
 	"\\columnseprule.2pt\n"
 	"\\renewcommand{\\columnseprulecolor}"
 		"{\\color{deemph}}\n"
 
-#line 164 "preamble.md"
+#line 157 "preamble.md"
 
 	"\\begin{document}\n"
 
-#line 171 "preamble.md"
+#line 164 "preamble.md"
 
 	"\\pagecolor{background}\n"
 	"\\color{normal}\n"
@@ -491,13 +489,13 @@
 		"\\color{emph}\\mdseries"
 	"}\n"
 
-#line 182 "preamble.md"
+#line 175 "preamble.md"
 
 	"\\pagestyle{plain}\n"
 	"\\maketitle\n"
 	"\\thispagestyle{fancy}\n"
 
-#line 192 "preamble.md"
+#line 185 "preamble.md"
 
 	"\\surroundwithmdframed["
 		"backgroundcolor=codebackground,"
@@ -556,13 +554,13 @@
 		break;
 	}
 } 
-#line 502 "index.md"
+#line 504 "index.md"
 
 	if (line == "") {
 		close_list();
 	}
 
-#line 510 "index.md"
+#line 512 "index.md"
  {
 	static const std::string prefix {
 		"* "
@@ -575,7 +573,7 @@
 		break;
 	}
 } 
-#line 525 "index.md"
+#line 527 "index.md"
 
 	if (line.size() && isdigit(line[0])) {
 		unsigned i { 1 };
@@ -589,31 +587,31 @@
 		}
 	}
 
-#line 580 "index.md"
+#line 582 "index.md"
 
 	if (line == "```lisp") {
 		std::cout << "\\begin{lisp}\n";
 		nextline(line);
 		
-#line 593 "index.md"
+#line 595 "index.md"
 
 	int nr { 1 };
 	while (line != end_of_file &&
 		line != "```"
 	) {
 		
-#line 609 "index.md"
+#line 611 "index.md"
 
 	if (nr > 1) {
 		std::cout << "\\\\*\n";
 	}
 
-#line 618 "index.md"
+#line 620 "index.md"
 
 	std::cout << "$\\hlLine{" <<
 		nr++ << "}";
 
-#line 626 "index.md"
+#line 628 "index.md"
 
 	unsigned i { 0 };
 	for (;
@@ -626,13 +624,13 @@
 			i << "}";
 	}
 
-#line 643 "index.md"
+#line 645 "index.md"
 
 	for (auto t { i };
 		t < line.size(); ++t
 	) {
 		
-#line 654 "index.md"
+#line 656 "index.md"
 
 	if (line[t] == ' ') {
 		std::cout << "\\";
@@ -645,28 +643,28 @@
 		std::cout << line[t];
 	}
 
-#line 647 "index.md"
+#line 649 "index.md"
 ;
 	}
 
-#line 672 "index.md"
+#line 674 "index.md"
 
 	std::cout << "$";
 
-#line 598 "index.md"
+#line 600 "index.md"
 ;
 		nextline(line);
 	}
 	std::cout << "\n";
 	nextline(line);
 
-#line 584 "index.md"
+#line 586 "index.md"
 ;
 		std::cout << "\\end{lisp}\n";
 		break;
 	}
 
-#line 741 "index.md"
+#line 743 "index.md"
  {
 	static const std::string prefix {
 		"!("
@@ -674,13 +672,13 @@
 	if (has_prefix(line, prefix)) {
 		exit_two_columns();
 		
-#line 756 "index.md"
+#line 758 "index.md"
 
 	std::cout << "\\begin{center}\n";
 	std::cout <<
 		"\\includegraphics[scale=.5]{";
 	
-#line 769 "index.md"
+#line 771 "index.md"
 
 	unsigned i { prefix.size() };
 	while (i < line.size() &&
@@ -693,12 +691,12 @@
 		std::cout << "-" << theme;
 	}
 
-#line 760 "index.md"
+#line 762 "index.md"
 ;
 	std::cout << ".pdf}\n";
 	std::cout << "\\end{center}\n";
 
-#line 747 "index.md"
+#line 749 "index.md"
 ;
 		nextline(line);
 		break;
