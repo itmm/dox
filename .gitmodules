@@ -1,3 +1,6 @@
 [submodule "slides"]
 	path = slides
 	url = https://github.com/itmm/slides.git
+[submodule "lazy-write"]
+	path = lazy-write
+	url = https://github.com/itmm/lazy-write.git

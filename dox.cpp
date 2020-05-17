@@ -7,6 +7,10 @@
 	#include <iostream>
 	#include <string>
 
+#line 794 "index.md"
+
+	#include "lazy-write.h"
+
 #line 6 "index.md"
 ;
 	
@@ -702,6 +706,28 @@ continue;
 		break;
 	}
 } 
+#line 800 "index.md"
+
+	if (line == "```gv") {
+		static int count { 1 };
+		std::string name {
+			"imgs/dot-" + std::to_string(count++)
+		};
+		Lazy_Write wr { name + ".dot" };
+		nextline(line);
+		while (line != end_of_file && line != "```") {
+			wr << line + "\n";
+			nextline(line);
+		}
+		nextline(line);
+		std::cout << "\\begin{center}\n";
+		std::cout <<
+			"\\includegraphics[scale=.5]{";
+		std::cout << name << ".pdf}\n";
+		std::cout << "\\end{center}\n";
+		break;
+	}
+
 #line 274 "index.md"
 ;
 		enter_two_columns();
