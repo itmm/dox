@@ -798,7 +798,11 @@ continue;
 
 ```
 @add(process special)
-	if (line == "```gv") {
+	if (line == "```gv" || line == "```GV") {
+		bool big { line[3] == 'G' };
+		if (big) {
+			exit_two_columns();
+		}
 		static int count { 1 };
 		std::string name {
 			"imgs/dot-" + std::to_string(count++)

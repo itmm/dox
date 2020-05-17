@@ -1101,7 +1101,11 @@ add theme name if present
 <div class="page"><div class="slide"><div class="slide-nr">71</div>
 <code>
 <span class="macro">@add(<span class="name">process special</span>)</span><br/>
-<span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span> == <span class="str">"```gv"</span>) {<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span> == <span class="str">"```gv"</span> || <span class="var">line</span> == <span class="str">"```GV"</span>) {<br/>
+<span class="in2"></span><span class="type">bool</span> <span class="var">big</span> { <span class="var">line</span>[<span class="num">3</span>] == <span class="str">'G'</span> };<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">big</span>) {<br/>
+<span class="in3"></span><span class="fn">exit_two_columns</span>();<br/>
+<span class="in2"></span>}<br/>
 <span class="in2"></span><span class="keyword">static</span> <span class="type">int</span> <span class="var">count</span> { <span class="num">1</span> };<br/>
 <span class="in2"></span><span class="type">std</span>::<span class="type">string</span> <span class="var">name</span> {<br/>
 <span class="in3"></span><span class="str">"imgs/dot-"</span> + <span class="type">std</span>::<span class="fn">to_string</span>(<span class="var">count</span>++)<br/>
