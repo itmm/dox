@@ -813,7 +813,11 @@ continue;
 		std::cout << "\\begin{center}\n";
 		std::cout <<
 			"\\includegraphics[scale=.5]{";
-		std::cout << name << ".pdf}\n";
+		std::cout << name;
+		if (theme.size()) {
+			std::cout << "-" << theme;
+		}
+		std::cout << ".pdf}\n";
 		std::cout << "\\end{center}\n";
 		break;
 	}
