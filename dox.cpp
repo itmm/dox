@@ -722,7 +722,7 @@ continue;
 		nextline(line);
 		std::cout << "\\begin{center}\n";
 		std::cout <<
-			"\\includegraphics[scale=.5]{";
+			"\\includegraphics{";
 		std::cout << name;
 		if (theme.size()) {
 			std::cout << "-" << theme;
