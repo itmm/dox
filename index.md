@@ -756,12 +756,10 @@ continue;
 
 ```
 @def(include graphics)
-	std::cout << "\\begin{center}\n";
 	std::cout <<
-		"\\includegraphics[scale=.5]{";
+		"\\centerline{\\includegraphics[scale=.5]{";
 	@put(copy themed graphics name);
-	std::cout << ".pdf}\n";
-	std::cout << "\\end{center}\n";
+	std::cout << ".pdf}}\n";
 @end(include graphics)
 ```
 * include LaTeX statements to load graphic
@@ -814,15 +812,13 @@ continue;
 			nextline(line);
 		}
 		nextline(line);
-		std::cout << "\\begin{center}\n";
 		std::cout <<
-			"\\includegraphics{";
+			"\\centerline{\\includegraphics[trim={1in .9in 1in .9in},clip]{";
 		std::cout << name;
 		if (theme.size()) {
 			std::cout << "-" << theme;
 		}
-		std::cout << ".pdf}\n";
-		std::cout << "\\end{center}\n";
+		std::cout << ".pdf}}\n";
 		break;
 	}
 @end(process special)

@@ -7,7 +7,7 @@
 	#include <iostream>
 	#include <string>
 
-#line 794 "index.md"
+#line 792 "index.md"
 
 	#include "lazy-write.h"
 
@@ -678,11 +678,10 @@ continue;
 		
 #line 758 "index.md"
 
-	std::cout << "\\begin{center}\n";
 	std::cout <<
-		"\\includegraphics[scale=.5]{";
+		"\\centerline{\\includegraphics[scale=.5]{";
 	
-#line 771 "index.md"
+#line 769 "index.md"
 
 	unsigned i { prefix.size() };
 	while (i < line.size() &&
@@ -695,10 +694,9 @@ continue;
 		std::cout << "-" << theme;
 	}
 
-#line 762 "index.md"
+#line 761 "index.md"
 ;
-	std::cout << ".pdf}\n";
-	std::cout << "\\end{center}\n";
+	std::cout << ".pdf}}\n";
 
 #line 749 "index.md"
 ;
@@ -706,7 +704,7 @@ continue;
 		break;
 	}
 } 
-#line 800 "index.md"
+#line 798 "index.md"
 
 	if (line == "```gv" || line == "```GV") {
 		bool big { line[3] == 'G' };
@@ -724,15 +722,13 @@ continue;
 			nextline(line);
 		}
 		nextline(line);
-		std::cout << "\\begin{center}\n";
 		std::cout <<
-			"\\includegraphics{";
+			"\\centerline{\\includegraphics[trim={1in .9in 1in .9in},clip]{";
 		std::cout << name;
 		if (theme.size()) {
 			std::cout << "-" << theme;
 		}
-		std::cout << ".pdf}\n";
-		std::cout << "\\end{center}\n";
+		std::cout << ".pdf}}\n";
 		break;
 	}
 
