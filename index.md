@@ -824,3 +824,31 @@ continue;
 @end(process special)
 ```
 
+```
+@add(process special)
+	if (line == "```lily") {
+		exit_two_columns();
+		static int count { 1 };
+		std::string name {
+			"imgs/lily-" + std::to_string(count++)
+		};
+		Lazy_Write wr { name + ".ly" };
+		nextline(line);
+		wr << "\\include \"preamble.ly\"\n";
+		while (line != end_of_file && line != "```") {
+			wr << line + "\n";
+			nextline(line);
+		}
+		nextline(line);
+		std::cout <<
+			"\\centerline{\\includegraphics{";
+		std::cout << name;
+		if (theme.size()) {
+			std::cout << "-" << theme;
+		}
+		std::cout << ".pdf}}\n";
+		break;
+	}
+@end(process special)
+```
+
