@@ -767,7 +767,7 @@ continue;
 
 ```
 @def(copy themed graphics name)
-	unsigned i { prefix.size() };
+	auto i { prefix.size() };
 	while (i < line.size() &&
 		line[i] != '}' && line[i] != '.'
 	) {

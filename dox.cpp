@@ -683,7 +683,7 @@ continue;
 	
 #line 769 "index.md"
 
-	unsigned i { prefix.size() };
+	auto i { prefix.size() };
 	while (i < line.size() &&
 		line[i] != '}' && line[i] != '.'
 	) {
