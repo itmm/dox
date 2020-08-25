@@ -746,7 +746,7 @@ continue;
 		}
 		Lazy_Write wr { themed_name + ".ly" };
 		nextline(line);
-		wr << "\\include \"preamble\n";
+		wr << "\\include \"preamble";
 		if (theme.size()) {
 			wr << "-" << theme;
 		}
