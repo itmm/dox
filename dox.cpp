@@ -740,9 +740,17 @@ continue;
 		std::string name {
 			"imgs/lily-" + std::to_string(count++)
 		};
-		Lazy_Write wr { name + ".ly" };
+		std::string themed_name { name };
+		if (theme.size()) {
+			themed_name += "-" + theme;
+		}
+		Lazy_Write wr { themed_name + ".ly" };
 		nextline(line);
-		wr << "\\include \"preamble.ly\"\n";
+		wr << "\\include \"preamble\n";
+		if (theme.size()) {
+			wr << "-" << theme;
+		}
+		wr << ".ly\"\n";
 		while (line != end_of_file && line != "```") {
 			wr << line + "\n";
 			nextline(line);
