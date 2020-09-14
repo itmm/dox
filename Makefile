@@ -8,7 +8,7 @@ all: hx_run
 
 hx_run: $(HX_SRCs)
 	@echo HX
-	@hx
+	@which hx 2> /dev/null && hx || true
 	@date >$@
 	@make --no-print-directory dox
 
