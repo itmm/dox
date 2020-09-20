@@ -60,6 +60,8 @@ specify theme with a command line argument
 <code>
 <span class="macro">@def(<span class="name">main prereqs</span>)</span><br/>
 <span class="in1"></span><span class="keyword">static</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">theme</span> {};<br/>
+<span class="in1"></span><span class="keyword">static</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">prefix</span> {};<br/>
+<span class="in1"></span><span class="type">bool</span> <span class="var">with_multi_cols</span> { <span class="num">true</span> };<br/>
 <span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
 <ul><li>
@@ -68,18 +70,39 @@ no default theme is used
 </div>
 <div class="page"><div class="slide"><div class="slide-nr">6</div>
 <code>
-<span class="macro">@def(<span class="name">main</span>)</span> {<br/>
-<span class="in1"></span><span class="keyword">static</span> <span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">light</span> {<br/>
-<span class="in2"></span><span class="str">"--theme=light"</span><br/>
-<span class="in1"></span>};<br/>
-<span class="in1"></span><span class="keyword">static</span> <span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">dark</span> {<br/>
-<span class="in2"></span><span class="str">"--theme=dark"</span><br/>
-<span class="in1"></span>};<br/>
-<span class="in1"></span><span class="keyword">if</span> (<span class="var">argc</span> == <span class="num">2</span> &amp;&amp; <span class="var">argv</span>[<span class="num">1</span>] == <span class="var">light</span>) {<br/>
-<span class="in2"></span><span class="var">theme</span> = <span class="str">"light"</span>;<br/>
+<span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
+<span class="in1"></span><span class="type">std</span>::<span class="type">string</span> <span class="fn">after_prefix</span>(<span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> &amp;<span class="var">str</span>, <span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> &amp;<span class="var">prefix</span>) {<br/>
+<span class="in2"></span><span class="type">auto</span> <span class="var">len</span> { <span class="var">prefix</span>.<span class="fn">size</span>() };<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">str</span>.<span class="fn">size</span>() &gt; <span class="var">len</span> &amp;&amp; <span class="var">str</span>.<span class="fn">substr</span>(<span class="num">0</span>, <span class="var">len</span>) == <span class="var">prefix</span>) {<br/>
+<span class="in3"></span><span class="keyword">return</span> <span class="var">str</span>.<span class="fn">substr</span>(<span class="var">len</span>);<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">return</span> <span class="type">std</span>::<span class="type">string</span> {};<br/>
 <span class="in1"></span>}<br/>
-<span class="in1"></span><span class="keyword">if</span> (<span class="var">argc</span> == <span class="num">2</span> &amp;&amp; <span class="var">argv</span>[<span class="num">1</span>] == <span class="var">dark</span>) {<br/>
-<span class="in2"></span><span class="var">theme</span> = <span class="str">"dark"</span>;<br/>
+<span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
+</code></div>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">7</div>
+<code>
+<span class="macro">@def(<span class="name">main</span>)</span> {<br/>
+<span class="in1"></span><span class="keyword">static</span> <span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">theme_pre</span> {<br/>
+<span class="in2"></span><span class="str">"--theme="</span><br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="keyword">static</span> <span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">prefix_pre</span> {<br/>
+<span class="in2"></span><span class="str">"--prefix="</span><br/>
+<span class="in1"></span>};<br/>
+<span class="in1"></span><span class="keyword">for</span> (<span class="type">int</span> <span class="var">i</span> { <span class="num">1</span> }; <span class="var">i</span> &lt; <span class="var">argc</span>; ++<span class="var">i</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="type">string</span> <span class="var">arg</span> { <span class="var">argv</span>[<span class="var">i</span>] };<br/>
+<span class="in2"></span>{<br/>
+<span class="in3"></span><span class="type">auto</span> <span class="var">val</span> { <span class="fn">after_prefix</span>(<span class="var">arg</span>, <span class="var">theme_pre</span>) };<br/>
+<span class="in3"></span><span class="keyword">if</span> (! <span class="var">val</span>.<span class="fn">empty</span>()) { <span class="var">theme</span> = <span class="var">val</span>; }<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span>{<br/>
+<span class="in3"></span><span class="type">auto</span> <span class="var">val</span> { <span class="fn">after_prefix</span>(<span class="var">arg</span>, <span class="var">prefix_pre</span>) };<br/>
+<span class="in3"></span><span class="keyword">if</span> (! <span class="var">val</span>.<span class="fn">empty</span>()) { <span class="var">prefix</span> = <span class="var">val</span>; }<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">arg</span> == <span class="str">"--single-col"</span>) {<br/>
+<span class="in3"></span><span class="var">with_multi_cols</span> = <span class="num">false</span>;<br/>
+<span class="in2"></span>}<br/>
 <span class="in1"></span>}<br/>
 } <span class="macro">@end(<span class="name">main</span>)</span><br/>
 </code></div>
@@ -91,14 +114,14 @@ may select other theme based on command line arguments
 <h2>Meta-Data</h2>
 <div class="slides">
 <div class="page">
-<div class="slide slide-header"><div class="slide-nr">7</div><div class="headers">
+<div class="slide slide-header"><div class="slide-nr">8</div><div class="headers">
 <h2>Meta-Data</h2>
 </div></div>
 <ul><li>
 collect information about the document
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">8</div>
+<div class="page"><div class="slide"><div class="slide-nr">9</div>
 <code>
 <span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
 <span class="in1"></span><span class="keyword">static</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">title</span>;<br/>
@@ -114,14 +137,14 @@ collect information about the document
 <h2>Read the next line</h2>
 <div class="slides">
 <div class="page">
-<div class="slide slide-header"><div class="slide-nr">9</div><div class="headers">
+<div class="slide slide-header"><div class="slide-nr">10</div><div class="headers">
 <h2>Read the next line</h2>
 </div></div>
 <ul><li>
 reading one line from standard input
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">10</div>
+<div class="page"><div class="slide"><div class="slide-nr">11</div>
 <code>
 <span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
 <span class="in1"></span><span class="keyword">static</span> <span class="type">const</span><br/>
@@ -136,7 +159,7 @@ a special string value marks the end of file
 as the newline is stripped by the reading routine the provided string  should never occur during normal reading
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">11</div>
+<div class="page"><div class="slide"><div class="slide-nr">12</div>
 <code>
 <span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
 <span class="in1"></span><span class="type">void</span> <span class="fn">nextline</span>(<span class="type">std</span>::<span class="type">string</span> &amp;<span class="var">line</span>) {<br/>
@@ -158,7 +181,7 @@ if the end is already reached, nothing will be read
 <h2>Reading Meta-Data</h2>
 <div class="slides">
 <div class="page">
-<div class="slide slide-header"><div class="slide-nr">12</div><div class="headers">
+<div class="slide slide-header"><div class="slide-nr">13</div><div class="headers">
 <h2>Reading Meta-Data</h2>
 </div></div>
 <ul><li>
@@ -169,7 +192,7 @@ every line until the first empty line is considered meta-data
 but nonetheless the meta-data is formatted as regular markdown code
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">13</div>
+<div class="page"><div class="slide"><div class="slide-nr">14</div>
 <code>
 <span class="macro">@add(<span class="name">main</span>)</span><br/>
 <span class="in1"></span><span class="type">std</span>::<span class="type">string</span> <span class="var">line</span>;<br/>
@@ -183,7 +206,7 @@ read the first line
 and process meta-data
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">14</div>
+<div class="page"><div class="slide"><div class="slide-nr">15</div>
 <code>
 <span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
 <span class="in1"></span><span class="type">bool</span> <span class="fn">has_prefix</span>(<br/>
@@ -203,7 +226,7 @@ check if a string starts with the specified prefix
 this is used a couple of times in the program
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">15</div>
+<div class="page"><div class="slide"><div class="slide-nr">16</div>
 <code>
 <span class="macro">@def(<span class="name">read metadata</span>)</span> {<br/>
 <span class="in1"></span><span class="keyword">static</span> <span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">prefix</span> {<br/>
@@ -223,7 +246,7 @@ this is used a couple of times in the program
 the first meta-data must be the title that is provided with a lever 1  heading
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">16</div>
+<div class="page"><div class="slide"><div class="slide-nr">17</div>
 <code>
 <span class="macro">@add(<span class="name">read metadata</span>)</span> {<br/>
 <span class="in1"></span><span class="keyword">static</span> <span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">prefix</span> {<br/>
@@ -243,7 +266,7 @@ the first meta-data must be the title that is provided with a lever 1  heading
 the next line specifies the author
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">17</div>
+<div class="page"><div class="slide"><div class="slide-nr">18</div>
 <code>
 <span class="macro">@add(<span class="name">read metadata</span>)</span> {<br/>
 <span class="in1"></span><span class="keyword">static</span> <span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">prefix</span> {<br/>
@@ -263,7 +286,7 @@ the next line may specify the generation date
 if no date is provided, the program uses the current date
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">18</div>
+<div class="page"><div class="slide"><div class="slide-nr">19</div>
 <code>
 <span class="macro">@add(<span class="name">read metadata</span>)</span><br/>
 <span class="in1"></span><span class="keyword">while</span> (<br/>
@@ -284,14 +307,14 @@ all other lines until the first empty line are ignored
 <h2>Writing the preamble</h2>
 <div class="slides">
 <div class="page">
-<div class="slide slide-header"><div class="slide-nr">19</div><div class="headers">
+<div class="slide slide-header"><div class="slide-nr">20</div><div class="headers">
 <h2>Writing the preamble</h2>
 </div></div>
 <ul><li>
 after <code><span class="var">dox</span></code> read the meta-data it writes the LaTeX preamble
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">20</div>
+<div class="page"><div class="slide"><div class="slide-nr">21</div>
 <code>
 <span class="macro">@add(<span class="name">main</span>)</span><br/>
 <span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt;<br/>
@@ -302,7 +325,7 @@ after <code><span class="var">dox</span></code> read the meta-data it writes the
 write the preamble
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">21</div>
+<div class="page"><div class="slide"><div class="slide-nr">22</div>
 <code>
 <span class="macro">@inc(<span class="name"><a href="preamble.html">preamble.md</a></span>)</span><br/>
 </code></div>
@@ -314,14 +337,14 @@ preamble is defined in another document
 <h2>Handle Two-Column Style</h2>
 <div class="slides">
 <div class="page">
-<div class="slide slide-header"><div class="slide-nr">22</div><div class="headers">
+<div class="slide slide-header"><div class="slide-nr">23</div><div class="headers">
 <h2>Handle Two-Column Style</h2>
 </div></div>
 <ul><li>
 output can switch between one-column and two-column style
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">23</div>
+<div class="page"><div class="slide"><div class="slide-nr">24</div>
 <code>
 <span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
 <span class="in1"></span><span class="type">bool</span> <span class="var">in_two_columns</span> { <span class="num">false</span> };<br/>
@@ -331,11 +354,11 @@ output can switch between one-column and two-column style
 is the output currently in two-column style?
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">24</div>
+<div class="page"><div class="slide"><div class="slide-nr">25</div>
 <code>
 <span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
 <span class="in1"></span><span class="type">void</span> <span class="fn">enter_two_columns</span>() {<br/>
-<span class="in2"></span><span class="keyword">if</span> (! <span class="var">in_two_columns</span>) {<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">with_multi_cols</span> &amp;&amp; ! <span class="var">in_two_columns</span>) {<br/>
 <span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt;<br/>
 <span class="in4"></span><span class="str">"\\begin{multicols}{2}\n"</span>;<br/>
 <span class="in3"></span><span class="var">in_two_columns</span> = <span class="num">true</span>;<br/>
@@ -347,7 +370,7 @@ is the output currently in two-column style?
 switch into two-column style
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">25</div>
+<div class="page"><div class="slide"><div class="slide-nr">26</div>
 <code>
 <span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
 <span class="in1"></span><span class="type">void</span> <span class="fn">exit_two_columns</span>() {<br/>
@@ -367,14 +390,14 @@ switch back into one-column style
 <h2>Process main body</h2>
 <div class="slides">
 <div class="page">
-<div class="slide slide-header"><div class="slide-nr">26</div><div class="headers">
+<div class="slide slide-header"><div class="slide-nr">27</div><div class="headers">
 <h2>Process main body</h2>
 </div></div>
 <ul><li>
 process the main body of text
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">27</div>
+<div class="page"><div class="slide"><div class="slide-nr">28</div>
 <code>
 <span class="macro">@add(<span class="name">main</span>)</span><br/>
 <span class="in1"></span><span class="keyword">while</span> (<span class="var">line</span> != <span class="var">end_of_file</span>) {<br/>
@@ -390,7 +413,7 @@ read and process all lines
 and close the document
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">28</div>
+<div class="page"><div class="slide"><div class="slide-nr">29</div>
 <code>
 <span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
 <span class="in1"></span><span class="type">void</span> <span class="fn">format_line</span>(<br/>
@@ -404,7 +427,7 @@ and close the document
 do special formatting of all the special sequences in one line of  normal text
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">29</div>
+<div class="page"><div class="slide"><div class="slide-nr">30</div>
 <code>
 <span class="macro">@def(<span class="name">process line</span>)</span><br/>
 <span class="in1"></span><span class="keyword">do</span> {<br/>
@@ -430,14 +453,14 @@ and read the next line
 <h2>Process section headers</h2>
 <div class="slides">
 <div class="page">
-<div class="slide slide-header"><div class="slide-nr">30</div><div class="headers">
+<div class="slide slide-header"><div class="slide-nr">31</div><div class="headers">
 <h2>Process section headers</h2>
 </div></div>
 <ul><li>
 process the section and subsection headers
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">31</div>
+<div class="page"><div class="slide"><div class="slide-nr">32</div>
 <code>
 <span class="macro">@def(<span class="name">process special</span>)</span> {<br/>
 <span class="in1"></span><span class="keyword">static</span> <span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">prefix</span> {<br/>
@@ -454,7 +477,7 @@ process the section and subsection headers
 process section header
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">32</div>
+<div class="page"><div class="slide"><div class="slide-nr">33</div>
 <code>
 <span class="macro">@def(<span class="name">write section</span>)</span><br/>
 <span class="in1"></span><span class="fn">exit_two_columns</span>();<br/>
@@ -469,7 +492,7 @@ process section header
 section headers are in one-column style
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">33</div>
+<div class="page"><div class="slide"><div class="slide-nr">34</div>
 <code>
 <span class="macro">@add(<span class="name">process special</span>)</span> {<br/>
 <span class="in1"></span><span class="keyword">static</span> <span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">prefix</span> {<br/>
@@ -494,14 +517,14 @@ subsections stay in the current columns style
 <h2>Handle emphasis</h2>
 <div class="slides">
 <div class="page">
-<div class="slide slide-header"><div class="slide-nr">34</div><div class="headers">
+<div class="slide slide-header"><div class="slide-nr">35</div><div class="headers">
 <h2>Handle emphasis</h2>
 </div></div>
 <ul><li>
 text in a line can be emphasised
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">35</div>
+<div class="page"><div class="slide"><div class="slide-nr">36</div>
 <code>
 <span class="macro">@def(<span class="name">format line</span>)</span><br/>
 <span class="in1"></span><span class="keyword">for</span> (<span class="type">unsigned</span> <span class="var">i</span> { <span class="num">0</span> };<br/>
@@ -518,7 +541,7 @@ iterate over each char
 and process special format sequences
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">36</div>
+<div class="page"><div class="slide"><div class="slide-nr">37</div>
 <code>
 <span class="macro">@def(<span class="name">handle format</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<br/>
@@ -617,7 +640,7 @@ replace the marking char with spaces
 and copy all other chars
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">37</div>
+<div class="page"><div class="slide"><div class="slide-nr">38</div>
 <code>
 <span class="macro">@def(<span class="name">add padding</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span>[<span class="var">j</span>] == <span class="str">' '</span>) {<br/>
@@ -637,14 +660,14 @@ otherwise it is swallowed by TeX
 <h2>Handle lists</h2>
 <div class="slides">
 <div class="page">
-<div class="slide slide-header"><div class="slide-nr">38</div><div class="headers">
+<div class="slide slide-header"><div class="slide-nr">39</div><div class="headers">
 <h2>Handle lists</h2>
 </div></div>
 <ul><li>
 format lists
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">39</div>
+<div class="page"><div class="slide"><div class="slide-nr">40</div>
 <code>
 <span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
 <span class="in1"></span><span class="type">enum</span> <span class="keyword">class</span> <span class="type">List_Type</span> {<br/>
@@ -656,7 +679,7 @@ format lists
 is the output currently in a list item
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">40</div>
+<div class="page"><div class="slide"><div class="slide-nr">41</div>
 <code>
 <span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
 <span class="in1"></span><span class="type">void</span> <span class="fn">open_list</span>(<span class="type">bool</span> <span class="var">enumerate</span>) {<br/>
@@ -674,7 +697,7 @@ is the output currently in a list item
 <span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">41</div>
+<div class="page"><div class="slide"><div class="slide-nr">42</div>
 <code>
 <span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
 <span class="in1"></span><span class="type">void</span> <span class="fn">close_list</span>() {<br/>
@@ -693,7 +716,7 @@ is the output currently in a list item
 <span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">42</div>
+<div class="page"><div class="slide"><div class="slide-nr">43</div>
 <code>
 <span class="macro">@add(<span class="name">process special</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span> == <span class="str">""</span>) {<br/>
@@ -702,7 +725,7 @@ is the output currently in a list item
 <span class="macro">@end(<span class="name">process special</span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">43</div>
+<div class="page"><div class="slide"><div class="slide-nr">44</div>
 <code>
 <span class="macro">@add(<span class="name">process special</span>)</span> {<br/>
 <span class="in1"></span><span class="keyword">static</span> <span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">prefix</span> {<br/>
@@ -718,7 +741,7 @@ is the output currently in a list item
 } <span class="macro">@end(<span class="name">process special</span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">44</div>
+<div class="page"><div class="slide"><div class="slide-nr">45</div>
 <code>
 <span class="macro">@add(<span class="name">process special</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span>.<span class="fn">size</span>() &amp;&amp; <span class="fn">isdigit</span>(<span class="var">line</span>[<span class="num">0</span>])) {<br/>
@@ -742,14 +765,14 @@ subsections stay in the current columns style
 <h2>Handle math</h2>
 <div class="slides">
 <div class="page">
-<div class="slide slide-header"><div class="slide-nr">45</div><div class="headers">
+<div class="slide slide-header"><div class="slide-nr">46</div><div class="headers">
 <h2>Handle math</h2>
 </div></div>
 <ul><li>
 verbose copy math blocks
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">46</div>
+<div class="page"><div class="slide"><div class="slide-nr">47</div>
 <code>
 <span class="macro">@add(<span class="name">handle format</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span>[<span class="var">i</span>] == <span class="str">'$'</span>) {<br/>
@@ -761,7 +784,7 @@ verbose copy math blocks
 start of math mode
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">47</div>
+<div class="page"><div class="slide"><div class="slide-nr">48</div>
 <code>
 <span class="macro">@def(<span class="name">math</span>)</span><br/>
 <span class="in1"></span><span class="type">unsigned</span> <span class="var">j</span> { <span class="var">i</span> + <span class="num">1</span> };<br/>
@@ -774,7 +797,7 @@ start of math mode
 find end of math mode
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">48</div>
+<div class="page"><div class="slide"><div class="slide-nr">49</div>
 <code>
 <span class="macro">@add(<span class="name">math</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">j</span> &lt; <span class="var">line</span>.<span class="fn">size</span>() &amp;&amp; <span class="var">line</span>[<span class="var">j</span>] == <span class="str">'$'</span>) {<br/>
@@ -794,14 +817,14 @@ directly copy math
 <h2>Handle Source Code</h2>
 <div class="slides">
 <div class="page">
-<div class="slide slide-header"><div class="slide-nr">49</div><div class="headers">
+<div class="slide slide-header"><div class="slide-nr">50</div><div class="headers">
 <h2>Handle Source Code</h2>
 </div></div>
 <ul><li>
 highlight source code
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">50</div>
+<div class="page"><div class="slide"><div class="slide-nr">51</div>
 <code>
 <span class="macro">@add(<span class="name">process special</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span> == <span class="str">"```lisp"</span>) {<br/>
@@ -817,7 +840,7 @@ highlight source code
 parse LISP block
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">51</div>
+<div class="page"><div class="slide"><div class="slide-nr">52</div>
 <code>
 <span class="macro">@def(<span class="name">process lisp lines</span>)</span><br/>
 <span class="in1"></span><span class="type">int</span> <span class="var">nr</span> { <span class="num">1</span> };<br/>
@@ -837,7 +860,7 @@ process each line
 close last line with a newline
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">52</div>
+<div class="page"><div class="slide"><div class="slide-nr">53</div>
 <code>
 <span class="macro">@def(<span class="name">process lisp line</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">nr</span> &gt; <span class="num">1</span>) {<br/>
@@ -849,7 +872,7 @@ close last line with a newline
 terminate previous line correctly
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">53</div>
+<div class="page"><div class="slide"><div class="slide-nr">54</div>
 <code>
 <span class="macro">@add(<span class="name">process lisp line</span>)</span><br/>
 <span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"$\\hlLine{"</span> &lt;&lt;<br/>
@@ -860,7 +883,7 @@ terminate previous line correctly
 enter math mode and write line number
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">54</div>
+<div class="page"><div class="slide"><div class="slide-nr">55</div>
 <code>
 <span class="macro">@add(<span class="name">process lisp line</span>)</span><br/>
 <span class="in1"></span><span class="type">unsigned</span> <span class="var">i</span> { <span class="num">0</span> };<br/>
@@ -881,7 +904,7 @@ skip over tabs
 and add matching indent
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">55</div>
+<div class="page"><div class="slide"><div class="slide-nr">56</div>
 <code>
 <span class="macro">@add(<span class="name">process lisp line</span>)</span><br/>
 <span class="in1"></span><span class="keyword">for</span> (<span class="type">auto</span> <span class="var">t</span> { <span class="var">i</span> };<br/>
@@ -895,7 +918,7 @@ and add matching indent
 copy code
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">56</div>
+<div class="page"><div class="slide"><div class="slide-nr">57</div>
 <code>
 <span class="macro">@def(<span class="name">copy code</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span>[<span class="var">t</span>] == <span class="str">' '</span>) {<br/>
@@ -918,7 +941,7 @@ but escape spaces
 special treatment to separate hyphens from minus signs
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">57</div>
+<div class="page"><div class="slide"><div class="slide-nr">58</div>
 <code>
 <span class="macro">@add(<span class="name">process lisp line</span>)</span><br/>
 <span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"$"</span>;<br/>
@@ -932,14 +955,14 @@ leave math mode
 <h2>Handle inline code</h2>
 <div class="slides">
 <div class="page">
-<div class="slide slide-header"><div class="slide-nr">58</div><div class="headers">
+<div class="slide slide-header"><div class="slide-nr">59</div><div class="headers">
 <h2>Handle inline code</h2>
 </div></div>
 <ul><li>
 display an inline code fragment
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">59</div>
+<div class="page"><div class="slide"><div class="slide-nr">60</div>
 <code>
 <span class="macro">@add(<span class="name">handle format</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span>[<span class="var">i</span>] == <span class="str">'`'</span>) {<br/>
@@ -951,7 +974,7 @@ display an inline code fragment
 parse inline code fragment
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">60</div>
+<div class="page"><div class="slide"><div class="slide-nr">61</div>
 <code>
 <span class="macro">@def(<span class="name">inline code</span>)</span><br/>
 <span class="in1"></span><span class="type">unsigned</span> <span class="var">j</span> { <span class="var">i</span> + <span class="num">1</span> };<br/>
@@ -965,7 +988,7 @@ parse inline code fragment
 find end of fragment
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">61</div>
+<div class="page"><div class="slide"><div class="slide-nr">62</div>
 <code>
 <span class="macro">@add(<span class="name">inline code</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">j</span> &lt; <span class="var">line</span>.<span class="fn">size</span>() &amp;&amp;<br/>
@@ -981,7 +1004,7 @@ find end of fragment
 process valid fragment
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">62</div>
+<div class="page"><div class="slide"><div class="slide-nr">63</div>
 <code>
 <span class="macro">@def(<span class="name">do inline code</span>)</span><br/>
 <span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\hlInline{"</span>;<br/>
@@ -997,7 +1020,7 @@ copy code fragment
 but escape spaces
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">63</div>
+<div class="page"><div class="slide"><div class="slide-nr">64</div>
 <code>
 <span class="macro">@add(<span class="name">do inline code</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">j</span> + <span class="num">1</span> &lt; <span class="var">line</span>.<span class="fn">size</span>() &amp;&amp;<br/>
@@ -1015,14 +1038,14 @@ pad trailing space
 <h2>Include Graphics</h2>
 <div class="slides">
 <div class="page">
-<div class="slide slide-header"><div class="slide-nr">64</div><div class="headers">
+<div class="slide slide-header"><div class="slide-nr">65</div><div class="headers">
 <h2>Include Graphics</h2>
 </div></div>
 <ul><li>
 include PDF graphics in the correct theme
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">65</div>
+<div class="page"><div class="slide"><div class="slide-nr">66</div>
 <code>
 <span class="macro">@add(<span class="name">process special</span>)</span> {<br/>
 <span class="in1"></span><span class="keyword">static</span> <span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">prefix</span> {<br/>
@@ -1040,7 +1063,7 @@ include PDF graphics in the correct theme
 parse image
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">66</div>
+<div class="page"><div class="slide"><div class="slide-nr">67</div>
 <code>
 <span class="macro">@def(<span class="name">include graphics</span>)</span><br/>
 <span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt;<br/>
@@ -1055,7 +1078,7 @@ include LaTeX statements to load graphic
 only PDF graphics are supported
 </li></ul>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">67</div>
+<div class="page"><div class="slide"><div class="slide-nr">68</div>
 <code>
 <span class="macro">@def(<span class="name">copy themed graphics name</span>)</span><br/>
 <span class="in1"></span><span class="type">auto</span> <span class="var">i</span> { <span class="var">prefix</span>.<span class="fn">size</span>() };<br/>
@@ -1080,23 +1103,23 @@ add theme name if present
 <h2>Handle Graphviz Code</h2>
 <div class="slides">
 <div class="page">
-<div class="slide slide-header"><div class="slide-nr">68</div><div class="headers">
+<div class="slide slide-header"><div class="slide-nr">69</div><div class="headers">
 <h2>Handle Graphviz Code</h2>
 </div></div>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">69</div>
+<div class="page"><div class="slide"><div class="slide-nr">70</div>
 <code>
 <span class="macro">@inc(<span class="name"><a href="lazy-write/lazy.html">lazy-write/lazy.md</a></span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">70</div>
+<div class="page"><div class="slide"><div class="slide-nr">71</div>
 <code>
 <span class="macro">@add(<span class="name">includes</span>)</span><br/>
 <span class="in1"></span><span class="keyword">#include</span> <span class="str">"lazy-write.h"</span><br/>
 <span class="macro">@end(<span class="name">includes</span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">71</div>
+<div class="page"><div class="slide"><div class="slide-nr">72</div>
 <code>
 <span class="macro">@add(<span class="name">process special</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span> == <span class="str">"```gv"</span> || <span class="var">line</span> == <span class="str">"```GV"</span>) {<br/>
@@ -1127,7 +1150,7 @@ add theme name if present
 <span class="macro">@end(<span class="name">process special</span>)</span><br/>
 </code></div>
 </div>
-<div class="page"><div class="slide"><div class="slide-nr">72</div>
+<div class="page"><div class="slide"><div class="slide-nr">73</div>
 <code>
 <span class="macro">@add(<span class="name">process special</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span> == <span class="str">"```lily"</span>) {<br/>
@@ -1142,7 +1165,7 @@ add theme name if present
 <span class="in2"></span>}<br/>
 <span class="in2"></span><span class="type">Lazy_Write</span> <span class="var">wr</span> { <span class="var">themed_name</span> + <span class="str">".ly"</span> };<br/>
 <span class="in2"></span><span class="fn">nextline</span>(<span class="var">line</span>);<br/>
-<span class="in2"></span><span class="var">wr</span> &lt;&lt; <span class="str">"\\include \"preamble"</span>;<br/>
+<span class="in2"></span><span class="var">wr</span> &lt;&lt; <span class="str">"\\include \""</span> &lt;&lt; <span class="var">prefix</span> &lt;&lt; <span class="str">"preamble"</span>;<br/>
 <span class="in2"></span><span class="keyword">if</span> (<span class="var">theme</span>.<span class="fn">size</span>()) {<br/>
 <span class="in3"></span><span class="var">wr</span> &lt;&lt; <span class="str">"-"</span> &lt;&lt; <span class="var">theme</span>;<br/>
 <span class="in2"></span>}<br/>

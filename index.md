@@ -30,23 +30,45 @@
 ```
 @def(main prereqs)
 	static std::string theme {};
+	static std::string prefix {};
+	bool with_multi_cols { true };
 @end(main prereqs)
 ```
 * no default theme is used
 
 ```
-@def(main) {
-	static const std::string light {
-		"--theme=light"
-	};
-	static const std::string dark {
-		"--theme=dark"
-	};
-	if (argc == 2 && argv[1] == light) {
-		theme = "light";
+@add(main prereqs)
+	std::string after_prefix(const std::string &str, const std::string &prefix) {
+		auto len { prefix.size() };
+		if (str.size() > len && str.substr(0, len) == prefix) {
+			return str.substr(len);
+		}
+		return std::string {};
 	}
-	if (argc == 2 && argv[1] == dark) {
-		theme = "dark";
+@end(main prereqs)
+```
+
+```
+@def(main) {
+	static const std::string theme_pre {
+		"--theme="
+	};
+	static const std::string prefix_pre {
+		"--prefix="
+	};
+	for (int i { 1 }; i < argc; ++i) {
+		std::string arg { argv[i] };
+		{
+			auto val { after_prefix(arg, theme_pre) };
+			if (! val.empty()) { theme = val; }
+		}
+		{
+			auto val { after_prefix(arg, prefix_pre) };
+			if (! val.empty()) { prefix = val; }
+		}
+		if (arg == "--single-col") {
+			with_multi_cols = false;
+		}
 	}
 } @end(main)
 ```
@@ -218,7 +240,7 @@
 ```
 @add(main prereqs)
 	void enter_two_columns() {
-		if (! in_two_columns) {
+		if (with_multi_cols && ! in_two_columns) {
 			std::cout <<
 				"\\begin{multicols}{2}\n";
 			in_two_columns = true;
@@ -838,7 +860,7 @@ continue;
 		}
 		Lazy_Write wr { themed_name + ".ly" };
 		nextline(line);
-		wr << "\\include \"preamble";
+		wr << "\\include \"" << prefix << "preamble";
 		if (theme.size()) {
 			wr << "-" << theme;
 		}
