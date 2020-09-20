@@ -438,7 +438,7 @@ continue;
 
 	"\\usepackage" << (theme.size() ?
 		"[" + theme + "]" : ""
-	) << "{" << prefix << "solarized}\n"
+	) << "{solarized}\n"
 
 #line 61 "preamble.md"
 
@@ -465,7 +465,7 @@ continue;
 
 #line 101 "preamble.md"
 
-	"\\usepackage{" << prefix << "lisp}\n"
+	"\\usepackage{lisp}\n"
 
 #line 108 "preamble.md"
 

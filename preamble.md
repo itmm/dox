@@ -52,7 +52,7 @@
 @add(preamble)
 	"\\usepackage" << (theme.size() ?
 		"[" + theme + "]" : ""
-	) << "{" << prefix << "solarized}\n"
+	) << "{solarized}\n"
 @end(preamble)
 ```
 * the local solarized package is used with the current theme
@@ -99,7 +99,7 @@
 
 ```
 @add(preamble)
-	"\\usepackage{" << prefix << "lisp}\n"
+	"\\usepackage{lisp}\n"
 @end(preamble)
 ```
 * highlight LISP source code
