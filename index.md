@@ -32,6 +32,9 @@
 	static std::string theme {};
 	static std::string prefix {};
 	bool with_multi_cols { true };
+	bool generate_latex { true };
+	bool generate_html { false };
+	bool generate_markdown { false };
 @end(main prereqs)
 ```
 * no default theme is used
@@ -68,6 +71,25 @@
 		}
 		if (arg == "--single-col") {
 			with_multi_cols = false;
+			generate_latex = true;
+			generate_html = false;
+			generate_markdown = false;
+		}
+		if (arg == "--two-cols") {
+			with_multi_cols = true;
+			generate_latex = true;
+			generate_html = false;
+			generate_markdown = false;
+		}
+		if (arg == "--markdown") {
+			generate_latex = false;
+			generate_html = false;
+			generate_markdown = true;
+		}
+		if (arg == "--html") {
+			generate_latex = false;
+			generate_html = true;
+			generate_markdown = false;
 		}
 	}
 } @end(main)
@@ -155,6 +177,9 @@
 		title = line.substr(
 			prefix.size()
 		);
+		if (generate_markdown) {
+			std::cout << line << '\n';
+		}
 		nextline(line);
 	} else {
 		std::cerr << "no title\n";
@@ -173,6 +198,9 @@
 		author = line.substr(
 			prefix.size()
 		);
+		if (generate_markdown) {
+			std::cout << line << '\n';
+		}
 		nextline(line);
 	} else {
 		std::cerr << "no author\n";
@@ -190,6 +218,9 @@
 		date = line.substr(
 			prefix.size()
 		);
+		if (generate_markdown) {
+			std::cout << line << '\n';
+		}
 		nextline(line);
 	}
 } @end(read metadata)
@@ -203,8 +234,11 @@
 		line != end_of_file && line.size()
 	) {
 		std::cerr <<
-			"ignoring meta line: " <<
+			"unknown meta line: " <<
 			line << "\n";
+		if (generate_markdown) {
+			std::cout << line << '\n';
+		}
 		nextline(line);
 	}
 @end(read metadata)
@@ -216,8 +250,18 @@
 
 ```
 @add(main)
-	std::cout <<
-		@put(preamble);
+	if (generate_latex) {
+		std::cout <<
+			@put(preamble);
+	}
+	if (generate_html) {
+		std::cout << "<!doctype html>\n"
+			"<html><head>"
+				"<meta charset=\"utf-8\"/>"
+				"<title>" << title << "</title>"
+			"</head><body>"
+				"<h1>" << title << "</h1>";
+	}
 @end(main)
 ```
 * write the preamble
@@ -241,8 +285,10 @@
 @add(main prereqs)
 	void enter_two_columns() {
 		if (with_multi_cols && ! in_two_columns) {
-			std::cout <<
-				"\\begin{multicols}{2}\n";
+			if (generate_latex) {
+				std::cout <<
+					"\\begin{multicols}{2}\n";
+			}
 			in_two_columns = true;
 		}
 	}
@@ -254,8 +300,10 @@
 @add(main prereqs)
 	void exit_two_columns() {
 		if (in_two_columns) {
-			std::cout <<
-				"\\end{multicols}\n";
+			if (generate_latex) {
+				std::cout <<
+					"\\end{multicols}\n";
+			}
 			in_two_columns = false;
 		}
 	}
@@ -272,7 +320,9 @@
 		@put(process line);
 	}
 	exit_two_columns();
-	std::cout << "\\end{document}\n";
+	if (generate_latex) {
+		std::cout << "\\end{document}\n";
+	}
 @end(main)
 ```
 * read and process all lines
@@ -326,11 +376,23 @@
 ```
 @def(write section)
 	exit_two_columns();
-	std::cout << "\\section{";
-	format_line(line.substr(
-		prefix.size()
-	));
-	std::cout << "}\n";
+	if (generate_latex) {
+		std::cout << "\\section{";
+		format_line(line.substr(
+			prefix.size()
+		));
+		std::cout << "}\n";
+	}
+	if (generate_markdown) {
+		std::cout << line << '\n';
+	}
+	if (generate_html) {
+		std::cout << "<h2>";
+		format_line(line.substr(
+			prefix.size()
+		));
+		std::cout << "</h2>\n";
+	}
 @end(write section)
 ```
 * section headers are in one-column style
@@ -341,11 +403,23 @@
 		"### "
 	};
 	if (has_prefix(line, prefix)) {
-		std::cout << "\\subsection{";
-		format_line(line.substr(
-			prefix.size()
-		));
-		std::cout << "}\n";
+		if (generate_latex) {
+			std::cout << "\\subsection{";
+			format_line(line.substr(
+				prefix.size()
+			));
+			std::cout << "}\n";
+		}
+		if (generate_markdown) {
+			std::cout << line << '\n';
+		}
+		if (generate_html) {
+			std::cout << "<h3>";
+			format_line(line.substr(
+				prefix.size()
+			));
+			std::cout << "</h3>\n";
+		}
 		nextline(line);
 		break;
 	}
@@ -425,9 +499,25 @@
 	```
 @add(do emphasis)
 	if (bold) {
-		std::cout << "\\textbf{";
+		if (generate_latex) {
+			std::cout << "\\textbf{";
+		}
+		if (generate_markdown) {
+			std::cout << mark << mark;
+		}
+		if (generate_html) {
+			std::cout << "<b>";
+		}
 	} else {
-		std::cout << "\\emph{";
+		if (generate_latex) {
+			std::cout << "\\emph{";
+		}
+		if (generate_markdown) {
+			std::cout << mark;
+		}
+		if (generate_html) {
+			std::cout << "<i>";
+		}
 	}
 @end(do emphasis)
 	```
@@ -442,7 +532,19 @@ unsigned end { bold ? j - 2 : j - 1 };
 for (auto t { begin }; t < end; ++t) {
 	@put(emphasis loop);
 }
-std::cout << "}";
+if (generate_latex) {
+	std::cout << "}";
+}
+if (generate_markdown) {
+	if (bold) {
+		std::cout << mark << mark;
+	} else {
+		std::cout << mark;
+	}
+}
+if (generate_html) {
+	std::cout << (bold ? "</b>" : "</i>");
+}
 @put(add padding);
 i = j - 1;
 continue;
@@ -467,7 +569,9 @@ continue;
 ```
 @def(add padding)
 	if (line[j] == ' ') {
-		std::cout << '\\';
+		if (generate_latex) {
+			std::cout << '\\';
+		}
 	}
 @end(add padding)
 ```
@@ -489,17 +593,48 @@ continue;
 
 ```
 @add(main prereqs)
+	int item_counter { 0 };
+
 	void open_list(bool enumerate) {
+		bool already_open { true };
 		if (list_type == List_Type::no_list) {
 			if (enumerate) {
-				std::cout << "\\begin{enumerate}\n";
+				if (generate_latex) {
+					std::cout << "\\begin{enumerate}\n";
+				}
+				if (generate_html) {
+					std::cout << "<ol>\n";
+				}
 				list_type = List_Type::enum_list;
+				item_counter = 0;
 			} else {
-				std::cout << "\\begin{itemize}\n";
+				if (generate_latex) {
+					std::cout << "\\begin{itemize}\n";
+				}
+				if (generate_html) {
+					std::cout << "<ul>\n";
+				}
 				list_type = List_Type::item_list;
 			}
+			already_open = false;
 		}
-		std::cout << "\\item ";
+		if (generate_html) {
+			std::cout << "\\item ";
+		}
+		if (generate_markdown) {
+			if (list_type == List_Type::enum_list) {
+				std::cout << ++item_counter << ". ";
+			}
+			if (list_type == List_Type::item_list) {
+				std::cout << "* ";
+			}
+		}
+		if (generate_html) {
+			if (already_open) {
+				std::cout << "</li>";
+			}
+			std::cout << "<li>";
+		}
 	}
 @end(main prereqs)
 ```
@@ -511,10 +646,20 @@ continue;
 			case List_Type::no_list:
 				break;
 			case List_Type::enum_list:
-				std::cout << "\\end{enumerate}\n";
+				if (generate_latex) {
+					std::cout << "\\end{enumerate}\n";
+				}
+				if (generate_html) {
+					std::cout << "</li></ol>";
+				}
 				break;
 			case List_Type::item_list:
-				std::cout << "\\end{itemize}\n";
+				if (generate_latex) {
+					std::cout << "\\end{itemize}\n";
+				}
+				if (generate_html) {
+					std::cout << "</li></ol>";
+				}
 				break;
 		}
 		list_type = List_Type::no_list;
@@ -587,8 +732,20 @@ continue;
 ```
 @add(math)
 	if (j < line.size() && line[j] == '$') {
-		for (auto t { i }; t <= j; ++t) {
-			std::cout << line[t];
+		if (generate_latex) {
+			for (auto t { i }; t <= j; ++t) {
+				std::cout << line[t];
+			}
+		}
+		if (generate_markdown) {
+			for (auto t { i + 1 }; t < j; ++t) {
+				std::cout << line[t];
+			}
+		}
+		if (generate_html) {
+			for (auto t { i + 1 }; t < j; ++t) {
+				std::cout << line[t];
+			}
 		}
 		i = j;
 		continue;
@@ -632,7 +789,15 @@ continue;
 ```
 @def(process lisp line)
 	if (nr > 1) {
-		std::cout << "\\\\*\n";
+		if (generate_latex) {
+			std::cout << "\\\\*\n";
+		}
+		if (generate_markdown) {
+			std::cout << '\n';
+		}
+		if (generate_html) {
+			std::cout << "<br/>\n";
+		}
 	}
 @end(process lisp line)
 ```
@@ -640,8 +805,14 @@ continue;
 
 ```
 @add(process lisp line)
-	std::cout << "$\\hlLine{" <<
-		nr++ << "}";
+	if (generate_latex) {
+		std::cout << "$\\hlLine{" <<
+			nr << "}";
+	}
+	if (generate_html) {
+		std::cout << "<span class=\"line\">" << nr << "</span>";
+	}
+	++nr;
 @end(process lisp line)
 ```
 * enter math mode and write line number
@@ -655,8 +826,18 @@ continue;
 		++i
 	) {}
 	if (i) {
-		std::cout << "\\hlIndent{" <<
-			i << "}";
+		if (generate_latex) {
+			std::cout << "\\hlIndent{" <<
+				i << "}";
+		}
+		if (generate_markdown) {
+			for (auto j { i }; j > 0; --j) {
+				std::cout << '\t';
+			}
+		}
+		if (generate_html) {
+			std::cout << "<span class=\"indent_" << i << "\"></span>";
+		}
 	}
 @end(process lisp line)
 ```
@@ -677,12 +858,22 @@ continue;
 ```
 @def(copy code)
 	if (line[t] == ' ') {
-		std::cout << "\\";
+		if (generate_latex) {
+			std::cout << "\\";
+		}
 	}
 	if (line[t] == '-' && t > 0 &&
 		isalpha(line[t - 1])
 	) {
-		std::cout << "{\\text -}";
+		if (generate_latex) {
+			std::cout << "{\\text -}";
+		}
+		if (generate_markdown) {
+			std::cout << line[t];
+		}
+		if (generate_html) {
+			std::cout << line[t];
+		}
 	} else {
 		std::cout << line[t];
 	}
@@ -694,7 +885,9 @@ continue;
 
 ```
 @add(process lisp line)
-	std::cout << "$";
+	if (generate_latex) {
+		std::cout << "$";
+	}
 @end(process lisp line)
 ```
 * leave math mode
@@ -737,11 +930,27 @@ continue;
 
 ```
 @def(do inline code)
-	std::cout << "\\hlInline{";
+	if (generate_latex) {
+		std::cout << "\\hlInline{";
+	}
+	if (generate_markdown) {
+		std::cout << '`';
+	}
+	if (generate_html) {
+		std::cout << "<code>";
+	}
 	for (auto t { i + 1 }; t < j; ++t) {
 		@mul(copy code);
 	}
-	std::cout << "}";
+	if (generate_latex) {
+		std::cout << "}";
+	}
+	if (generate_markdown) {
+		std::cout << '`';
+	}
+	if (generate_html) {
+		std::cout << "</code>";
+	}
 @end(do inline code)
 ```
 * copy code fragment
@@ -752,7 +961,9 @@ continue;
 	if (j + 1 < line.size() &&
 		line[j + 1] == ' '
 	) {
-		std::cout << "\\";
+		if (generate_latex) {
+			std::cout << "\\";
+		}
 	}
 @end(do inline code)
 ```
@@ -778,10 +989,20 @@ continue;
 
 ```
 @def(include graphics)
-	std::cout <<
-		"\\centerline{\\includegraphics[scale=.5]{";
-	@put(copy themed graphics name);
-	std::cout << ".pdf}}\n";
+	if (generate_latex) {
+		std::cout <<
+			"\\centerline{\\includegraphics[scale=.5]{";
+		@mul(copy themed graphics name);
+		std::cout << ".pdf}}\n";
+	}
+	if (generate_markdown) {
+		std::cout << line << '\n';
+	}
+	if (generate_html) {
+		std::cout << "<img src=\"";
+		@mul(copy themed graphics name);
+		std::cout << ".svg\"></img>\n";
+	}
 @end(include graphics)
 ```
 * include LaTeX statements to load graphic
@@ -834,13 +1055,31 @@ continue;
 			nextline(line);
 		}
 		nextline(line);
-		std::cout <<
-			"\\centerline{\\includegraphics[trim={1in .9in 1in .9in},clip]{";
-		std::cout << name;
-		if (theme.size()) {
-			std::cout << "-" << theme;
+		if (generate_latex) {
+			std::cout <<
+				"\\centerline{\\includegraphics[trim={1in .9in 1in .9in},clip]{";
+			std::cout << name;
+			if (theme.size()) {
+				std::cout << "-" << theme;
+			}
+			std::cout << ".pdf}}\n";
 		}
-		std::cout << ".pdf}}\n";
+		if (generate_markdown) {
+			std::cout << "!(";
+			std::cout << name;
+			if (theme.size()) {
+				std::cout << "-" << theme;
+			}
+			std::cout << ".svg)\n";
+		}
+		if (generate_html) {
+			std::cout << "<img src=\"";
+			std::cout << name;
+			if (theme.size()) {
+				std::cout << "-" << theme;
+			}
+			std::cout << ".svg\"></img>\n";
+		}
 		break;
 	}
 @end(process special)
@@ -870,15 +1109,31 @@ continue;
 			nextline(line);
 		}
 		nextline(line);
-		std::cout <<
-			"\\centerline{\\includegraphics{";
-		std::cout << name;
-		if (theme.size()) {
-			std::cout << "-" << theme;
+		if (generate_latex) {
+			std::cout <<
+				"\\centerline{\\includegraphics{";
+			std::cout << themed_name;
+			std::cout << ".pdf}}\n";
 		}
-		std::cout << ".pdf}}\n";
+		if (generate_markdown) {
+			std::cout << "!(";
+			std::cout << themed_name;
+			std::cout << ".svg)\n";
+		}
+		if (generate_html) {
+			std::cout << "<img src=\"";
+			std::cout << themed_name;
+			std::cout << ".svg\"></img>\n";
+		}
 		break;
 	}
 @end(process special)
 ```
 
+```
+@add(main)
+	if (generate_html) {
+		std::cout << "</body></html>\n";
+	}
+@end(main)
+```

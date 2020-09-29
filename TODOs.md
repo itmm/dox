@@ -1,5 +1,5 @@
 * links
 * autotools
-* generate markdown
-* generate HTML
+* group generation of special code blocks
+* add plantuml
 

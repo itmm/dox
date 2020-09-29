@@ -7,7 +7,7 @@
 	#include <iostream>
 	#include <string>
 
-#line 814 "index.md"
+#line 1035 "index.md"
 
 	#include "lazy-write.h"
 
@@ -19,8 +19,11 @@
 	static std::string theme {};
 	static std::string prefix {};
 	bool with_multi_cols { true };
+	bool generate_latex { true };
+	bool generate_html { false };
+	bool generate_markdown { false };
 
-#line 40 "index.md"
+#line 43 "index.md"
 
 	std::string after_prefix(const std::string &str, const std::string &prefix) {
 		auto len { prefix.size() };
@@ -30,20 +33,20 @@
 		return std::string {};
 	}
 
-#line 81 "index.md"
+#line 103 "index.md"
 
 	static std::string title;
 	static std::string author;
 	static std::string date { "\\today" };
 
-#line 93 "index.md"
+#line 115 "index.md"
 
 	static const
 		std::string end_of_file {
 			"\r\n"
 		};
 
-#line 105 "index.md"
+#line 127 "index.md"
 
 	void nextline(std::string &line) {
 		if (line != end_of_file) {
@@ -53,7 +56,7 @@
 		}
 	}
 
-#line 134 "index.md"
+#line 156 "index.md"
 
 	bool has_prefix(
 		const std::string &line,
@@ -65,49 +68,53 @@
 			l.substr(0, p.size()) == p;
 	}
 
-#line 234 "index.md"
+#line 278 "index.md"
 
 	bool in_two_columns { false };
 
-#line 241 "index.md"
+#line 285 "index.md"
 
 	void enter_two_columns() {
 		if (with_multi_cols && ! in_two_columns) {
-			std::cout <<
-				"\\begin{multicols}{2}\n";
+			if (generate_latex) {
+				std::cout <<
+					"\\begin{multicols}{2}\n";
+			}
 			in_two_columns = true;
 		}
 	}
 
-#line 254 "index.md"
+#line 300 "index.md"
 
 	void exit_two_columns() {
 		if (in_two_columns) {
-			std::cout <<
-				"\\end{multicols}\n";
+			if (generate_latex) {
+				std::cout <<
+					"\\end{multicols}\n";
+			}
 			in_two_columns = false;
 		}
 	}
 
-#line 282 "index.md"
+#line 332 "index.md"
 
 	void format_line(
 		const std::string line
 	) {
 		
-#line 360 "index.md"
+#line 434 "index.md"
 
 	for (unsigned i { 0 };
 		i < line.size(); ++i
 	) {
 		
-#line 373 "index.md"
+#line 447 "index.md"
 
 	if (
 			line[i] == '*' || line[i] == '_'
 	   ) {
 		
-#line 384 "index.md"
+#line 458 "index.md"
 
 	unsigned j { i };
 	char mark { line[j] };
@@ -125,11 +132,11 @@
 				)
 		  ) { if (line[j] == mark) { --cnt; }; ++j; }
 
-#line 405 "index.md"
+#line 479 "index.md"
 
 	if (! cnt) {
 		
-#line 415 "index.md"
+#line 489 "index.md"
 
 	bool bold {
 		i + 3 < j &&
@@ -137,15 +144,31 @@
 			line[j - 2] == mark
 	};
 
-#line 426 "index.md"
+#line 500 "index.md"
 
 	if (bold) {
-		std::cout << "\\textbf{";
+		if (generate_latex) {
+			std::cout << "\\textbf{";
+		}
+		if (generate_markdown) {
+			std::cout << mark << mark;
+		}
+		if (generate_html) {
+			std::cout << "<b>";
+		}
 	} else {
-		std::cout << "\\emph{";
+		if (generate_latex) {
+			std::cout << "\\emph{";
+		}
+		if (generate_markdown) {
+			std::cout << mark;
+		}
+		if (generate_html) {
+			std::cout << "<i>";
+		}
 	}
 
-#line 437 "index.md"
+#line 527 "index.md"
 
 	unsigned begin {
 		bold ? i + 2 : i + 1
@@ -153,7 +176,7 @@
 unsigned end { bold ? j - 2 : j - 1 };
 for (auto t { begin }; t < end; ++t) {
 	
-#line 456 "index.md"
+#line 558 "index.md"
 
 	if (line[t] == mark) {
 		std::cout << ' ';
@@ -161,60 +184,86 @@ for (auto t { begin }; t < end; ++t) {
 		std::cout << line[t];
 	}
 
-#line 443 "index.md"
+#line 533 "index.md"
 ;
 }
-std::cout << "}";
+if (generate_latex) {
+	std::cout << "}";
+}
+if (generate_markdown) {
+	if (bold) {
+		std::cout << mark << mark;
+	} else {
+		std::cout << mark;
+	}
+}
+if (generate_html) {
+	std::cout << (bold ? "</b>" : "</i>");
+}
 
-#line 468 "index.md"
+#line 570 "index.md"
 
 	if (line[j] == ' ') {
-		std::cout << '\\';
+		if (generate_latex) {
+			std::cout << '\\';
+		}
 	}
 
-#line 446 "index.md"
+#line 548 "index.md"
 ;
 i = j - 1;
 continue;
 
-#line 407 "index.md"
+#line 481 "index.md"
 ;
 	}
 
-#line 377 "index.md"
+#line 451 "index.md"
 ;
 	}
 
-#line 569 "index.md"
+#line 714 "index.md"
 
 	if (line[i] == '$') {
 		
-#line 578 "index.md"
+#line 723 "index.md"
 
 	unsigned j { i + 1 };
 	while (j < line.size() &&
 		line[j] != '$'
 	) { ++j; }
 
-#line 588 "index.md"
+#line 733 "index.md"
 
 	if (j < line.size() && line[j] == '$') {
-		for (auto t { i }; t <= j; ++t) {
-			std::cout << line[t];
+		if (generate_latex) {
+			for (auto t { i }; t <= j; ++t) {
+				std::cout << line[t];
+			}
+		}
+		if (generate_markdown) {
+			for (auto t { i + 1 }; t < j; ++t) {
+				std::cout << line[t];
+			}
+		}
+		if (generate_html) {
+			for (auto t { i + 1 }; t < j; ++t) {
+				std::cout << line[t];
+			}
 		}
 		i = j;
 		continue;
 	}
 
-#line 571 "index.md"
+#line 716 "index.md"
 ;
 	}
 
-#line 706 "index.md"
+#line 899 "index.md"
 
 	if (line[i] == '`') {
 		
-#line 715 "index.md"
+#line 908 "index.md"
 
 	unsigned j { i + 1 };
 	for (;
@@ -222,94 +271,163 @@ continue;
 		++j
 	) {}
 
-#line 726 "index.md"
+#line 919 "index.md"
 
 	if (j < line.size() &&
 		line[j] == '`'
 	) {
 		
-#line 739 "index.md"
+#line 932 "index.md"
 
-	std::cout << "\\hlInline{";
+	if (generate_latex) {
+		std::cout << "\\hlInline{";
+	}
+	if (generate_markdown) {
+		std::cout << '`';
+	}
+	if (generate_html) {
+		std::cout << "<code>";
+	}
 	for (auto t { i + 1 }; t < j; ++t) {
 		
-#line 678 "index.md"
+#line 859 "index.md"
 
 	if (line[t] == ' ') {
-		std::cout << "\\";
+		if (generate_latex) {
+			std::cout << "\\";
+		}
 	}
 	if (line[t] == '-' && t > 0 &&
 		isalpha(line[t - 1])
 	) {
-		std::cout << "{\\text -}";
+		if (generate_latex) {
+			std::cout << "{\\text -}";
+		}
+		if (generate_markdown) {
+			std::cout << line[t];
+		}
+		if (generate_html) {
+			std::cout << line[t];
+		}
 	} else {
 		std::cout << line[t];
 	}
 
-#line 742 "index.md"
+#line 943 "index.md"
 ;
 	}
-	std::cout << "}";
+	if (generate_latex) {
+		std::cout << "}";
+	}
+	if (generate_markdown) {
+		std::cout << '`';
+	}
+	if (generate_html) {
+		std::cout << "</code>";
+	}
 
-#line 751 "index.md"
+#line 960 "index.md"
 
 	if (j + 1 < line.size() &&
 		line[j + 1] == ' '
 	) {
-		std::cout << "\\";
+		if (generate_latex) {
+			std::cout << "\\";
+		}
 	}
 
-#line 730 "index.md"
+#line 923 "index.md"
 ;
 		i = j;
 		continue;
 	}
 
-#line 708 "index.md"
+#line 901 "index.md"
 ;
 	}
 
-#line 364 "index.md"
+#line 438 "index.md"
 ;
 		std::cout << line[i];
 	}
 
-#line 286 "index.md"
+#line 336 "index.md"
 ;
 	}
 
-#line 482 "index.md"
+#line 586 "index.md"
 
 	enum class List_Type {
 		no_list, enum_list, item_list
 	} list_type { List_Type::no_list };
 
-#line 491 "index.md"
+#line 595 "index.md"
+
+	int item_counter { 0 };
 
 	void open_list(bool enumerate) {
+		bool already_open { true };
 		if (list_type == List_Type::no_list) {
 			if (enumerate) {
-				std::cout << "\\begin{enumerate}\n";
+				if (generate_latex) {
+					std::cout << "\\begin{enumerate}\n";
+				}
+				if (generate_html) {
+					std::cout << "<ol>\n";
+				}
 				list_type = List_Type::enum_list;
+				item_counter = 0;
 			} else {
-				std::cout << "\\begin{itemize}\n";
+				if (generate_latex) {
+					std::cout << "\\begin{itemize}\n";
+				}
+				if (generate_html) {
+					std::cout << "<ul>\n";
+				}
 				list_type = List_Type::item_list;
 			}
+			already_open = false;
 		}
-		std::cout << "\\item ";
+		if (generate_html) {
+			std::cout << "\\item ";
+		}
+		if (generate_markdown) {
+			if (list_type == List_Type::enum_list) {
+				std::cout << ++item_counter << ". ";
+			}
+			if (list_type == List_Type::item_list) {
+				std::cout << "* ";
+			}
+		}
+		if (generate_html) {
+			if (already_open) {
+				std::cout << "</li>";
+			}
+			std::cout << "<li>";
+		}
 	}
 
-#line 508 "index.md"
+#line 643 "index.md"
 
 	void close_list() {
 		switch (list_type) {
 			case List_Type::no_list:
 				break;
 			case List_Type::enum_list:
-				std::cout << "\\end{enumerate}\n";
+				if (generate_latex) {
+					std::cout << "\\end{enumerate}\n";
+				}
+				if (generate_html) {
+					std::cout << "</li></ol>";
+				}
 				break;
 			case List_Type::item_list:
-				std::cout << "\\end{itemize}\n";
+				if (generate_latex) {
+					std::cout << "\\end{itemize}\n";
+				}
+				if (generate_html) {
+					std::cout << "</li></ol>";
+				}
 				break;
 		}
 		list_type = List_Type::no_list;
@@ -322,7 +440,7 @@ continue;
 		const char *const argv[]
 	) {
 		
-#line 52 "index.md"
+#line 55 "index.md"
  {
 	static const std::string theme_pre {
 		"--theme="
@@ -342,15 +460,34 @@ continue;
 		}
 		if (arg == "--single-col") {
 			with_multi_cols = false;
+			generate_latex = true;
+			generate_html = false;
+			generate_markdown = false;
+		}
+		if (arg == "--two-cols") {
+			with_multi_cols = true;
+			generate_latex = true;
+			generate_html = false;
+			generate_markdown = false;
+		}
+		if (arg == "--markdown") {
+			generate_latex = false;
+			generate_html = false;
+			generate_markdown = true;
+		}
+		if (arg == "--html") {
+			generate_latex = false;
+			generate_html = true;
+			generate_markdown = false;
 		}
 	}
 } 
-#line 124 "index.md"
+#line 146 "index.md"
 
 	std::string line;
 	nextline(line);
 	
-#line 150 "index.md"
+#line 172 "index.md"
  {
 	static const std::string prefix {
 		"# "
@@ -359,12 +496,15 @@ continue;
 		title = line.substr(
 			prefix.size()
 		);
+		if (generate_markdown) {
+			std::cout << line << '\n';
+		}
 		nextline(line);
 	} else {
 		std::cerr << "no title\n";
 	}
 } 
-#line 168 "index.md"
+#line 193 "index.md"
  {
 	static const std::string prefix {
 		"* author: "
@@ -373,12 +513,15 @@ continue;
 		author = line.substr(
 			prefix.size()
 		);
+		if (generate_markdown) {
+			std::cout << line << '\n';
+		}
 		nextline(line);
 	} else {
 		std::cerr << "no author\n";
 	}
 } 
-#line 185 "index.md"
+#line 213 "index.md"
  {
 	static const std::string prefix {
 		"* date: "
@@ -387,27 +530,34 @@ continue;
 		date = line.substr(
 			prefix.size()
 		);
+		if (generate_markdown) {
+			std::cout << line << '\n';
+		}
 		nextline(line);
 	}
 } 
-#line 201 "index.md"
+#line 232 "index.md"
 
 	while (
 		line != end_of_file && line.size()
 	) {
 		std::cerr <<
-			"ignoring meta line: " <<
+			"unknown meta line: " <<
 			line << "\n";
+		if (generate_markdown) {
+			std::cout << line << '\n';
+		}
 		nextline(line);
 	}
 
-#line 127 "index.md"
+#line 149 "index.md"
 ;
 
-#line 218 "index.md"
+#line 252 "index.md"
 
-	std::cout <<
-		
+	if (generate_latex) {
+		std::cout <<
+			
 #line 5 "preamble.md"
 
 	
@@ -530,61 +680,94 @@ continue;
 #line 6 "preamble.md"
 
 
-#line 220 "index.md"
+#line 255 "index.md"
 ;
+	}
+	if (generate_html) {
+		std::cout << "<!doctype html>\n"
+			"<html><head>"
+				"<meta charset=\"utf-8\"/>"
+				"<title>" << title << "</title>"
+			"</head><body>"
+				"<h1>" << title << "</h1>";
+	}
 
-#line 270 "index.md"
+#line 318 "index.md"
 
 	while (line != end_of_file) {
 		
-#line 294 "index.md"
+#line 344 "index.md"
 
 	do {
 		
-#line 313 "index.md"
+#line 363 "index.md"
  {
 	static const std::string prefix {
 		"## "
 	};
 	if (has_prefix(line, prefix)) {
 		
-#line 327 "index.md"
+#line 377 "index.md"
 
 	exit_two_columns();
-	std::cout << "\\section{";
-	format_line(line.substr(
-		prefix.size()
-	));
-	std::cout << "}\n";
+	if (generate_latex) {
+		std::cout << "\\section{";
+		format_line(line.substr(
+			prefix.size()
+		));
+		std::cout << "}\n";
+	}
+	if (generate_markdown) {
+		std::cout << line << '\n';
+	}
+	if (generate_html) {
+		std::cout << "<h2>";
+		format_line(line.substr(
+			prefix.size()
+		));
+		std::cout << "</h2>\n";
+	}
 
-#line 318 "index.md"
+#line 368 "index.md"
 ;
 		nextline(line);
 		break;
 	}
 } 
-#line 339 "index.md"
+#line 401 "index.md"
  {
 	static const std::string prefix {
 		"### "
 	};
 	if (has_prefix(line, prefix)) {
-		std::cout << "\\subsection{";
-		format_line(line.substr(
-			prefix.size()
-		));
-		std::cout << "}\n";
+		if (generate_latex) {
+			std::cout << "\\subsection{";
+			format_line(line.substr(
+				prefix.size()
+			));
+			std::cout << "}\n";
+		}
+		if (generate_markdown) {
+			std::cout << line << '\n';
+		}
+		if (generate_html) {
+			std::cout << "<h3>";
+			format_line(line.substr(
+				prefix.size()
+			));
+			std::cout << "</h3>\n";
+		}
 		nextline(line);
 		break;
 	}
 } 
-#line 526 "index.md"
+#line 671 "index.md"
 
 	if (line == "") {
 		close_list();
 	}
 
-#line 534 "index.md"
+#line 679 "index.md"
  {
 	static const std::string prefix {
 		"* "
@@ -597,7 +780,7 @@ continue;
 		break;
 	}
 } 
-#line 549 "index.md"
+#line 694 "index.md"
 
 	if (line.size() && isdigit(line[0])) {
 		unsigned i { 1 };
@@ -611,31 +794,45 @@ continue;
 		}
 	}
 
-#line 604 "index.md"
+#line 761 "index.md"
 
 	if (line == "```lisp") {
 		std::cout << "\\begin{lisp}\n";
 		nextline(line);
 		
-#line 617 "index.md"
+#line 774 "index.md"
 
 	int nr { 1 };
 	while (line != end_of_file &&
 		line != "```"
 	) {
 		
-#line 633 "index.md"
+#line 790 "index.md"
 
 	if (nr > 1) {
-		std::cout << "\\\\*\n";
+		if (generate_latex) {
+			std::cout << "\\\\*\n";
+		}
+		if (generate_markdown) {
+			std::cout << '\n';
+		}
+		if (generate_html) {
+			std::cout << "<br/>\n";
+		}
 	}
 
-#line 642 "index.md"
+#line 807 "index.md"
 
-	std::cout << "$\\hlLine{" <<
-		nr++ << "}";
+	if (generate_latex) {
+		std::cout << "$\\hlLine{" <<
+			nr << "}";
+	}
+	if (generate_html) {
+		std::cout << "<span class=\"line\">" << nr << "</span>";
+	}
+	++nr;
 
-#line 650 "index.md"
+#line 821 "index.md"
 
 	unsigned i { 0 };
 	for (;
@@ -644,51 +841,73 @@ continue;
 		++i
 	) {}
 	if (i) {
-		std::cout << "\\hlIndent{" <<
-			i << "}";
+		if (generate_latex) {
+			std::cout << "\\hlIndent{" <<
+				i << "}";
+		}
+		if (generate_markdown) {
+			for (auto j { i }; j > 0; --j) {
+				std::cout << '\t';
+			}
+		}
+		if (generate_html) {
+			std::cout << "<span class=\"indent_" << i << "\"></span>";
+		}
 	}
 
-#line 667 "index.md"
+#line 848 "index.md"
 
 	for (auto t { i };
 		t < line.size(); ++t
 	) {
 		
-#line 678 "index.md"
+#line 859 "index.md"
 
 	if (line[t] == ' ') {
-		std::cout << "\\";
+		if (generate_latex) {
+			std::cout << "\\";
+		}
 	}
 	if (line[t] == '-' && t > 0 &&
 		isalpha(line[t - 1])
 	) {
-		std::cout << "{\\text -}";
+		if (generate_latex) {
+			std::cout << "{\\text -}";
+		}
+		if (generate_markdown) {
+			std::cout << line[t];
+		}
+		if (generate_html) {
+			std::cout << line[t];
+		}
 	} else {
 		std::cout << line[t];
 	}
 
-#line 671 "index.md"
+#line 852 "index.md"
 ;
 	}
 
-#line 696 "index.md"
+#line 887 "index.md"
 
-	std::cout << "$";
+	if (generate_latex) {
+		std::cout << "$";
+	}
 
-#line 622 "index.md"
+#line 779 "index.md"
 ;
 		nextline(line);
 	}
 	std::cout << "\n";
 	nextline(line);
 
-#line 608 "index.md"
+#line 765 "index.md"
 ;
 		std::cout << "\\end{lisp}\n";
 		break;
 	}
 
-#line 765 "index.md"
+#line 976 "index.md"
  {
 	static const std::string prefix {
 		"!("
@@ -696,12 +915,13 @@ continue;
 	if (has_prefix(line, prefix)) {
 		exit_two_columns();
 		
-#line 780 "index.md"
+#line 991 "index.md"
 
-	std::cout <<
-		"\\centerline{\\includegraphics[scale=.5]{";
-	
-#line 791 "index.md"
+	if (generate_latex) {
+		std::cout <<
+			"\\centerline{\\includegraphics[scale=.5]{";
+		
+#line 1012 "index.md"
 
 	auto i { prefix.size() };
 	while (i < line.size() &&
@@ -714,17 +934,41 @@ continue;
 		std::cout << "-" << theme;
 	}
 
-#line 783 "index.md"
+#line 995 "index.md"
 ;
-	std::cout << ".pdf}}\n";
+		std::cout << ".pdf}}\n";
+	}
+	if (generate_markdown) {
+		std::cout << line << '\n';
+	}
+	if (generate_html) {
+		std::cout << "<img src=\"";
+		
+#line 1012 "index.md"
 
-#line 771 "index.md"
+	auto i { prefix.size() };
+	while (i < line.size() &&
+		line[i] != '}' && line[i] != '.'
+	) {
+		std::cout << line[i];
+		++i;
+	}
+	if (theme.size()) {
+		std::cout << "-" << theme;
+	}
+
+#line 1003 "index.md"
+;
+		std::cout << ".svg\"></img>\n";
+	}
+
+#line 982 "index.md"
 ;
 		nextline(line);
 		break;
 	}
 } 
-#line 820 "index.md"
+#line 1041 "index.md"
 
 	if (line == "```gv" || line == "```GV") {
 		bool big { line[3] == 'G' };
@@ -742,17 +986,35 @@ continue;
 			nextline(line);
 		}
 		nextline(line);
-		std::cout <<
-			"\\centerline{\\includegraphics[trim={1in .9in 1in .9in},clip]{";
-		std::cout << name;
-		if (theme.size()) {
-			std::cout << "-" << theme;
+		if (generate_latex) {
+			std::cout <<
+				"\\centerline{\\includegraphics[trim={1in .9in 1in .9in},clip]{";
+			std::cout << name;
+			if (theme.size()) {
+				std::cout << "-" << theme;
+			}
+			std::cout << ".pdf}}\n";
 		}
-		std::cout << ".pdf}}\n";
+		if (generate_markdown) {
+			std::cout << "!(";
+			std::cout << name;
+			if (theme.size()) {
+				std::cout << "-" << theme;
+			}
+			std::cout << ".svg)\n";
+		}
+		if (generate_html) {
+			std::cout << "<img src=\"";
+			std::cout << name;
+			if (theme.size()) {
+				std::cout << "-" << theme;
+			}
+			std::cout << ".svg\"></img>\n";
+		}
 		break;
 	}
 
-#line 850 "index.md"
+#line 1089 "index.md"
 
 	if (line == "```lily") {
 		exit_two_columns();
@@ -776,17 +1038,26 @@ continue;
 			nextline(line);
 		}
 		nextline(line);
-		std::cout <<
-			"\\centerline{\\includegraphics{";
-		std::cout << name;
-		if (theme.size()) {
-			std::cout << "-" << theme;
+		if (generate_latex) {
+			std::cout <<
+				"\\centerline{\\includegraphics{";
+			std::cout << themed_name;
+			std::cout << ".pdf}}\n";
 		}
-		std::cout << ".pdf}}\n";
+		if (generate_markdown) {
+			std::cout << "!(";
+			std::cout << themed_name;
+			std::cout << ".svg)\n";
+		}
+		if (generate_html) {
+			std::cout << "<img src=\"";
+			std::cout << themed_name;
+			std::cout << ".svg\"></img>\n";
+		}
 		break;
 	}
 
-#line 296 "index.md"
+#line 346 "index.md"
 ;
 		enter_two_columns();
 		format_line(line);
@@ -794,11 +1065,19 @@ continue;
 		nextline(line);
 	} while (false);
 
-#line 272 "index.md"
+#line 320 "index.md"
 ;
 	}
 	exit_two_columns();
-	std::cout << "\\end{document}\n";
+	if (generate_latex) {
+		std::cout << "\\end{document}\n";
+	}
+
+#line 1134 "index.md"
+
+	if (generate_html) {
+		std::cout << "</body></html>\n";
+	}
 
 #line 12 "index.md"
 ;

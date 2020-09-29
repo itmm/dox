@@ -62,6 +62,9 @@ specify theme with a command line argument
 <span class="in1"></span><span class="keyword">static</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">theme</span> {};<br/>
 <span class="in1"></span><span class="keyword">static</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">prefix</span> {};<br/>
 <span class="in1"></span><span class="type">bool</span> <span class="var">with_multi_cols</span> { <span class="num">true</span> };<br/>
+<span class="in1"></span><span class="type">bool</span> <span class="var">generate_latex</span> { <span class="num">true</span> };<br/>
+<span class="in1"></span><span class="type">bool</span> <span class="var">generate_html</span> { <span class="num">false</span> };<br/>
+<span class="in1"></span><span class="type">bool</span> <span class="var">generate_markdown</span> { <span class="num">false</span> };<br/>
 <span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
 <ul><li>
@@ -102,6 +105,25 @@ no default theme is used
 <span class="in2"></span>}<br/>
 <span class="in2"></span><span class="keyword">if</span> (<span class="var">arg</span> == <span class="str">"--single-col"</span>) {<br/>
 <span class="in3"></span><span class="var">with_multi_cols</span> = <span class="num">false</span>;<br/>
+<span class="in3"></span><span class="var">generate_latex</span> = <span class="num">true</span>;<br/>
+<span class="in3"></span><span class="var">generate_html</span> = <span class="num">false</span>;<br/>
+<span class="in3"></span><span class="var">generate_markdown</span> = <span class="num">false</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">arg</span> == <span class="str">"--two-cols"</span>) {<br/>
+<span class="in3"></span><span class="var">with_multi_cols</span> = <span class="num">true</span>;<br/>
+<span class="in3"></span><span class="var">generate_latex</span> = <span class="num">true</span>;<br/>
+<span class="in3"></span><span class="var">generate_html</span> = <span class="num">false</span>;<br/>
+<span class="in3"></span><span class="var">generate_markdown</span> = <span class="num">false</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">arg</span> == <span class="str">"--markdown"</span>) {<br/>
+<span class="in3"></span><span class="var">generate_latex</span> = <span class="num">false</span>;<br/>
+<span class="in3"></span><span class="var">generate_html</span> = <span class="num">false</span>;<br/>
+<span class="in3"></span><span class="var">generate_markdown</span> = <span class="num">true</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">arg</span> == <span class="str">"--html"</span>) {<br/>
+<span class="in3"></span><span class="var">generate_latex</span> = <span class="num">false</span>;<br/>
+<span class="in3"></span><span class="var">generate_html</span> = <span class="num">true</span>;<br/>
+<span class="in3"></span><span class="var">generate_markdown</span> = <span class="num">false</span>;<br/>
 <span class="in2"></span>}<br/>
 <span class="in1"></span>}<br/>
 } <span class="macro">@end(<span class="name">main</span>)</span><br/>
@@ -236,6 +258,9 @@ this is used a couple of times in the program
 <span class="in2"></span><span class="var">title</span> = <span class="var">line</span>.<span class="fn">substr</span>(<br/>
 <span class="in3"></span><span class="var">prefix</span>.<span class="fn">size</span>()<br/>
 <span class="in2"></span>);<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_markdown</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">line</span> &lt;&lt; <span class="str">'\n'</span>;<br/>
+<span class="in2"></span>}<br/>
 <span class="in2"></span><span class="fn">nextline</span>(<span class="var">line</span>);<br/>
 <span class="in1"></span>} <span class="keyword">else</span> {<br/>
 <span class="in2"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"no title\n"</span>;<br/>
@@ -256,6 +281,9 @@ the first meta-data must be the title that is provided with a lever 1  heading
 <span class="in2"></span><span class="var">author</span> = <span class="var">line</span>.<span class="fn">substr</span>(<br/>
 <span class="in3"></span><span class="var">prefix</span>.<span class="fn">size</span>()<br/>
 <span class="in2"></span>);<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_markdown</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">line</span> &lt;&lt; <span class="str">'\n'</span>;<br/>
+<span class="in2"></span>}<br/>
 <span class="in2"></span><span class="fn">nextline</span>(<span class="var">line</span>);<br/>
 <span class="in1"></span>} <span class="keyword">else</span> {<br/>
 <span class="in2"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="str">"no author\n"</span>;<br/>
@@ -276,6 +304,9 @@ the next line specifies the author
 <span class="in2"></span><span class="var">date</span> = <span class="var">line</span>.<span class="fn">substr</span>(<br/>
 <span class="in3"></span><span class="var">prefix</span>.<span class="fn">size</span>()<br/>
 <span class="in2"></span>);<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_markdown</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">line</span> &lt;&lt; <span class="str">'\n'</span>;<br/>
+<span class="in2"></span>}<br/>
 <span class="in2"></span><span class="fn">nextline</span>(<span class="var">line</span>);<br/>
 <span class="in1"></span>}<br/>
 } <span class="macro">@end(<span class="name">read metadata</span>)</span><br/>
@@ -293,8 +324,11 @@ if no date is provided, the program uses the current date
 <span class="in2"></span><span class="var">line</span> != <span class="var">end_of_file</span> &amp;&amp; <span class="var">line</span>.<span class="fn">size</span>()<br/>
 <span class="in1"></span>) {<br/>
 <span class="in2"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt;<br/>
-<span class="in3"></span><span class="str">"ignoring meta line: "</span> &lt;&lt;<br/>
+<span class="in3"></span><span class="str">"unknown meta line: "</span> &lt;&lt;<br/>
 <span class="in3"></span><span class="var">line</span> &lt;&lt; <span class="str">"\n"</span>;<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_markdown</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">line</span> &lt;&lt; <span class="str">'\n'</span>;<br/>
+<span class="in2"></span>}<br/>
 <span class="in2"></span><span class="fn">nextline</span>(<span class="var">line</span>);<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">read metadata</span>)</span><br/>
@@ -317,8 +351,18 @@ after <code><span class="var">dox</span></code> read the meta-data it writes the
 <div class="page"><div class="slide"><div class="slide-nr">21</div>
 <code>
 <span class="macro">@add(<span class="name">main</span>)</span><br/>
-<span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt;<br/>
-<span class="in2"></span><span class="macro">@put(<span class="name">preamble</span>)</span>;<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">generate_latex</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt;<br/>
+<span class="in3"></span><span class="macro">@put(<span class="name">preamble</span>)</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">generate_html</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"&lt;!doctype html&gt;\n"</span><br/>
+<span class="in3"></span><span class="str">"&lt;html&gt;&lt;head&gt;"</span><br/>
+<span class="in4"></span><span class="str">"&lt;meta charset=\"utf-8\"/&gt;"</span><br/>
+<span class="in4"></span><span class="str">"&lt;title&gt;"</span> &lt;&lt; <span class="var">title</span> &lt;&lt; <span class="str">"&lt;/title&gt;"</span><br/>
+<span class="in3"></span><span class="str">"&lt;/head&gt;&lt;body&gt;"</span><br/>
+<span class="in4"></span><span class="str">"&lt;h1&gt;"</span> &lt;&lt; <span class="var">title</span> &lt;&lt; <span class="str">"&lt;/h1&gt;"</span>;<br/>
+<span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">main</span>)</span><br/>
 </code></div>
 <ul><li>
@@ -359,8 +403,10 @@ is the output currently in two-column style?
 <span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
 <span class="in1"></span><span class="type">void</span> <span class="fn">enter_two_columns</span>() {<br/>
 <span class="in2"></span><span class="keyword">if</span> (<span class="var">with_multi_cols</span> &amp;&amp; ! <span class="var">in_two_columns</span>) {<br/>
-<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt;<br/>
-<span class="in4"></span><span class="str">"\\begin{multicols}{2}\n"</span>;<br/>
+<span class="in3"></span><span class="keyword">if</span> (<span class="var">generate_latex</span>) {<br/>
+<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt;<br/>
+<span class="in5"></span><span class="str">"\\begin{multicols}{2}\n"</span>;<br/>
+<span class="in3"></span>}<br/>
 <span class="in3"></span><span class="var">in_two_columns</span> = <span class="num">true</span>;<br/>
 <span class="in2"></span>}<br/>
 <span class="in1"></span>}<br/>
@@ -375,8 +421,10 @@ switch into two-column style
 <span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
 <span class="in1"></span><span class="type">void</span> <span class="fn">exit_two_columns</span>() {<br/>
 <span class="in2"></span><span class="keyword">if</span> (<span class="var">in_two_columns</span>) {<br/>
-<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt;<br/>
-<span class="in4"></span><span class="str">"\\end{multicols}\n"</span>;<br/>
+<span class="in3"></span><span class="keyword">if</span> (<span class="var">generate_latex</span>) {<br/>
+<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt;<br/>
+<span class="in5"></span><span class="str">"\\end{multicols}\n"</span>;<br/>
+<span class="in3"></span>}<br/>
 <span class="in3"></span><span class="var">in_two_columns</span> = <span class="num">false</span>;<br/>
 <span class="in2"></span>}<br/>
 <span class="in1"></span>}<br/>
@@ -404,7 +452,9 @@ process the main body of text
 <span class="in2"></span><span class="macro">@put(<span class="name">process line</span>)</span>;<br/>
 <span class="in1"></span>}<br/>
 <span class="in1"></span><span class="fn">exit_two_columns</span>();<br/>
-<span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\end{document}\n"</span>;<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">generate_latex</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\end{document}\n"</span>;<br/>
+<span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">main</span>)</span><br/>
 </code></div>
 <ul><li>
@@ -481,11 +531,23 @@ process section header
 <code>
 <span class="macro">@def(<span class="name">write section</span>)</span><br/>
 <span class="in1"></span><span class="fn">exit_two_columns</span>();<br/>
-<span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\section{"</span>;<br/>
-<span class="in1"></span><span class="fn">format_line</span>(<span class="var">line</span>.<span class="fn">substr</span>(<br/>
-<span class="in2"></span><span class="var">prefix</span>.<span class="fn">size</span>()<br/>
-<span class="in1"></span>));<br/>
-<span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"}\n"</span>;<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">generate_latex</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\section{"</span>;<br/>
+<span class="in2"></span><span class="fn">format_line</span>(<span class="var">line</span>.<span class="fn">substr</span>(<br/>
+<span class="in3"></span><span class="var">prefix</span>.<span class="fn">size</span>()<br/>
+<span class="in2"></span>));<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"}\n"</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">generate_markdown</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">line</span> &lt;&lt; <span class="str">'\n'</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">generate_html</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"&lt;h2&gt;"</span>;<br/>
+<span class="in2"></span><span class="fn">format_line</span>(<span class="var">line</span>.<span class="fn">substr</span>(<br/>
+<span class="in3"></span><span class="var">prefix</span>.<span class="fn">size</span>()<br/>
+<span class="in2"></span>));<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"&lt;/h2&gt;\n"</span>;<br/>
+<span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">write section</span>)</span><br/>
 </code></div>
 <ul><li>
@@ -499,11 +561,23 @@ section headers are in one-column style
 <span class="in2"></span><span class="str">"### "</span><br/>
 <span class="in1"></span>};<br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="fn">has_prefix</span>(<span class="var">line</span>, <span class="var">prefix</span>)) {<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\subsection{"</span>;<br/>
-<span class="in2"></span><span class="fn">format_line</span>(<span class="var">line</span>.<span class="fn">substr</span>(<br/>
-<span class="in3"></span><span class="var">prefix</span>.<span class="fn">size</span>()<br/>
-<span class="in2"></span>));<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"}\n"</span>;<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_latex</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\subsection{"</span>;<br/>
+<span class="in3"></span><span class="fn">format_line</span>(<span class="var">line</span>.<span class="fn">substr</span>(<br/>
+<span class="in4"></span><span class="var">prefix</span>.<span class="fn">size</span>()<br/>
+<span class="in3"></span>));<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"}\n"</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_markdown</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">line</span> &lt;&lt; <span class="str">'\n'</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_html</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"&lt;h3&gt;"</span>;<br/>
+<span class="in3"></span><span class="fn">format_line</span>(<span class="var">line</span>.<span class="fn">substr</span>(<br/>
+<span class="in4"></span><span class="var">prefix</span>.<span class="fn">size</span>()<br/>
+<span class="in3"></span>));<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"&lt;/h3&gt;\n"</span>;<br/>
+<span class="in2"></span>}<br/>
 <span class="in2"></span><span class="fn">nextline</span>(<span class="var">line</span>);<br/>
 <span class="in2"></span><span class="keyword">break</span>;<br/>
 <span class="in1"></span>}<br/>
@@ -598,9 +672,25 @@ and process special format sequences
 <span class="in1"></span><span class="str">``</span>`<br/>
 <span class="macro">@add(<span class="name">do emphasis</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">bold</span>) {<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\textbf{"</span>;<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_latex</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\textbf{"</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_markdown</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">mark</span> &lt;&lt; <span class="var">mark</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_html</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"&lt;b&gt;"</span>;<br/>
+<span class="in2"></span>}<br/>
 <span class="in1"></span>} <span class="keyword">else</span> {<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\emph{"</span>;<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_latex</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\emph{"</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_markdown</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">mark</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_html</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"&lt;i&gt;"</span>;<br/>
+<span class="in2"></span>}<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">do emphasis</span>)</span><br/>
 <span class="in1"></span><span class="str">``</span>`<br/>
@@ -615,7 +705,19 @@ and process special format sequences
 <span class="keyword">for</span> (<span class="type">auto</span> <span class="var">t</span> { <span class="var">begin</span> }; <span class="var">t</span> &lt; <span class="var">end</span>; ++<span class="var">t</span>) {<br/>
 <span class="in1"></span><span class="macro">@put(<span class="name">emphasis loop</span>)</span>;<br/>
 }<br/>
-<span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"}"</span>;<br/>
+<span class="keyword">if</span> (<span class="var">generate_latex</span>) {<br/>
+<span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"}"</span>;<br/>
+}<br/>
+<span class="keyword">if</span> (<span class="var">generate_markdown</span>) {<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">bold</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">mark</span> &lt;&lt; <span class="var">mark</span>;<br/>
+<span class="in1"></span>} <span class="keyword">else</span> {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">mark</span>;<br/>
+<span class="in1"></span>}<br/>
+}<br/>
+<span class="keyword">if</span> (<span class="var">generate_html</span>) {<br/>
+<span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; (<span class="var">bold</span> ? <span class="str">"&lt;/b&gt;"</span> : <span class="str">"&lt;/i&gt;"</span>);<br/>
+}<br/>
 <span class="macro">@put(<span class="name">add padding</span>)</span>;<br/>
 <span class="var">i</span> = <span class="var">j</span> - <span class="num">1</span>;<br/>
 <span class="keyword">continue</span>;<br/>
@@ -644,7 +746,9 @@ and copy all other chars
 <code>
 <span class="macro">@def(<span class="name">add padding</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span>[<span class="var">j</span>] == <span class="str">' '</span>) {<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">'\\'</span>;<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_latex</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">'\\'</span>;<br/>
+<span class="in2"></span>}<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">add padding</span>)</span><br/>
 </code></div>
@@ -682,17 +786,48 @@ is the output currently in a list item
 <div class="page"><div class="slide"><div class="slide-nr">41</div>
 <code>
 <span class="macro">@add(<span class="name">main prereqs</span>)</span><br/>
+<span class="in1"></span><span class="type">int</span> <span class="var">item_counter</span> { <span class="num">0</span> };<br/>
+<br/>
 <span class="in1"></span><span class="type">void</span> <span class="fn">open_list</span>(<span class="type">bool</span> <span class="var">enumerate</span>) {<br/>
+<span class="in2"></span><span class="type">bool</span> <span class="var">already_open</span> { <span class="num">true</span> };<br/>
 <span class="in2"></span><span class="keyword">if</span> (<span class="var">list_type</span> == <span class="type">List_Type</span>::<span class="var">no_list</span>) {<br/>
 <span class="in3"></span><span class="keyword">if</span> (<span class="var">enumerate</span>) {<br/>
-<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\begin{enumerate}\n"</span>;<br/>
+<span class="in4"></span><span class="keyword">if</span> (<span class="var">generate_latex</span>) {<br/>
+<span class="in5"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\begin{enumerate}\n"</span>;<br/>
+<span class="in4"></span>}<br/>
+<span class="in4"></span><span class="keyword">if</span> (<span class="var">generate_html</span>) {<br/>
+<span class="in5"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"&lt;ol&gt;\n"</span>;<br/>
+<span class="in4"></span>}<br/>
 <span class="in4"></span><span class="var">list_type</span> = <span class="type">List_Type</span>::<span class="var">enum_list</span>;<br/>
+<span class="in4"></span><span class="var">item_counter</span> = <span class="num">0</span>;<br/>
 <span class="in3"></span>} <span class="keyword">else</span> {<br/>
-<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\begin{itemize}\n"</span>;<br/>
+<span class="in4"></span><span class="keyword">if</span> (<span class="var">generate_latex</span>) {<br/>
+<span class="in5"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\begin{itemize}\n"</span>;<br/>
+<span class="in4"></span>}<br/>
+<span class="in4"></span><span class="keyword">if</span> (<span class="var">generate_html</span>) {<br/>
+<span class="in5"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"&lt;ul&gt;\n"</span>;<br/>
+<span class="in4"></span>}<br/>
 <span class="in4"></span><span class="var">list_type</span> = <span class="type">List_Type</span>::<span class="var">item_list</span>;<br/>
 <span class="in3"></span>}<br/>
+<span class="in3"></span><span class="var">already_open</span> = <span class="num">false</span>;<br/>
 <span class="in2"></span>}<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\item "</span>;<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_html</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\item "</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_markdown</span>) {<br/>
+<span class="in3"></span><span class="keyword">if</span> (<span class="var">list_type</span> == <span class="type">List_Type</span>::<span class="var">enum_list</span>) {<br/>
+<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; ++<span class="var">item_counter</span> &lt;&lt; <span class="str">". "</span>;<br/>
+<span class="in3"></span>}<br/>
+<span class="in3"></span><span class="keyword">if</span> (<span class="var">list_type</span> == <span class="type">List_Type</span>::<span class="var">item_list</span>) {<br/>
+<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"* "</span>;<br/>
+<span class="in3"></span>}<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_html</span>) {<br/>
+<span class="in3"></span><span class="keyword">if</span> (<span class="var">already_open</span>) {<br/>
+<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"&lt;/li&gt;"</span>;<br/>
+<span class="in3"></span>}<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"&lt;li&gt;"</span>;<br/>
+<span class="in2"></span>}<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
@@ -705,10 +840,20 @@ is the output currently in a list item
 <span class="in3"></span><span class="keyword">case</span> <span class="type">List_Type</span>::<span class="var">no_list</span>:<br/>
 <span class="in4"></span><span class="keyword">break</span>;<br/>
 <span class="in3"></span><span class="keyword">case</span> <span class="type">List_Type</span>::<span class="var">enum_list</span>:<br/>
-<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\end{enumerate}\n"</span>;<br/>
+<span class="in4"></span><span class="keyword">if</span> (<span class="var">generate_latex</span>) {<br/>
+<span class="in5"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\end{enumerate}\n"</span>;<br/>
+<span class="in4"></span>}<br/>
+<span class="in4"></span><span class="keyword">if</span> (<span class="var">generate_html</span>) {<br/>
+<span class="in5"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"&lt;/li&gt;&lt;/ol&gt;"</span>;<br/>
+<span class="in4"></span>}<br/>
 <span class="in4"></span><span class="keyword">break</span>;<br/>
 <span class="in3"></span><span class="keyword">case</span> <span class="type">List_Type</span>::<span class="var">item_list</span>:<br/>
-<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\end{itemize}\n"</span>;<br/>
+<span class="in4"></span><span class="keyword">if</span> (<span class="var">generate_latex</span>) {<br/>
+<span class="in5"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\end{itemize}\n"</span>;<br/>
+<span class="in4"></span>}<br/>
+<span class="in4"></span><span class="keyword">if</span> (<span class="var">generate_html</span>) {<br/>
+<span class="in5"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"&lt;/li&gt;&lt;/ol&gt;"</span>;<br/>
+<span class="in4"></span>}<br/>
 <span class="in4"></span><span class="keyword">break</span>;<br/>
 <span class="in2"></span>}<br/>
 <span class="in2"></span><span class="var">list_type</span> = <span class="type">List_Type</span>::<span class="var">no_list</span>;<br/>
@@ -801,8 +946,20 @@ find end of math mode
 <code>
 <span class="macro">@add(<span class="name">math</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">j</span> &lt; <span class="var">line</span>.<span class="fn">size</span>() &amp;&amp; <span class="var">line</span>[<span class="var">j</span>] == <span class="str">'$'</span>) {<br/>
-<span class="in2"></span><span class="keyword">for</span> (<span class="type">auto</span> <span class="var">t</span> { <span class="var">i</span> }; <span class="var">t</span> &lt;= <span class="var">j</span>; ++<span class="var">t</span>) {<br/>
-<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">line</span>[<span class="var">t</span>];<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_latex</span>) {<br/>
+<span class="in3"></span><span class="keyword">for</span> (<span class="type">auto</span> <span class="var">t</span> { <span class="var">i</span> }; <span class="var">t</span> &lt;= <span class="var">j</span>; ++<span class="var">t</span>) {<br/>
+<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">line</span>[<span class="var">t</span>];<br/>
+<span class="in3"></span>}<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_markdown</span>) {<br/>
+<span class="in3"></span><span class="keyword">for</span> (<span class="type">auto</span> <span class="var">t</span> { <span class="var">i</span> + <span class="num">1</span> }; <span class="var">t</span> &lt; <span class="var">j</span>; ++<span class="var">t</span>) {<br/>
+<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">line</span>[<span class="var">t</span>];<br/>
+<span class="in3"></span>}<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_html</span>) {<br/>
+<span class="in3"></span><span class="keyword">for</span> (<span class="type">auto</span> <span class="var">t</span> { <span class="var">i</span> + <span class="num">1</span> }; <span class="var">t</span> &lt; <span class="var">j</span>; ++<span class="var">t</span>) {<br/>
+<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">line</span>[<span class="var">t</span>];<br/>
+<span class="in3"></span>}<br/>
 <span class="in2"></span>}<br/>
 <span class="in2"></span><span class="var">i</span> = <span class="var">j</span>;<br/>
 <span class="in2"></span><span class="keyword">continue</span>;<br/>
@@ -864,7 +1021,15 @@ close last line with a newline
 <code>
 <span class="macro">@def(<span class="name">process lisp line</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">nr</span> &gt; <span class="num">1</span>) {<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\\\*\n"</span>;<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_latex</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\\\*\n"</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_markdown</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">'\n'</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_html</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"&lt;br/&gt;\n"</span>;<br/>
+<span class="in2"></span>}<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">process lisp line</span>)</span><br/>
 </code></div>
@@ -875,8 +1040,14 @@ terminate previous line correctly
 <div class="page"><div class="slide"><div class="slide-nr">54</div>
 <code>
 <span class="macro">@add(<span class="name">process lisp line</span>)</span><br/>
-<span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"$\\hlLine{"</span> &lt;&lt;<br/>
-<span class="in2"></span><span class="var">nr</span>++ &lt;&lt; <span class="str">"}"</span>;<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">generate_latex</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"$\\hlLine{"</span> &lt;&lt;<br/>
+<span class="in3"></span><span class="var">nr</span> &lt;&lt; <span class="str">"}"</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">generate_html</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"&lt;span class=\"line\"&gt;"</span> &lt;&lt; <span class="var">nr</span> &lt;&lt; <span class="str">"&lt;/span&gt;"</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="in1"></span>++<span class="var">nr</span>;<br/>
 <span class="macro">@end(<span class="name">process lisp line</span>)</span><br/>
 </code></div>
 <ul><li>
@@ -893,8 +1064,18 @@ enter math mode and write line number
 <span class="in2"></span>++<span class="var">i</span><br/>
 <span class="in1"></span>) {}<br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">i</span>) {<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\hlIndent{"</span> &lt;&lt;<br/>
-<span class="in3"></span><span class="var">i</span> &lt;&lt; <span class="str">"}"</span>;<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_latex</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\hlIndent{"</span> &lt;&lt;<br/>
+<span class="in4"></span><span class="var">i</span> &lt;&lt; <span class="str">"}"</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_markdown</span>) {<br/>
+<span class="in3"></span><span class="keyword">for</span> (<span class="type">auto</span> <span class="var">j</span> { <span class="var">i</span> }; <span class="var">j</span> &gt; <span class="num">0</span>; --<span class="var">j</span>) {<br/>
+<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">'\t'</span>;<br/>
+<span class="in3"></span>}<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_html</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"&lt;span class=\"indent_"</span> &lt;&lt; <span class="var">i</span> &lt;&lt; <span class="str">"\"&gt;&lt;/span&gt;"</span>;<br/>
+<span class="in2"></span>}<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">process lisp line</span>)</span><br/>
 </code></div>
@@ -922,12 +1103,22 @@ copy code
 <code>
 <span class="macro">@def(<span class="name">copy code</span>)</span><br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span>[<span class="var">t</span>] == <span class="str">' '</span>) {<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\"</span>;<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_latex</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\"</span>;<br/>
+<span class="in2"></span>}<br/>
 <span class="in1"></span>}<br/>
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">line</span>[<span class="var">t</span>] == <span class="str">'-'</span> &amp;&amp; <span class="var">t</span> &gt; <span class="num">0</span> &amp;&amp;<br/>
 <span class="in2"></span><span class="fn">isalpha</span>(<span class="var">line</span>[<span class="var">t</span> - <span class="num">1</span>])<br/>
 <span class="in1"></span>) {<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"{\\text -}"</span>;<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_latex</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"{\\text -}"</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_markdown</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">line</span>[<span class="var">t</span>];<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_html</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">line</span>[<span class="var">t</span>];<br/>
+<span class="in2"></span>}<br/>
 <span class="in1"></span>} <span class="keyword">else</span> {<br/>
 <span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">line</span>[<span class="var">t</span>];<br/>
 <span class="in1"></span>}<br/>
@@ -944,7 +1135,9 @@ special treatment to separate hyphens from minus signs
 <div class="page"><div class="slide"><div class="slide-nr">58</div>
 <code>
 <span class="macro">@add(<span class="name">process lisp line</span>)</span><br/>
-<span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"$"</span>;<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">generate_latex</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"$"</span>;<br/>
+<span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">process lisp line</span>)</span><br/>
 </code></div>
 <ul><li>
@@ -1007,11 +1200,27 @@ process valid fragment
 <div class="page"><div class="slide"><div class="slide-nr">63</div>
 <code>
 <span class="macro">@def(<span class="name">do inline code</span>)</span><br/>
-<span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\hlInline{"</span>;<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">generate_latex</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\hlInline{"</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">generate_markdown</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">'`'</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">generate_html</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"&lt;code&gt;"</span>;<br/>
+<span class="in1"></span>}<br/>
 <span class="in1"></span><span class="keyword">for</span> (<span class="type">auto</span> <span class="var">t</span> { <span class="var">i</span> + <span class="num">1</span> }; <span class="var">t</span> &lt; <span class="var">j</span>; ++<span class="var">t</span>) {<br/>
 <span class="in2"></span><span class="macro">@mul(<span class="name">copy code</span>)</span>;<br/>
 <span class="in1"></span>}<br/>
-<span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"}"</span>;<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">generate_latex</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"}"</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">generate_markdown</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">'`'</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">generate_html</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"&lt;/code&gt;"</span>;<br/>
+<span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">do inline code</span>)</span><br/>
 </code></div>
 <ul><li>
@@ -1026,7 +1235,9 @@ but escape spaces
 <span class="in1"></span><span class="keyword">if</span> (<span class="var">j</span> + <span class="num">1</span> &lt; <span class="var">line</span>.<span class="fn">size</span>() &amp;&amp;<br/>
 <span class="in2"></span><span class="var">line</span>[<span class="var">j</span> + <span class="num">1</span>] == <span class="str">' '</span><br/>
 <span class="in1"></span>) {<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\"</span>;<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_latex</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"\\"</span>;<br/>
+<span class="in2"></span>}<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">do inline code</span>)</span><br/>
 </code></div>
@@ -1066,10 +1277,20 @@ parse image
 <div class="page"><div class="slide"><div class="slide-nr">67</div>
 <code>
 <span class="macro">@def(<span class="name">include graphics</span>)</span><br/>
-<span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt;<br/>
-<span class="in2"></span><span class="str">"\\centerline{\\includegraphics[scale=.5]{"</span>;<br/>
-<span class="in1"></span><span class="macro">@put(<span class="name">copy themed graphics name</span>)</span>;<br/>
-<span class="in1"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">".pdf}}\n"</span>;<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">generate_latex</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt;<br/>
+<span class="in3"></span><span class="str">"\\centerline{\\includegraphics[scale=.5]{"</span>;<br/>
+<span class="in2"></span><span class="macro">@mul(<span class="name">copy themed graphics name</span>)</span>;<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">".pdf}}\n"</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">generate_markdown</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">line</span> &lt;&lt; <span class="str">'\n'</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">generate_html</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"&lt;img src=\""</span>;<br/>
+<span class="in2"></span><span class="macro">@mul(<span class="name">copy themed graphics name</span>)</span>;<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">".svg\"&gt;&lt;/img&gt;\n"</span>;<br/>
+<span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">include graphics</span>)</span><br/>
 </code></div>
 <ul><li>
@@ -1138,13 +1359,31 @@ add theme name if present
 <span class="in3"></span><span class="fn">nextline</span>(<span class="var">line</span>);<br/>
 <span class="in2"></span>}<br/>
 <span class="in2"></span><span class="fn">nextline</span>(<span class="var">line</span>);<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt;<br/>
-<span class="in3"></span><span class="str">"\\centerline{\\includegraphics[trim={1in .9in 1in .9in},clip]{"</span>;<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">name</span>;<br/>
-<span class="in2"></span><span class="keyword">if</span> (<span class="var">theme</span>.<span class="fn">size</span>()) {<br/>
-<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"-"</span> &lt;&lt; <span class="var">theme</span>;<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_latex</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt;<br/>
+<span class="in4"></span><span class="str">"\\centerline{\\includegraphics[trim={1in .9in 1in .9in},clip]{"</span>;<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">name</span>;<br/>
+<span class="in3"></span><span class="keyword">if</span> (<span class="var">theme</span>.<span class="fn">size</span>()) {<br/>
+<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"-"</span> &lt;&lt; <span class="var">theme</span>;<br/>
+<span class="in3"></span>}<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">".pdf}}\n"</span>;<br/>
 <span class="in2"></span>}<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">".pdf}}\n"</span>;<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_markdown</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"!("</span>;<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">name</span>;<br/>
+<span class="in3"></span><span class="keyword">if</span> (<span class="var">theme</span>.<span class="fn">size</span>()) {<br/>
+<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"-"</span> &lt;&lt; <span class="var">theme</span>;<br/>
+<span class="in3"></span>}<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">".svg)\n"</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_html</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"&lt;img src=\""</span>;<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">name</span>;<br/>
+<span class="in3"></span><span class="keyword">if</span> (<span class="var">theme</span>.<span class="fn">size</span>()) {<br/>
+<span class="in4"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"-"</span> &lt;&lt; <span class="var">theme</span>;<br/>
+<span class="in3"></span>}<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">".svg\"&gt;&lt;/img&gt;\n"</span>;<br/>
+<span class="in2"></span>}<br/>
 <span class="in2"></span><span class="keyword">break</span>;<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">process special</span>)</span><br/>
@@ -1175,16 +1414,34 @@ add theme name if present
 <span class="in3"></span><span class="fn">nextline</span>(<span class="var">line</span>);<br/>
 <span class="in2"></span>}<br/>
 <span class="in2"></span><span class="fn">nextline</span>(<span class="var">line</span>);<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt;<br/>
-<span class="in3"></span><span class="str">"\\centerline{\\includegraphics{"</span>;<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">name</span>;<br/>
-<span class="in2"></span><span class="keyword">if</span> (<span class="var">theme</span>.<span class="fn">size</span>()) {<br/>
-<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"-"</span> &lt;&lt; <span class="var">theme</span>;<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_latex</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt;<br/>
+<span class="in4"></span><span class="str">"\\centerline{\\includegraphics{"</span>;<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">themed_name</span>;<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">".pdf}}\n"</span>;<br/>
 <span class="in2"></span>}<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">".pdf}}\n"</span>;<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_markdown</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"!("</span>;<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">themed_name</span>;<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">".svg)\n"</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">generate_html</span>) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"&lt;img src=\""</span>;<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">themed_name</span>;<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">".svg\"&gt;&lt;/img&gt;\n"</span>;<br/>
+<span class="in2"></span>}<br/>
 <span class="in2"></span><span class="keyword">break</span>;<br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">process special</span>)</span><br/>
+</code></div>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">74</div>
+<code>
+<span class="macro">@add(<span class="name">main</span>)</span><br/>
+<span class="in1"></span><span class="keyword">if</span> (<span class="var">generate_html</span>) {<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"&lt;/body&gt;&lt;/html&gt;\n"</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">main</span>)</span><br/>
 </code></div>
 </div>
 </body>
