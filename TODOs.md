@@ -5,4 +5,4 @@
 * fix bold/emphasis parsing
 * integrate xtx
 * add HTML stylesheet
-
+* too much space on enumaration -> markdown
