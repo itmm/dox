@@ -6,3 +6,5 @@
 * integrate xtx
 * add HTML stylesheet
 * too much space on enumaration -> markdown
+* support blockquote
+* support quotes in LaTeX and HTML
