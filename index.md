@@ -618,7 +618,7 @@ continue;
 			}
 			already_open = false;
 		}
-		if (generate_html) {
+		if (generate_latex) {
 			std::cout << "\\item ";
 		}
 		if (generate_markdown) {
