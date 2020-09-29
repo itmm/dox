@@ -115,13 +115,15 @@
 
 ```
 @add(preamble)
-	"\\fancyfoot[C]{{"
+	"\\fancyfoot[C]\x7b\x7b"
 		"\\color{deemph}\\small"
 		"$\\thepage$"
-	"}}\n"
+	"\x7d\x7d\n"
 @end(preamble)
 ```
 * page footer contains a small page number
+* `\x7b` and `\x7d` are curly braces
+* if they are inserted directly it breaks jekyll build
 
 ```
 @add(preamble)

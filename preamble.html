@@ -176,14 +176,18 @@ define own pagestyle
 <div class="page"><div class="slide"><div class="slide-nr">15</div>
 <code>
 <span class="macro">@add(<span class="name">preamble</span>)</span><br/>
-<span class="in1"></span><span class="str">"\\fancyfoot[C]{{"</span><br/>
+<span class="in1"></span><span class="str">"\\fancyfoot[C]\x7b\x7b"</span><br/>
 <span class="in2"></span><span class="str">"\\color{deemph}\\small"</span><br/>
 <span class="in2"></span><span class="str">"$\\thepage$"</span><br/>
-<span class="in1"></span><span class="str">"}}\n"</span><br/>
+<span class="in1"></span><span class="str">"\x7d\x7d\n"</span><br/>
 <span class="macro">@end(<span class="name">preamble</span>)</span><br/>
 </code></div>
 <ul><li>
 page footer contains a small page number
+</li><li>
+<code>\<span class="var">x7b</span></code> and <code>\<span class="var">x7d</span></code> are curly braces
+</li><li>
+if they are inserted directly it breaks jekyll build
 </li></ul>
 </div>
 <div class="page"><div class="slide"><div class="slide-nr">16</div>

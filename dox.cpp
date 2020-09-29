@@ -625,19 +625,19 @@ continue;
 
 #line 117 "preamble.md"
 
-	"\\fancyfoot[C]{{"
+	"\\fancyfoot[C]\x7b\x7b"
 		"\\color{deemph}\\small"
 		"$\\thepage$"
-	"}}\n"
+	"\x7d\x7d\n"
 
-#line 127 "preamble.md"
+#line 129 "preamble.md"
 
 	"\\renewcommand{\\headrulewidth}"
 		"{0pt}\n"
 	"\\renewcommand{\\footrulewidth}"
 		"{0pt}}\n"
 
-#line 137 "preamble.md"
+#line 139 "preamble.md"
 
 	"\\title{"
 		"\\color{emph}" << title <<
@@ -645,17 +645,17 @@ continue;
 	"\\author{" << author << "}\n"
 	"\\date{" << date << "}\n"
 
-#line 148 "preamble.md"
+#line 150 "preamble.md"
 
 	"\\columnseprule.2pt\n"
 	"\\renewcommand{\\columnseprulecolor}"
 		"{\\color{deemph}}\n"
 
-#line 157 "preamble.md"
+#line 159 "preamble.md"
 
 	"\\begin{document}\n"
 
-#line 164 "preamble.md"
+#line 166 "preamble.md"
 
 	"\\pagecolor{background}\n"
 	"\\color{normal}\n"
@@ -663,13 +663,13 @@ continue;
 		"\\color{emph}\\mdseries"
 	"}\n"
 
-#line 175 "preamble.md"
+#line 177 "preamble.md"
 
 	"\\pagestyle{plain}\n"
 	"\\maketitle\n"
 	"\\thispagestyle{fancy}\n"
 
-#line 185 "preamble.md"
+#line 187 "preamble.md"
 
 	"\\surroundwithmdframed["
 		"backgroundcolor=codebackground,"
