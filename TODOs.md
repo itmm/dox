@@ -4,4 +4,5 @@
 * add plantuml
 * fix bold/emphasis parsing
 * integrate xtx
+* add HTML stylesheet
 
