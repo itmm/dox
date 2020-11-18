@@ -28,6 +28,7 @@ generate LaTeX sources from a markdown file
 <span class="in1"></span>}<br/>
 <span class="macro">@End(<span class="name">file: dox.cpp</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 simple main program
 </li></ul>
@@ -39,6 +40,7 @@ simple main program
 <span class="in1"></span><span class="keyword">#include</span> <span class="str">&lt;string&gt;</span><br/>
 <span class="macro">@end(<span class="name">includes</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 needs libraries for string processing
 </li></ul>
@@ -67,6 +69,7 @@ specify theme with a command line argument
 <span class="in1"></span><span class="type">bool</span> <span class="var">generate_markdown</span> { <span class="num">false</span> };<br/>
 <span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 no default theme is used
 </li></ul>
@@ -83,6 +86,7 @@ no default theme is used
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
+<ul></ul>
 </div>
 <div class="page"><div class="slide"><div class="slide-nr">7</div>
 <code>
@@ -128,6 +132,7 @@ no default theme is used
 <span class="in1"></span>}<br/>
 } <span class="macro">@end(<span class="name">main</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 may select other theme based on command line arguments
 </li></ul>
@@ -151,6 +156,7 @@ collect information about the document
 <span class="in1"></span><span class="keyword">static</span> <span class="type">std</span>::<span class="type">string</span> <span class="var">date</span> { <span class="str">"\\today"</span> };<br/>
 <span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 <code><span class="var">date</span></code> defaults to the LaTeX command for the current day
 </li></ul>
@@ -175,6 +181,7 @@ reading one line from standard input
 <span class="in2"></span>};<br/>
 <span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 a special string value marks the end of file
 </li><li>
@@ -193,6 +200,7 @@ as the newline is stripped by the reading routine the provided string  should ne
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 reads the next line into the argument
 </li><li>
@@ -222,6 +230,7 @@ but nonetheless the meta-data is formatted as regular markdown code
 <span class="in1"></span><span class="macro">@put(<span class="name">read metadata</span>)</span>;<br/>
 <span class="macro">@end(<span class="name">main</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 read the first line
 </li><li>
@@ -242,6 +251,7 @@ and process meta-data
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 check if a string starts with the specified prefix
 </li><li>
@@ -267,6 +277,7 @@ this is used a couple of times in the program
 <span class="in1"></span>}<br/>
 } <span class="macro">@end(<span class="name">read metadata</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 the first meta-data must be the title that is provided with a lever 1  heading
 </li></ul>
@@ -290,6 +301,7 @@ the first meta-data must be the title that is provided with a lever 1  heading
 <span class="in1"></span>}<br/>
 } <span class="macro">@end(<span class="name">read metadata</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 the next line specifies the author
 </li></ul>
@@ -311,6 +323,7 @@ the next line specifies the author
 <span class="in1"></span>}<br/>
 } <span class="macro">@end(<span class="name">read metadata</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 the next line may specify the generation date
 </li><li>
@@ -333,6 +346,7 @@ if no date is provided, the program uses the current date
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">read metadata</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 all other lines until the first empty line are ignored
 </li></ul>
@@ -365,6 +379,7 @@ after <code><span class="var">dox</span></code> read the meta-data it writes the
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">main</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 write the preamble
 </li></ul>
@@ -373,6 +388,7 @@ write the preamble
 <code>
 <span class="macro">@inc(<span class="name"><a href="preamble.html">preamble.md</a></span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 preamble is defined in another document
 </li></ul>
@@ -394,6 +410,7 @@ output can switch between one-column and two-column style
 <span class="in1"></span><span class="type">bool</span> <span class="var">in_two_columns</span> { <span class="num">false</span> };<br/>
 <span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 is the output currently in two-column style?
 </li></ul>
@@ -412,6 +429,7 @@ is the output currently in two-column style?
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 switch into two-column style
 </li></ul>
@@ -430,6 +448,7 @@ switch into two-column style
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 switch back into one-column style
 </li></ul>
@@ -457,6 +476,7 @@ process the main body of text
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">main</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 read and process all lines
 </li><li>
@@ -473,6 +493,7 @@ and close the document
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 do special formatting of all the special sequences in one line of  normal text
 </li></ul>
@@ -489,6 +510,7 @@ do special formatting of all the special sequences in one line of  normal text
 <span class="in1"></span>} <span class="keyword">while</span> (<span class="num">false</span>);<br/>
 <span class="macro">@end(<span class="name">process line</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 first process some special lines
 </li><li>
@@ -523,6 +545,7 @@ process the section and subsection headers
 <span class="in1"></span>}<br/>
 } <span class="macro">@end(<span class="name">process special</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 process section header
 </li></ul>
@@ -550,6 +573,7 @@ process section header
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">write section</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 section headers are in one-column style
 </li></ul>
@@ -583,6 +607,7 @@ section headers are in one-column style
 <span class="in1"></span>}<br/>
 } <span class="macro">@end(<span class="name">process special</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 subsections stay in the current columns style
 </li></ul>
@@ -609,6 +634,7 @@ text in a line can be emphasised
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">format line</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 iterate over each char
 </li><li>
@@ -736,6 +762,7 @@ and process special format sequences
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">emphasis loop</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 replace the marking char with spaces
 </li><li>
@@ -752,6 +779,7 @@ and copy all other chars
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">add padding</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 if a space follows the emphasise sequence
 </li><li>
@@ -779,6 +807,7 @@ format lists
 <span class="in1"></span>} <span class="var">list_type</span> { <span class="type">List_Type</span>::<span class="var">no_list</span> };<br/>
 <span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 is the output currently in a list item
 </li></ul>
@@ -831,6 +860,7 @@ is the output currently in a list item
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
+<ul></ul>
 </div>
 <div class="page"><div class="slide"><div class="slide-nr">42</div>
 <code>
@@ -860,6 +890,7 @@ is the output currently in a list item
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">main prereqs</span>)</span><br/>
 </code></div>
+<ul></ul>
 </div>
 <div class="page"><div class="slide"><div class="slide-nr">43</div>
 <code>
@@ -869,6 +900,7 @@ is the output currently in a list item
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">process special</span>)</span><br/>
 </code></div>
+<ul></ul>
 </div>
 <div class="page"><div class="slide"><div class="slide-nr">44</div>
 <code>
@@ -885,6 +917,7 @@ is the output currently in a list item
 <span class="in1"></span>}<br/>
 } <span class="macro">@end(<span class="name">process special</span>)</span><br/>
 </code></div>
+<ul></ul>
 </div>
 <div class="page"><div class="slide"><div class="slide-nr">45</div>
 <code>
@@ -902,6 +935,7 @@ is the output currently in a list item
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">process special</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 subsections stay in the current columns style
 </li></ul>
@@ -925,6 +959,7 @@ verbose copy math blocks
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">handle format</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 start of math mode
 </li></ul>
@@ -938,6 +973,7 @@ start of math mode
 <span class="in1"></span>) { ++<span class="var">j</span>; }<br/>
 <span class="macro">@end(<span class="name">math</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 find end of math mode
 </li></ul>
@@ -966,6 +1002,7 @@ find end of math mode
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">math</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 directly copy math
 </li></ul>
@@ -993,6 +1030,7 @@ highlight source code
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">process special</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 parse LISP block
 </li></ul>
@@ -1011,6 +1049,7 @@ parse LISP block
 <span class="in1"></span><span class="fn">nextline</span>(<span class="var">line</span>);<br/>
 <span class="macro">@end(<span class="name">process lisp lines</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 process each line
 </li><li>
@@ -1033,6 +1072,7 @@ close last line with a newline
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">process lisp line</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 terminate previous line correctly
 </li></ul>
@@ -1050,6 +1090,7 @@ terminate previous line correctly
 <span class="in1"></span>++<span class="var">nr</span>;<br/>
 <span class="macro">@end(<span class="name">process lisp line</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 enter math mode and write line number
 </li></ul>
@@ -1079,6 +1120,7 @@ enter math mode and write line number
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">process lisp line</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 skip over tabs
 </li><li>
@@ -1095,6 +1137,7 @@ and add matching indent
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">process lisp line</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 copy code
 </li></ul>
@@ -1124,6 +1167,7 @@ copy code
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">copy code</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 copy code
 </li><li>
@@ -1140,6 +1184,7 @@ special treatment to separate hyphens from minus signs
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">process lisp line</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 leave math mode
 </li></ul>
@@ -1163,6 +1208,7 @@ display an inline code fragment
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">handle format</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 parse inline code fragment
 </li></ul>
@@ -1177,6 +1223,7 @@ parse inline code fragment
 <span class="in1"></span>) {}<br/>
 <span class="macro">@end(<span class="name">inline code</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 find end of fragment
 </li></ul>
@@ -1193,6 +1240,7 @@ find end of fragment
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">inline code</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 process valid fragment
 </li></ul>
@@ -1223,6 +1271,7 @@ process valid fragment
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">do inline code</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 copy code fragment
 </li><li>
@@ -1241,6 +1290,7 @@ but escape spaces
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">do inline code</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 pad trailing space
 </li></ul>
@@ -1270,6 +1320,7 @@ include PDF graphics in the correct theme
 <span class="in1"></span>}<br/>
 } <span class="macro">@end(<span class="name">process special</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 parse image
 </li></ul>
@@ -1293,6 +1344,7 @@ parse image
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">include graphics</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 include LaTeX statements to load graphic
 </li><li>
@@ -1314,6 +1366,7 @@ only PDF graphics are supported
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">copy themed graphics name</span>)</span><br/>
 </code></div>
+<div class="page">
 <ul><li>
 copy name until the first extension
 </li><li>
@@ -1332,6 +1385,7 @@ add theme name if present
 <code>
 <span class="macro">@inc(<span class="name"><a href="lazy-write/lazy.html">lazy-write/lazy.md</a></span>)</span><br/>
 </code></div>
+<ul></ul>
 </div>
 <div class="page"><div class="slide"><div class="slide-nr">71</div>
 <code>
@@ -1339,6 +1393,7 @@ add theme name if present
 <span class="in1"></span><span class="keyword">#include</span> <span class="str">"lazy-write.h"</span><br/>
 <span class="macro">@end(<span class="name">includes</span>)</span><br/>
 </code></div>
+<ul></ul>
 </div>
 <div class="page"><div class="slide"><div class="slide-nr">72</div>
 <code>
@@ -1388,6 +1443,7 @@ add theme name if present
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">process special</span>)</span><br/>
 </code></div>
+<ul></ul>
 </div>
 <div class="page"><div class="slide"><div class="slide-nr">73</div>
 <code>
@@ -1434,6 +1490,7 @@ add theme name if present
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">process special</span>)</span><br/>
 </code></div>
+<ul></ul>
 </div>
 <div class="page"><div class="slide"><div class="slide-nr">74</div>
 <code>
@@ -1443,6 +1500,7 @@ add theme name if present
 <span class="in1"></span>}<br/>
 <span class="macro">@end(<span class="name">main</span>)</span><br/>
 </code></div>
+<ul></ul>
 </div>
 </body>
 </html>
